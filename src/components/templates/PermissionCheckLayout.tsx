@@ -1,14 +1,15 @@
+import { cn } from "../../utils/style";
 import Title from "../atoms/Title";
 import BackHeader from "../molecules/BackHeader";
+import PrimaryButton from "../molecules/PrimaryButton";
 import PermissionBox from "../organisms/login/PermissionBox";
 
 interface CheckPermissionItemProps {
   onBack?: () => void;
   pageTitle: string;
   permissionList: { title: string; description: string }[];
-  checkedList?: boolean[];
-  defaultCheckedList?: boolean[];
-  onChangeList?: ((next: boolean) => void)[];
+  checkedList: boolean[];
+  onChange: (index: number) => void;
   disabledList?: boolean[];
 }
 
@@ -17,8 +18,7 @@ export default function PermissionCheckLayout({
   pageTitle,
   permissionList,
   checkedList,
-  defaultCheckedList,
-  onChangeList,
+  onChange,
   disabledList,
 }: CheckPermissionItemProps) {
   return (
@@ -30,10 +30,21 @@ export default function PermissionCheckLayout({
           <PermissionBox
             permissionList={permissionList}
             checkedList={checkedList}
-            defaultCheckedList={defaultCheckedList}
-            onChangeList={onChangeList}
+            onChange={onChange}
             disabledList={disabledList}
           />
+          <div
+            className={cn(
+              "transition-opacity duration-200 opacity-0 pointer-events-none fixed left-0 bottom-20 w-full px-10",
+              {
+                "opacity-100 pointer-events-auto": checkedList?.every((v) => v),
+              }
+            )}
+          >
+            <PrimaryButton variant="primary" size="md">
+              다음
+            </PrimaryButton>
+          </div>
         </div>
       </div>
     </>

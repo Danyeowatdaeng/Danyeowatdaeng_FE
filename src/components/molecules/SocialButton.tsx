@@ -1,4 +1,5 @@
 import Icon from "../atoms/Icon";
+import PrimaryButton from "./PrimaryButton";
 
 type Provider = "kakao" | "naver" | "google";
 
@@ -7,21 +8,13 @@ type SocialButtonProps = {
   label: React.ReactNode; // 버튼 라벨
 } & React.ComponentPropsWithoutRef<"button">;
 
-export function SocialButton({
-  provider,
-  label,
-  className,
-  ...rest
-}: SocialButtonProps) {
+export function SocialButton({ provider, label, ...rest }: SocialButtonProps) {
   return (
-    <button
-      className={`justify-center items-center w-full bg-[#00A3A5] h-12 rounded-lg inline-flex gap-3 px-4 ${className ?? ""}`}
-      {...rest}
-    >
+    <PrimaryButton variant="primary" size="md" {...rest}>
       {provider === "kakao" && <Icon />}
       {provider === "naver" && <Icon />}
       {provider === "google" && <Icon />}
       <span className="font-bold text-[0.9rem] text-white">{label}</span>
-    </button>
+    </PrimaryButton>
   );
 }

@@ -2,17 +2,15 @@ import CheckPermissionItem from "../../molecules/PermissionCheckBox";
 
 type CheckPermissionItemProps = {
   permissionList: { title: string; description: string }[];
-  checkedList?: boolean[];
-  defaultCheckedList?: boolean[];
-  onChangeList?: ((next: boolean) => void)[];
+  checkedList: boolean[];
+  onChange: (index: number) => void;
   disabledList?: boolean[];
 };
 
 export default function PermissionBox({
   permissionList,
   checkedList,
-  defaultCheckedList,
-  onChangeList,
+  onChange,
   disabledList,
 }: CheckPermissionItemProps) {
   return (
@@ -23,12 +21,9 @@ export default function PermissionBox({
           id={`permission${idx + 1}`}
           title={permission.title}
           desc={permission.description}
-          checked={checkedList ? checkedList[idx] : undefined}
-          defaultChecked={
-            defaultCheckedList ? defaultCheckedList[idx] : undefined
-          }
-          onChange={onChangeList ? onChangeList[idx] : undefined}
+          checked={checkedList[idx]}
           disabled={disabledList ? disabledList[idx] : undefined}
+          onClick={() => onChange(idx)}
         />
       ))}
     </div>

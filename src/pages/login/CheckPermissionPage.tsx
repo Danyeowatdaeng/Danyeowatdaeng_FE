@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import PermissionCheckLayout from "../../components/templates/PermissionCheckLayout";
 
 export default function CheckPermissionPage() {
@@ -9,12 +10,25 @@ export default function CheckPermissionPage() {
     { title: "알림", description: "알림 관련 서비스 이용" },
     { title: "위치", description: "위치 기반 서비스 이용" },
   ];
+  const [checkedList, setCheckedList] = useState<boolean[]>(
+    new Array(permissionList.length).fill(false)
+  );
+
+  const handlePermissionChange = (index: number) => {
+    setCheckedList((prev: boolean[]) => {
+      const next = [...prev];
+      next[index] = !next[index];
+      return next;
+    });
+  };
+
   return (
     <PermissionCheckLayout
       onBack={() => navigate({ to: "/login" })}
       pageTitle="접근 권한을 허용해주세요"
       permissionList={permissionList}
-      onChangeList={[() => {}, () => {}]}
+      checkedList={checkedList}
+      onChange={handlePermissionChange}
     />
   );
 }

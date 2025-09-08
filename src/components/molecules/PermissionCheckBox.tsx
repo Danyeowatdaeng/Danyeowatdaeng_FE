@@ -8,7 +8,7 @@ type CheckPermissionItemProps = {
   desc?: string;
   checked?: boolean; // controlled
   defaultChecked?: boolean; // uncontrolled
-  onChange?: (next: boolean) => void;
+  onClick?: (next: boolean) => void;
   disabled?: boolean;
 };
 
@@ -18,7 +18,7 @@ export default function CheckPermissionItem({
   desc,
   checked,
   defaultChecked,
-  onChange,
+  onClick,
   disabled,
 }: CheckPermissionItemProps) {
   return (
@@ -33,7 +33,7 @@ export default function CheckPermissionItem({
         id={id}
         checked={checked}
         defaultChecked={defaultChecked}
-        onChange={onChange}
+        onChange={onClick}
         disabled={disabled}
       />
       <div className="flex-1">
