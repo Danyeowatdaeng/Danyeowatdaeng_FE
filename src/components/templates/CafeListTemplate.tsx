@@ -7,11 +7,11 @@ import type { CafeCardData } from "../molecules/CafeCard";
 
 type CafeListTemplateProps = {
   // 헤더
-  title?: string;                 // 상단 제목 (기본: "애견동반카페")
-  onBack?: () => void;            // 뒤로가기 액션
+  title?: string; // 상단 제목
+  onBack?: () => void; // 뒤로가기
 
   // 거리 선택
-  distanceLabel?: Distance;       // "500m" | "1km" | "2km" | "4km"
+  distanceLabel?: Distance;
   onDistanceClick?: (d: Distance) => void;
 
   // 카페 리스트
