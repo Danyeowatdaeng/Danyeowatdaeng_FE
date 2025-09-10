@@ -1,4 +1,6 @@
 import { cn } from "../../utils/style";
+import { useNavigate } from "@tanstack/react-router";
+//components
 import Title from "../atoms/Title";
 import BackHeader from "../molecules/BackHeader";
 import PrimaryButton from "../molecules/PrimaryButton";
@@ -21,6 +23,8 @@ export default function PermissionCheckLayout({
   onChange,
   disabledList,
 }: CheckPermissionItemProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="p-10 gap-10 mx-auto">
@@ -35,13 +39,17 @@ export default function PermissionCheckLayout({
           />
           <div
             className={cn(
-              "transition-opacity duration-200 opacity-0 pointer-events-none fixed left-0 bottom-20 w-full px-10",
+              "transition-opacity duration-200 opacity-0 pointer-events-none fixed left-0 bottom-25 w-full px-10",
               {
                 "opacity-100 pointer-events-auto": checkedList?.every((v) => v),
               }
             )}
           >
-            <PrimaryButton variant="primary" size="md">
+            <PrimaryButton
+              onClick={() => navigate({ to: "/" })}
+              variant="primary"
+              size="md"
+            >
               다음
             </PrimaryButton>
           </div>
