@@ -8,6 +8,24 @@ type KakaoMapProps = {
 };
 
 export default function KakaoMap({ expanded }: KakaoMapProps) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}&libraries=services,clusterer&autoload=false`;
+    script.async = true;
+
+    script.onload = () => {
+      window.kakao.maps.load(() => {
+        console.log("Kakao Maps loaded");
+      });
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   // 지도의 크기가 변경될 때 지도를 다시 렌더링하기 위한 상태
   const [shouldRerender, setShouldRerender] = useState(false);
   // 현재 위치 상태
