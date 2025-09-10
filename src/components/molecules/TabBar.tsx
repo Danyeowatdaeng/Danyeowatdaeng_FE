@@ -54,7 +54,7 @@ export default function TabBar({ className = "" }: TabBarProps) {
             inactiveIconSrc="/Assets/icons/User.svg"
             label="프로필"
             active={currentPath === "/profile"}
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate({ to: "/profile" })}
           />
         </div>
       </div>
