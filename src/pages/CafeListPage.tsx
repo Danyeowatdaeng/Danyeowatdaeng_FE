@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { Distance } from "../components/molecules/DistanceButton";
 import CafeListTemplate from "../components/templates/CafeListTemplate";
 import type { CafeCardData } from "../components/molecules/CafeCard";
 import { useRouter } from "@tanstack/react-router";
