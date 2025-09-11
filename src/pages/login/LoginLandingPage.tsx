@@ -1,17 +1,22 @@
 import AuthLandingTemplate from "../../components/templates/AuthLandingLayout";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 
 export default function LoginLandingPage() {
-  const navigate = useNavigate();
   const router = useRouter();
   const onBack = () => router.history.go(-1);
+
+  const checkSignin = (social: string) => {
+    window.location.href = `https://danyeowatdaeng.p-e.kr/oauth2/authorization/${social}`;
+  };
   const onNaver = () => {
-    navigate({ to: "/" }); //임시로직, 추후 변경 필요
+    checkSignin("naver");
   };
   const onKakao = () => {
-    navigate({ to: "/login/checkPermission" });
+    checkSignin("kakao");
   };
-  const onGoogle = () => {};
+  const onGoogle = () => {
+    checkSignin("google");
+  };
   return (
     <AuthLandingTemplate
       onBack={onBack}
