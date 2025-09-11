@@ -68,13 +68,6 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
         center={position}
         className={`w-full h-full min-h-56`}
         level={3}
-        onClick={(_, mouseEvent) => {
-          setPosition({
-            lat: mouseEvent.latLng.getLat(),
-            lng: mouseEvent.latLng.getLng(),
-          });
-          setIsBottomSheetOpen(false);
-        }}
       >
         <MapMarker
           position={position}

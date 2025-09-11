@@ -15,6 +15,7 @@ import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
+import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
@@ -46,6 +47,11 @@ const LandingCafeRoute = LandingCafeRouteImport.update({
   path: '/landing/cafe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlacePlaceIdReviewRoute = PlacePlaceIdReviewRouteImport.update({
+  id: '/place/$placeId/review',
+  path: '/place/$placeId/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
+  '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
+  '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing/': typeof LandingIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/landing'
     | '/login'
+    | '/place/$placeId/review'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/landing'
     | '/login'
+    | '/place/$placeId/review'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/landing/'
     | '/login/'
+    | '/place/$placeId/review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LandingIndexRoute: typeof LandingIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  PlacePlaceIdReviewRoute: typeof PlacePlaceIdReviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingCafeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/place/$placeId/review': {
+      id: '/place/$placeId/review'
+      path: '/place/$placeId/review'
+      fullPath: '/place/$placeId/review'
+      preLoaderRoute: typeof PlacePlaceIdReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  PlacePlaceIdReviewRoute: PlacePlaceIdReviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
