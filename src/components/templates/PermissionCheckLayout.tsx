@@ -1,11 +1,10 @@
 import { cn } from "../../utils/style";
-import { useNavigate } from "@tanstack/react-router";
+
 //components
 import Title from "../atoms/Title";
 import BackHeader from "../molecules/BackHeader";
 import PrimaryButton from "../molecules/PrimaryButton";
 import PermissionBox from "../organisms/login/PermissionBox";
-
 interface CheckPermissionItemProps {
   onBack?: () => void;
   pageTitle: string;
@@ -13,6 +12,7 @@ interface CheckPermissionItemProps {
   checkedList: boolean[];
   onChange: (index: number) => void;
   disabledList?: boolean[];
+  handleSubmit: () => void;
 }
 
 export default function PermissionCheckLayout({
@@ -22,9 +22,8 @@ export default function PermissionCheckLayout({
   checkedList,
   onChange,
   disabledList,
+  handleSubmit,
 }: CheckPermissionItemProps) {
-  const navigate = useNavigate();
-
   return (
     <>
       <div className="p-10 gap-10 mx-auto">
@@ -45,11 +44,7 @@ export default function PermissionCheckLayout({
               }
             )}
           >
-            <PrimaryButton
-              onClick={() => navigate({ to: "/" })}
-              variant="primary"
-              size="md"
-            >
+            <PrimaryButton onClick={handleSubmit} variant="primary" size="md">
               다음
             </PrimaryButton>
           </div>

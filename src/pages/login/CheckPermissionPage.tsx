@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import PermissionCheckLayout from "../../components/templates/PermissionCheckLayout";
+import { post } from "../../api";
 
 export default function CheckPermissionPage() {
   const navigate = useNavigate();
@@ -22,6 +23,19 @@ export default function CheckPermissionPage() {
     });
   };
 
+  const handleSubmit = async () => {
+    const res: { status: number } = await post("/terms/agree-terms", {
+      termsCodes: [],
+    });
+    if (res.status !== 200) {
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+      return;
+    }
+
+    console.log("약관 동의 완료");
+    navigate({ to: "/" });
+  };
+
   return (
     <PermissionCheckLayout
       onBack={() => navigate({ to: "/login" })}
@@ -29,6 +43,7 @@ export default function CheckPermissionPage() {
       permissionList={permissionList}
       checkedList={checkedList}
       onChange={handlePermissionChange}
+      handleSubmit={handleSubmit}
     />
   );
 }
