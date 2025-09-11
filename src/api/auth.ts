@@ -22,12 +22,12 @@ export const getTokenFromCookie = (): TokenInfo | null => {
 // 쿠키에 토큰 저장
 export const saveTokenToCookie = (tokenInfo: TokenInfo) => {
   // secure, httpOnly 옵션은 서버에서 설정해야 합니다.
-  Cookies.set("accessToken", tokenInfo.accessToken);
-  Cookies.set("refreshToken", tokenInfo.refreshToken);
+  Cookies.set("access_token", tokenInfo.accessToken);
+  Cookies.set("refresh_token", tokenInfo.refreshToken);
 };
 
 // 쿠키에서 토큰 제거
 export const removeTokenFromCookie = () => {
-  Cookies.remove("accessToken");
-  Cookies.remove("refreshToken");
+  Cookies.remove("access_token");
+  Cookies.remove("refresh_token");
 };
