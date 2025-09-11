@@ -21,6 +21,14 @@ api.interceptors.request.use(
     const { accessToken } = getTokenFromCookie() || {};
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+      console.log("API 요청:", {
+        url: config.url,
+        method: config.method,
+        headers: config.headers,
+        data: config.data,
+      });
+    } else {
+      console.warn("토큰이 없습니다!");
     }
     return config;
   },
