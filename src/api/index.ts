@@ -25,7 +25,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         // 쿠키는 자동으로 전송됨
-        const response = await api.post("/auth/refresh");
+        await api.post("/auth/refresh");
         return api(originalRequest);
       } catch (refreshError) {
         // 토큰 갱신 실패 시 로그인 페이지로 이동
