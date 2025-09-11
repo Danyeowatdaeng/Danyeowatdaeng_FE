@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
+import { getTokenFromCookie } from "./auth";
 
 // API 기본 설정
 const BASE_URL = "https://danyeowatdaeng.p-e.kr/api"; // 실제 API 서버 주소로 변경
@@ -17,9 +18,9 @@ export const api = axios.create({
 // 요청 인터셉터 - 토큰 추가
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const { accessToken } = getTokenFromCookie() || {};
+    if (accessToken && config.headers) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
