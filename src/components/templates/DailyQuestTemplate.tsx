@@ -27,7 +27,7 @@ export default function DailyQuestTemplate({
       <BackHeader onBack={onBack} label="일일퀘스트" />
 
       {/* 펫 캐릭터 (임시) */}
-      <div className="w-full flex justify-center my- bg-red-100">
+      <div className="w-full flex justify-center mt-10">
         <img
           src="/Assets/icons/Pet.svg"
           alt=""
@@ -37,10 +37,10 @@ export default function DailyQuestTemplate({
       </div>
 
       {/* 진행률 */}
-      <DailyProgress done={done} total={total} />
+      <DailyProgress done={done} total={total} className="my-8"/>
 
       {/* 목록 */}
-      <QuestList className="mt-6" onWalk={onWalk} onDiary={onDiary} onReview={onReview} />
+      <QuestList onWalk={onWalk} onDiary={onDiary} onReview={onReview} />
     </div>
   );
 }
