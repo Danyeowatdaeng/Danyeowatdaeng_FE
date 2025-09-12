@@ -33,7 +33,7 @@ export default function TabBar({ className = "" }: TabBarProps) {
             inactiveIconSrc="/Assets/icons/PawPrint.svg"
             label="마이펫"
             active={currentPath === "/mypet"}
-            onClick={() => navigate({ to: "/login" })}
+            onClick={() => navigate({ to: "/mypet" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/ChatActive.svg"
