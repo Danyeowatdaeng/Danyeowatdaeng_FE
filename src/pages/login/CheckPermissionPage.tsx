@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import axios from "axios";
 import PermissionCheckLayout from "../../components/templates/PermissionCheckLayout";
-import { post } from "../../api";
 
 export default function CheckPermissionPage() {
   const navigate = useNavigate();
@@ -24,16 +24,31 @@ export default function CheckPermissionPage() {
   };
 
   const handleSubmit = async () => {
-    const res: { status: number } = await post("/terms/agree-terms", {
-      termsCodes: [],
-    });
-    if (res.status !== 200) {
-      alert("오류가 발생했습니다. 다시 시도해주세요.");
-      return;
-    }
+    try {
+      const res = await axios.post(
+        "https://danyeowatdaeng.p-e.kr/api/terms/agree-terms",
+        {
+          termsCodes: [],
+        },
+        {
+          withCredentials: true, // 쿠키 전송을 위해 필요
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    console.log("약관 동의 완료");
-    navigate({ to: "/" });
+      if (res.status !== 200) {
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+        return;
+      }
+
+      console.log("약관 동의 완료");
+      navigate({ to: "/" });
+    } catch (error) {
+      console.error("API 요청 오류:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
