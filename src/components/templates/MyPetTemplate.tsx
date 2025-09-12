@@ -2,6 +2,7 @@ import MyPetHeader from "../organisms/mypet/MyPetHeader";
 import QuestRow from "../molecules//QuestRow";
 import DiarySection from "../organisms/mypet/DiarySection";
 import type { DiaryItem } from "../molecules/DiaryCard";
+import { useRouter } from "@tanstack/react-router";
 
 type Props = {
   // 헤더
@@ -29,6 +30,8 @@ export default function MyPetTemplate({
   onWriteDiary,
   onDiaryClick,
 }: Props) {
+  const router = useRouter();
+  
   return (
     <div className="h-dvh flex flex-col p-6 my-5">
       {/* 상단 고정 영역 */}
@@ -43,7 +46,7 @@ export default function MyPetTemplate({
         <QuestRow
           className="mt-10 "
           title="반려동물과 일일 퀘스트!"
-          onClick={onQuestClick}
+          onClick={() => router.navigate({ to: "/quest" })}
         />
       </div>
 

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as QuestRouteImport } from './routes/quest'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MypetRouteImport } from './routes/mypet'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 
+const QuestRoute = QuestRouteImport.update({
+  id: '/quest',
+  path: '/quest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mypet': typeof MypetRoute
   '/profile': typeof ProfileRoute
+  '/quest': typeof QuestRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/mypet': typeof MypetRoute
   '/profile': typeof ProfileRoute
+  '/quest': typeof QuestRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/mypet': typeof MypetRoute
   '/profile': typeof ProfileRoute
+  '/quest': typeof QuestRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing/': typeof LandingIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/mypet'
     | '/profile'
+    | '/quest'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/landing'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/mypet'
     | '/profile'
+    | '/quest'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/landing'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/mypet'
     | '/profile'
+    | '/quest'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/landing/'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MypetRoute: typeof MypetRoute
   ProfileRoute: typeof ProfileRoute
+  QuestRoute: typeof QuestRoute
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LandingIndexRoute: typeof LandingIndexRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/quest': {
+      id: '/quest'
+      path: '/quest'
+      fullPath: '/quest'
+      preLoaderRoute: typeof QuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MypetRoute: MypetRoute,
   ProfileRoute: ProfileRoute,
+  QuestRoute: QuestRoute,
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LandingIndexRoute: LandingIndexRoute,

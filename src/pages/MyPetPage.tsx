@@ -1,9 +1,7 @@
-import { useRouter } from "@tanstack/react-router";
 import MyPetTemplate from "../components/templates/MyPetTemplate";
 import type { DiaryItem } from "../components/molecules/DiaryCard";
 
 export default function MyPetPage() {
-  const router = useRouter();
 
   const diaries: DiaryItem[] = [
     { id: 1, imageSrc: "/Assets/images/pet/1.jpg", caption: "바람맞은 강아지" },
