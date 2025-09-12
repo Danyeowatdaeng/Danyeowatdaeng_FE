@@ -1,8 +1,6 @@
-import React from "react";
-
 type Props = {
-  value: number;   // 0 ~ max
-  max?: number;    // 기본 100
+  value: number;
+  max?: number;
   className?: string;
   barClassName?: string;
 };
