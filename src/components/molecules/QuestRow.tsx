@@ -1,6 +1,6 @@
 import Button from "../atoms/Button";
-import Icon from "../atoms/Icon";
 import Title from "../atoms/Title";
+import { ChevronRight } from "lucide-react";
 
 type Props = {
   title: string;
@@ -16,7 +16,7 @@ export default function QuestRow({ title, onClick, className = "" }: Props) {
       aria-label={title}
     >
       <Title className="text-[20px] font-bold">{title}</Title>
-      <Icon src="/Assets/icons/ChevronRight.svg" alt="" aria-hidden width={20} height={20} />
+      <ChevronRight className="w-6 h-6" aria-hidden />
     </Button>
   );
 }

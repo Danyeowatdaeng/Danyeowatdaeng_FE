@@ -30,9 +30,9 @@ export default function MyPetTemplate({
   onDiaryClick,
 }: Props) {
   return (
-    <div className="h-dvh flex flex-col">
+    <div className="h-dvh flex flex-col p-6 my-5">
       {/* 상단 고정 영역 */}
-      <div className="p-6 my-5 flex-none">
+      <div className=" flex-none">
         <MyPetHeader
           avatarSrc={avatarSrc}
           name={name}
@@ -41,16 +41,16 @@ export default function MyPetTemplate({
         />
 
         <QuestRow
-          className="mt-9 bg-red-100"
+          className="mt-10 "
           title="반려동물과 일일 퀘스트!"
           onClick={onQuestClick}
         />
       </div>
 
       {/* 다이어리 영역 — 이 래퍼가 스크롤 기준 */}
-      <div className="flex-1 min-h-0 px-6 bg-red-100">
+      <div className="flex-1 min-h-0 mt-8 ">
         <DiarySection
-          className="h-full bg-yellow-100"
+          className="h-full "
           items={diaries}
           onWrite={onWriteDiary}
           onItemClick={onDiaryClick}
