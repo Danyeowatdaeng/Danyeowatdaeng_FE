@@ -9,24 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as MypetIndexRouteImport } from './routes/mypet/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
+import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MypetIndexRoute = MypetIndexRouteImport.update({
@@ -42,6 +43,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
 const LandingIndexRoute = LandingIndexRouteImport.update({
   id: '/landing/',
   path: '/landing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileCouponRoute = ProfileCouponRouteImport.update({
+  id: '/profile/coupon',
+  path: '/profile/coupon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MypetQuestRoute = MypetQuestRouteImport.update({
@@ -67,100 +73,107 @@ const LandingCafeRoute = LandingCafeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/profile': typeof ProfileRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/profile/coupon': typeof ProfileCouponRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
+  '/profile': typeof ProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/profile': typeof ProfileRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/profile/coupon': typeof ProfileCouponRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
+  '/profile': typeof ProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/profile': typeof ProfileRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/profile/coupon': typeof ProfileCouponRoute
   '/landing/': typeof LandingIndexRoute
   '/login/': typeof LoginIndexRoute
   '/mypet/': typeof MypetIndexRoute
+  '/profile/': typeof ProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/profile'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/profile/coupon'
     | '/landing'
     | '/login'
     | '/mypet'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/profile'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/profile/coupon'
     | '/landing'
     | '/login'
     | '/mypet'
+    | '/profile'
   id:
     | '__root__'
     | '/'
-    | '/profile'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/profile/coupon'
     | '/landing/'
     | '/login/'
     | '/mypet/'
+    | '/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProfileRoute: typeof ProfileRoute
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   MypetDiaryRoute: typeof MypetDiaryRoute
   MypetQuestRoute: typeof MypetQuestRoute
+  ProfileCouponRoute: typeof ProfileCouponRoute
   LandingIndexRoute: typeof LandingIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   MypetIndexRoute: typeof MypetIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mypet/': {
@@ -182,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/landing'
       fullPath: '/landing'
       preLoaderRoute: typeof LandingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/coupon': {
+      id: '/profile/coupon'
+      path: '/profile/coupon'
+      fullPath: '/profile/coupon'
+      preLoaderRoute: typeof ProfileCouponRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mypet/quest': {
@@ -217,14 +237,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProfileRoute: ProfileRoute,
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   MypetDiaryRoute: MypetDiaryRoute,
   MypetQuestRoute: MypetQuestRoute,
+  ProfileCouponRoute: ProfileCouponRoute,
   LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   MypetIndexRoute: MypetIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
