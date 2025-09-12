@@ -1,14 +1,16 @@
+import { useState } from "react";
 import MyPetHeader from "../organisms/mypet/MyPetHeader";
-import QuestRow from "../molecules//QuestRow";
+import QuestRow from "../molecules/QuestRow";
 import DiarySection from "../organisms/mypet/DiarySection";
+import ModalWrapper from "../molecules/ModalWrapper";
+import PetEditForm from "../organisms/mypet/PetEditForm";
 import type { DiaryItem } from "../molecules/DiaryCard";
 
 type Props = {
-  // 헤더
+  //헤더
   avatarSrc?: string;
   name: string;
   subtitle?: string;
-  onEditHeader?: () => void;
 
   // 퀘스트
   onQuestClick?: () => void;
@@ -23,39 +25,51 @@ export default function MyPetTemplate({
   avatarSrc,
   name,
   subtitle,
-  onEditHeader,
   onQuestClick,
   diaries,
   onWriteDiary,
   onDiaryClick,
 }: Props) {
+  const [isEditOpen, setEditOpen] = useState(false);
+
   return (
     <div className="h-dvh flex flex-col p-6 my-5">
-      {/* 상단 고정 영역 */}
-      <div className=" flex-none">
+      {/* 상단 고정 */}
+      <div className="flex-none">
         <MyPetHeader
           avatarSrc={avatarSrc}
           name={name}
           subtitle={subtitle}
-          onEdit={onEditHeader}
+          onEdit={() => setEditOpen(true)} // 아이콘 클릭 시 모달 열기
         />
-
         <QuestRow
-          className="mt-10 "
+          className="mt-10"
           title="반려동물과 일일 퀘스트!"
           onClick={onQuestClick}
         />
       </div>
 
-      {/* 다이어리 영역 */}
-      <div className="flex-1 min-h-0 mt-8 ">
+      {/* 다이어리 */}
+      <div className="flex-1 min-h-0 mt-8">
         <DiarySection
-          className="h-full "
+          className="h-full"
           items={diaries}
           onWrite={onWriteDiary}
           onItemClick={onDiaryClick}
         />
       </div>
+
+      {/* 모달 */}
+      {isEditOpen && (
+        <ModalWrapper onClose={() => setEditOpen(false)}>
+          <PetEditForm
+            avatarSrc={avatarSrc}
+            name={name}
+            subtitle={subtitle ?? ""}
+            onSave={() => setEditOpen(false)}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 }

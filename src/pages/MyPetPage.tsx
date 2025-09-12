@@ -25,7 +25,6 @@ export default function MyPetPage() {
       avatarSrc="/Assets/images/pet/avatar.jpg"
       name="초코"
       subtitle="3살/푸들"
-      onEditHeader={() => console.log("프로필 편집")}
       onQuestClick={goToDailyQuest} // 퀘스트 페이지 이동
       diaries={diaries}
       onWriteDiary={goToDiaryWrite} // 다이어리 작성하기 이동
