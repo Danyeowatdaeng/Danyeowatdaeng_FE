@@ -40,7 +40,7 @@ export default function TabBar({ className = "" }: TabBarProps) {
             inactiveIconSrc="/Assets/icons/Chat.svg"
             label="챗봇"
             active={currentPath === "/chat"}
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate({ to: "/chat" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/StarActive.svg"

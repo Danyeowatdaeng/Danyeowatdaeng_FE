@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as MypetIndexRouteImport } from './routes/mypet/index'
@@ -20,6 +21,11 @@ import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +79,7 @@ const LandingCafeRoute = LandingCafeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/mypet/diary'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   MypetDiaryRoute: typeof MypetDiaryRoute
@@ -162,6 +175,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   MypetDiaryRoute: MypetDiaryRoute,
