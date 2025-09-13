@@ -37,7 +37,6 @@ export default function ChatPage() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    // 간단한 더미 응답: 스크린샷과 비슷한 문구
     const botText =
       "냄새 좋은 커피집을 찾는거군요! 🐱\n5분 안에 갈 수 있는 카페를 찾았어요.\n\n1. 카페 라떼하우스\n- 걸어서 3분, 시그니처 라떼가 유명해요.\n\n2. 브라운빈 카페\n- 걸어서 5분, 조용한 분위기.\n\n3. 플랜트&빈\n- 걸어서 4분, 식물 가득한 인테리어.\n\n👉 가고 싶은 곳 번호를 알려주시면 지도 보여드릴게요!";
 
@@ -47,7 +46,7 @@ export default function ChatPage() {
       text: botText,
     };
 
-    // 약간의 딜레이로 응답하는 느낌
+    // 약간의 딜레이로 응답
     setTimeout(() => {
       setMessages((prev) => [...prev, botMessage]);
     }, 350);
@@ -55,7 +54,6 @@ export default function ChatPage() {
 
   return (
     <div className="mx-auto max-w-[560px] min-h-dvh bg-[#F7F8FA] flex flex-col">
-      {/* 더보기 버튼 - 왼쪽 상단 고정 */}
       <button
         className="fixed top-4 left-4 z-50 w-6 h-6 grid place-items-center"
         aria-label="더보기"
@@ -64,10 +62,8 @@ export default function ChatPage() {
         <img src="/Assets/icons/More%20circle.svg" alt="더보기" className="w-6 h-6" />
       </button>
 
-      {/* 상단 공간(상태바 여백 포함) */}
       <div className="h-11" />
 
-      {/* 메시지 영역 */}
       <div
         ref={listRef}
         className="flex-1 overflow-y-auto px-4 pt-4 pb-[200px]"
@@ -96,7 +92,6 @@ export default function ChatPage() {
               )
             )}
 
-            {/* 제안 칩 */}
             {hasConversationBegun && (
               <div className="flex flex-wrap gap-8">
                 {suggestions.map((s) => (
@@ -115,7 +110,7 @@ export default function ChatPage() {
         )}
       </div>
 
-      {/* 입력 영역 - 탭바와 동일 너비/높이, 하단 모서리 라운드 제거 */}
+      {/* 입력 영역 */}
       <div className="fixed inset-x-0 bottom-[72px] z-30">
         <div className="bg-white border border-black/5 shadow-[0_6px_24px_rgba(0,0,0,0.06)] rounded-t-[32px] px-6 h-[100px] flex items-center gap-4">
           <textarea
