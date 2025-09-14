@@ -29,3 +29,13 @@ export const post = async (url: string, data: unknown) => {
     throw error;
   }
 };
+
+export const get = async (url: string, params?: unknown) => {
+  try {
+    const res = await api.get(url, { params });
+    return res.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    throw error;
+  }
+};

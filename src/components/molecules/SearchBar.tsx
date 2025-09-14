@@ -1,59 +1,56 @@
+import { useState, useRef } from "react";
 import { Search, X } from "lucide-react";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import * as React from "react";
+import { get } from "../../api";
+import { useSearchResultStore } from "../../store/searchResultStore";
 
 type SearchBarProps = {
-  value?: string;
-  defaultValue?: string;
   placeholder?: string;
-  onChange?: (v: string) => void;
-  onSubmit?: (v: string) => void;
   onFocus?: () => void;
-  onClear?: () => void;
   className?: string;
 };
 
 export default function SearchBar({
-  value,
-  defaultValue,
   placeholder = "",
-  onChange,
-  onSubmit,
   onFocus,
-  onClear,
   className = "",
 }: SearchBarProps) {
-  const formRef = React.useRef<HTMLFormElement>(null);
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const { setSearchResults } = useSearchResultStore();
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const input = e.currentTarget.elements.namedItem(
-      "q"
-    ) as HTMLInputElement | null;
-    const text = value ?? input?.value ?? "";
-    onSubmit?.(text.trim());
+    if (searchValue.trim() === "") return;
+
+    try {
+      const response = await get("/map/search/keyword", {
+        keyword: searchValue.trim(),
+        page: 0,
+        size: 100,
+        sort: "string",
+      });
+
+      console.log("검색 결과:", response);
+      setSearchResults([...response.data]);
+    } catch (error) {
+      console.error("검색 오류:", error);
+    }
   };
 
   const handleClear = () => {
-    // controlled/uncontrolled 모두 지원
-    if (onClear) onClear();
-    const input = formRef.current?.elements.namedItem(
-      "q"
-    ) as HTMLInputElement | null;
-    if (input && value === undefined) {
-      input.value = "";
-    }
-    onChange?.("");
+    if (searchValue === "") return;
+    setSearchValue("");
   };
 
-  const hasText = (value ?? defaultValue ?? "").length > 0;
+  const hasText = searchValue.length > 0;
 
   return (
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className={`w-full h-[57px] rounded-lg bg-[#F3F3F3]
+      className={`w-full h-[57px] border-[#B8B8B8] border-1 rounded-lg bg-[#ffffff]
                   flex items-center gap-3 px-5
                   shadow-[0_2px_6px_rgba(0,0,0,0.04)] ${className}`}
       aria-label="검색"
@@ -62,9 +59,8 @@ export default function SearchBar({
     >
       <Input
         name="q"
-        value={value}
-        defaultValue={defaultValue}
-        onChange={(e) => onChange?.(e.target.value)}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         placeholder={placeholder}
         onFocus={onFocus}
         inputMode="search"

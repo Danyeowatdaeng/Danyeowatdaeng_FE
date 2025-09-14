@@ -21,7 +21,7 @@ export default function BottomSheet({
   title,
   className = "",
 }: BottomSheetProps) {
-  const MIN_HEIGHT = 300; // 기본 높이 (px)
+  const MIN_HEIGHT = 400; // 기본 높이 (px)
   const MAX_HEIGHT = window.innerHeight - 50; // 전체 화면 높이에서 여유 공간
 
   const { height, y, bind } = useBottomSheet({
@@ -64,7 +64,7 @@ export default function BottomSheet({
         className={`
         bg-white
           absolute left-0 right-0 bottom-0
-          rounded-t-2xl shadow-xl
+          rounded-t-4xl shadow-xl
           transition-transform duration-500
           ${open ? "" : "translate-y-full"}
           ${className}
@@ -75,7 +75,7 @@ export default function BottomSheet({
         {title && (
           <div className="px-4 pb-2 text-base font-semibold">{title}</div>
         )}
-        <div className="px-4 pb-6">{children}</div>
+        <div className="px-2 pb-6">{children}</div>
       </animated.div>
     </div>,
     document.body

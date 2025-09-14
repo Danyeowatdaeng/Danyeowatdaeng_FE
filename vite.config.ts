@@ -13,4 +13,7 @@ export default defineConfig({
       generatedRouteTree: "src/routeTree.gen.ts",
     }),
   ],
+  server: {
+    port: 3000,
+  },
 });
