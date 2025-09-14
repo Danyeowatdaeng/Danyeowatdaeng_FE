@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { SearchResult } from "../../store/searchResultStore";
 import { MapPinCheckInside } from "lucide-react";
+import CartButton from "./CartButton";
 
 interface KakaoPlace {
   place_name: string;
@@ -64,6 +65,7 @@ export default function PlacePreview({
         });
 
         if (result.length > 0) {
+          console.log("검색된 장소:", result[0]);
           setKakaoPlaceInfo(result[0]);
         } else {
           setKakaoPlaceInfo(null);
@@ -92,7 +94,7 @@ export default function PlacePreview({
   }
 
   return (
-    <div className="p-2 space-y-4">
+    <div className="p-3 space-y-4">
       {placeInfo ? (
         <>
           <div className="space-y-2">
@@ -115,14 +117,20 @@ export default function PlacePreview({
             </div>
 
             {kakaoPlaceInfo && (
-              <>
+              <div className="flex justify-between items-center">
                 <p className="text-[13px] text-black flex items-center gap-1 text-sm">
                   <MapPinCheckInside size={16} color="#797979" />
                   {kakaoPlaceInfo.road_address_name ||
                     kakaoPlaceInfo.address_name}
                 </p>
-              </>
+                <span className="text-[#797979] text-[12px]">
+                  {kakaoPlaceInfo.distance}Km
+                </span>
+              </div>
             )}
+            <div className="transition-colors pt-3 pb-5 duration-300 border-b-1 border-[#D9D9D9] w-full flex justify-end">
+              <CartButton />
+            </div>
           </div>
 
           <div className="flex space-x-2">

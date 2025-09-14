@@ -56,27 +56,7 @@ export function useBottomSheet({
   }, [isExpanded, api, maxHeight, minHeight]);
 
   const bind = useDrag(
-    ({ last, movement: [, my], tap }) => {
-      // 탭 동작 처리
-      if (tap) {
-        if (expandedRef.current) {
-          setIsExpanded(false);
-          api.start({
-            to: { height: minHeight, y: 0 },
-            immediate: false,
-            config: { tension: 300, friction: 30, clamp: true },
-          });
-        } else {
-          setIsExpanded(true);
-          api.start({
-            to: { height: maxHeight, y: 0 },
-            immediate: false,
-            config: { tension: 300, friction: 30, clamp: true },
-          });
-        }
-        return;
-      }
-
+    ({ last, movement: [, my] }) => {
       if (!last) {
         // 드래그 중
         let nextHeight: number;
@@ -85,12 +65,12 @@ export function useBottomSheet({
         if (expandedRef.current) {
           // 펼친 상태에서 드래그
           nextHeight = clamp(maxHeight - my, minHeight, maxHeight);
-          nextY = clamp(my > 0 ? my / 2 : 0, 0, minHeight);
+          nextY = clamp(my > 20 ? my / 2 : 0, 0, minHeight);
         } else {
           // 접힌 상태에서 드래그
           const deltaUp = Math.max(0, -my);
           nextHeight = clamp(minHeight + deltaUp, minHeight, maxHeight);
-          nextY = clamp(my > 0 ? my : 0, 0, minHeight);
+          nextY = clamp(my > 20 ? my : 0, 0, minHeight);
         }
 
         // 드래그 중에는 즉시 반영
@@ -148,7 +128,7 @@ export function useBottomSheet({
     {
       axis: "y",
       filterTaps: true,
-      threshold: 3,
+      threshold: 10, // 10픽셀 이하의 움직임은 무시
       enabled: open,
       eventOptions: { passive: false },
     }
