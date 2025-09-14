@@ -16,8 +16,8 @@ const buttonStyles = cva(
         ghost: "text-orange-500 hover:bg-orange-50 disabled:text-gray-300",
       },
       size: {
-        sm: "h-12 px-4 text-sm font-medium",
-        md: "h-12 px-6 text-base font-bold",
+        sm: "h-12 px-4 text-md font-400",
+        md: "h-12 px-6 text-base font-medium",
         lg: "h-12 px-8 text-lg font-bold",
         full: "h-12 w-full px-8 text-lg font-bold",
       },

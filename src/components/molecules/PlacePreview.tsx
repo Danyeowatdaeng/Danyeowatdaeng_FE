@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { SearchResult } from "../../store/searchResultStore";
 import { MapPinCheckInside } from "lucide-react";
 import CartButton from "./CartButton";
+import FlagIcon from "../atoms/Icon/FlagIcon";
+import StarIcon from "../atoms/Icon/StarIcon";
 
 interface KakaoPlace {
   place_name: string;
@@ -97,15 +99,18 @@ export default function PlacePreview({
     <div className="p-3 space-y-4">
       {placeInfo ? (
         <>
-          <div className="space-y-2">
+          <div>
             <div className="w-full overflow-x-scroll flex">
               <img
                 src={placeInfo.imageUrl1}
                 alt={placeInfo.title}
+                onClick={() => {
+                  window.open(kakaoPlaceInfo?.place_url, "_blank");
+                }}
                 className="w-full h-[160px] object-cover mr-2 rounded-lg"
               />
             </div>
-            <div className="flex mt-4 items-center">
+            <div className="flex mt-4 mb-2 items-center">
               <div className="w-fit text-xl font-bold text-[16px]">
                 {placeInfo.title}
               </div>
@@ -115,7 +120,16 @@ export default function PlacePreview({
                 </span>
               )}
             </div>
-
+            {/* 별점 area */}
+            <div className="flex mb-2 items-center">
+              <div className="text-[13px] mr-1 text-[#FF8A2B]">0.0</div>
+              <StarIcon width={13} height={13} />
+              <StarIcon width={13} height={13} />
+              <StarIcon width={13} height={13} />
+              <StarIcon width={13} height={13} />
+              <StarIcon width={13} height={13} />
+              <div className="text-[#797979] ml-1">(0)</div>
+            </div>
             {kakaoPlaceInfo && (
               <div className="flex justify-between items-center">
                 <p className="text-[13px] text-black flex items-center gap-1 text-sm">
@@ -135,14 +149,19 @@ export default function PlacePreview({
 
           <div className="flex space-x-2">
             {kakaoPlaceInfo && (
-              <a
-                href={kakaoPlaceInfo.place_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 bg-yellow-400 text-black py-2 px-4 rounded-lg text-center font-medium hover:bg-yellow-500 transition-colors"
-              >
-                카카오맵에서 보기
-              </a>
+              <div>
+                <div className="flex items-center gap-2 text-[#444444]">
+                  <FlagIcon />
+                  장소 정보
+                </div>
+                <div>
+                  {placeInfo.description && (
+                    <p className="text-sm text-gray-600">
+                      {placeInfo.description}
+                    </p>
+                  )}
+                </div>
+              </div>
             )}
             <button
               onClick={onReviewClick}

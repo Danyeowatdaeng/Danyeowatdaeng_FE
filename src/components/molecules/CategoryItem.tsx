@@ -4,12 +4,14 @@ import Icon from "../atoms/Icon";
 import Label from "../atoms/Label";
 
 export type CategoryItemProps = {
+  style: string;
   iconSrc: string;
   label: string;
   onClick?: () => void;
 };
 
 export default function CategoryItem({
+  style,
   iconSrc,
   label,
   onClick,
@@ -27,20 +29,22 @@ export default function CategoryItem({
     >
       {/* 회색 아이콘 박스 */}
       <div
-        className="
+        className={`
           w-[61px] h-[61px]
-          rounded-2xl bg-gray-100
+          rounded-xl ${style}
           flex items-center justify-center
-        "
+        `}
       >
         <Icon src={iconSrc} alt={label} width={42} height={42} />
       </div>
 
       {/* 라벨 */}
-      <Label
-        content={label}
-        className="text-[13px] leading-[18px] text-black"
-      />
+      {label !== "" && (
+        <Label
+          content={label}
+          className="text-[13px] leading-[18px] text-black"
+        />
+      )}
     </Button>
   );
 }

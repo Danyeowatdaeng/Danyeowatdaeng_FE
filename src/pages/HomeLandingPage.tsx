@@ -1,5 +1,5 @@
 import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
-import type { Category } from "../components/molecules/CategoryGrid";
+import type { CategoryItemProps } from "../components/molecules/CategoryItem";
 import type { EventListItemData } from "../components/molecules/EventListItem";
 import { useRouter } from "@tanstack/react-router";
 
@@ -7,43 +7,51 @@ export default function HomeLandingPage() {
   const router = useRouter();
 
   // 카테고리
-  const categories: Category[] = [
+  const categories: CategoryItemProps[] = [
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Suitcase.svg",
       label: "관광지",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Building.svg",
       label: "숙박",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Sailboat.svg",
       label: "체험/레저",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Cutlery.svg",
       label: "음식점",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Coffee.svg",
       label: "카페",
       onClick: () => router.navigate({ to: "/landing/cafe" }),
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/ShoppingCart.svg",
       label: "쇼핑",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Dog.svg",
       label: "문화시설",
       onClick: () => {},
     },
     {
+      style: "",
       iconSrc: "/Assets/icons/categories/Confetti.svg",
       label: "공연/축제",
       onClick: () => {},
@@ -68,7 +76,7 @@ export default function HomeLandingPage() {
     },
   ];
 
-    return (
+  return (
     <HomeLandingTemplate
       categories={categories}
       eventTitle="7월의 펫 이벤트"

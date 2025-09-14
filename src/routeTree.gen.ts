@@ -15,6 +15,7 @@ import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as MypetIndexRouteImport } from './routes/mypet/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
+import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
@@ -50,6 +51,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
 const LandingIndexRoute = LandingIndexRouteImport.update({
   id: '/landing/',
   path: '/landing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartIndexRoute = CartIndexRouteImport.update({
+  id: '/cart/',
+  path: '/cart/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileCouponRoute = ProfileCouponRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/cart/': typeof CartIndexRoute
   '/landing/': typeof LandingIndexRoute
   '/login/': typeof LoginIndexRoute
   '/mypet/': typeof MypetIndexRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/cart'
     | '/landing'
     | '/login'
     | '/mypet'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/cart'
     | '/landing'
     | '/login'
     | '/mypet'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/cart/'
     | '/landing/'
     | '/login/'
     | '/mypet/'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   MypetDiaryRoute: typeof MypetDiaryRoute
   MypetQuestRoute: typeof MypetQuestRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
+  CartIndexRoute: typeof CartIndexRoute
   LandingIndexRoute: typeof LandingIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   MypetIndexRoute: typeof MypetIndexRoute
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/landing'
       fullPath: '/landing'
       preLoaderRoute: typeof LandingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart/': {
+      id: '/cart/'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile/coupon': {
@@ -283,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   MypetDiaryRoute: MypetDiaryRoute,
   MypetQuestRoute: MypetQuestRoute,
   ProfileCouponRoute: ProfileCouponRoute,
+  CartIndexRoute: CartIndexRoute,
   LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   MypetIndexRoute: MypetIndexRoute,

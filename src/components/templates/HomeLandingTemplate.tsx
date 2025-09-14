@@ -13,7 +13,7 @@ type Props = {
   onEventClick?: (id: string | number) => void; // 리스트 아이템 클릭
 };
 
-export default function HomeTemplate({
+export default function HomeLandingTemplate({
   categories,
   eventTitle,
   events,

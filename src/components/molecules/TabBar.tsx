@@ -46,8 +46,8 @@ export default function TabBar({ className = "" }: TabBarProps) {
             activeIconSrc="/Assets/icons/StarActive.svg"
             inactiveIconSrc="/Assets/icons/Star.svg"
             label="찜하기"
-            active={currentPath === "/wish"}
-            onClick={() => navigate({ to: "/" })}
+            active={currentPath === "/cart"}
+            onClick={() => navigate({ to: "/cart" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/UserActive.svg"
