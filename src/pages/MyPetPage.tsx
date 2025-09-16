@@ -1,4 +1,3 @@
-// src/pages/MyPetPage.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 import axios from "axios";
@@ -8,7 +7,6 @@ import type { DiaryItem } from "../components/molecules/DiaryCard";
 export default function MyPetPage() {
   const router = useRouter();
   const [diaries, setDiaries] = useState<DiaryItem[]>([]);
-  const [setLoading] = useState(true);
 
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
   const goToDailyQuest = () => router.navigate({ to: "/mypet/quest" });
@@ -31,7 +29,10 @@ export default function MyPetPage() {
 
         const mapped: DiaryItem[] = (list ?? []).map((d: any) => ({
           id: d.id,
-          imageSrc: d.images?.[0]?.url ?? d.imageUrl ?? "/Assets/images/pet/placeholder.jpg",
+          imageSrc:
+            d.images?.[0]?.url ??
+            d.imageUrl ??
+            "/Assets/images/pet/placeholder.jpg",
           caption: d.content ?? d.caption ?? "",
         }));
 
@@ -42,8 +43,6 @@ export default function MyPetPage() {
           return;
         }
         console.error("다이어리 목록 조회 실패:", e?.response ?? e);
-      } finally {
-        if (mounted) setLoading(false);
       }
     })();
     return () => {
