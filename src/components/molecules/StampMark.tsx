@@ -20,7 +20,7 @@ export default function StampMark({
   caption,
   onClick,
   className = "",
-  size = 79,
+  size = 70,
 }: Props) {
   const isGift = kind === "gift";
   const active = state === "active" || state === "rewarded";
@@ -46,7 +46,7 @@ export default function StampMark({
         <Label
           content={caption}
           className={[
-            "mt-2 text-[16px] font-bold",
+            "mt-1 text-[14px] font-bold",
             state === "rewarded" ? "text-[#FF8A00]" : "text-[#9B9B9B]",
           ].join(" ")}
         />

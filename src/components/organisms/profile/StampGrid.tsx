@@ -14,7 +14,13 @@ type Props = {
 
 export default function StampGrid({ items, onItemClick, className = "" }: Props) {
   return (
-    <section className={["grid grid-cols-3 gap-x- gap-y-3 bg-red-100", className].join(" ")}>
+    <section
+      className={[
+        // 3열 그리드 + 가운데 정렬 + 적당한 여백
+        "grid grid-cols-3 gap-x-0 gap-y-3",
+        className,
+      ].join(" ")}
+    >
       {items.map((it, i) => (
         <StampMark
           key={i}
