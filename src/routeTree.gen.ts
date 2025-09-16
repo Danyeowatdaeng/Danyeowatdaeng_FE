@@ -19,6 +19,7 @@ import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
+import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
@@ -73,6 +74,11 @@ const MypetDiaryRoute = MypetDiaryRouteImport.update({
   path: '/mypet/diary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginMakeCharacterRoute = LoginMakeCharacterRouteImport.update({
+  id: '/login/makeCharacter',
+  path: '/login/makeCharacter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
   id: '/login/checkPermission',
   path: '/login/checkPermission',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
+    | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
+    | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/landing/cafe'
     | '/login/checkPermission'
+    | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
+  LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
   MypetDiaryRoute: typeof MypetDiaryRoute
   MypetQuestRoute: typeof MypetQuestRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
@@ -271,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetDiaryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/makeCharacter': {
+      id: '/login/makeCharacter'
+      path: '/login/makeCharacter'
+      fullPath: '/login/makeCharacter'
+      preLoaderRoute: typeof LoginMakeCharacterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login/checkPermission': {
       id: '/login/checkPermission'
       path: '/login/checkPermission'
@@ -300,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
+  LoginMakeCharacterRoute: LoginMakeCharacterRoute,
   MypetDiaryRoute: MypetDiaryRoute,
   MypetQuestRoute: MypetQuestRoute,
   ProfileCouponRoute: ProfileCouponRoute,
