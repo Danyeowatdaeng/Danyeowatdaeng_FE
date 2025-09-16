@@ -8,7 +8,7 @@ import type { DiaryItem } from "../components/molecules/DiaryCard";
 export default function MyPetPage() {
   const router = useRouter();
   const [diaries, setDiaries] = useState<DiaryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [setLoading] = useState(true);
 
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
   const goToDailyQuest = () => router.navigate({ to: "/mypet/quest" });
