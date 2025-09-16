@@ -31,7 +31,7 @@ export default function TicketCard({
         className,
       ].join(" ")}
     >
-      {/* 배경: 점선 포함된 SVG 한 장 */}
+      {/* 티켓 배경 */}
       <Icon
         src="/Assets/icons/Ticket.svg"
         alt=""

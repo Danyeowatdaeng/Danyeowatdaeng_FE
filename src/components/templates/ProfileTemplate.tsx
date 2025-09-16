@@ -18,6 +18,7 @@ type Props = {
   // 스탯 박스
   point: number | string;
   stamp: number | string;
+  onClickStamp?: () => void;
 };
 
 export default function ProfileTemplate({
@@ -29,6 +30,7 @@ export default function ProfileTemplate({
   onClickCoupon,
   point,
   stamp,
+  onClickStamp,
 }: Props) {
   const isWide = useWebControlStore((state) => state.isWide);
   return (
@@ -52,9 +54,11 @@ export default function ProfileTemplate({
         <hr className="my-8 border-[#D9D9D9]" />
 
         {/* 스탯 박스 */}
-        <ProfileStats point={point} stamp={stamp} />
+        <ProfileStats point={point} stamp={stamp} onClickStamp={onClickStamp}/>
       </div>
+
       {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
+
     </div>
   );
 }
