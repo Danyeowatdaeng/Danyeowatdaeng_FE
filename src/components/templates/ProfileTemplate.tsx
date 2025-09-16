@@ -1,4 +1,3 @@
-import React from "react";
 import ProfileBox from "../organisms/profile/ProfileBox";
 import Coupon from "../molecules/CouponButton";
 import ProfileStats from "../organisms/profile/ProfileStats";
