@@ -1,14 +1,15 @@
+// src/pages/DiaryWritePage.tsx
 import { useRef, useState } from "react";
-import DiaryWriteTemplate from "../components/templates/DiaryWriteTemplate";
 import { useRouter } from "@tanstack/react-router";
+import axios from "axios";
+import DiaryWriteTemplate from "../components/templates/DiaryWriteTemplate";
 
 export default function DiaryWritePage() {
   const router = useRouter();
 
   const [text, setText] = useState("");
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]); // preview 전용
 
-  // 하나의 숨김 input으로 모든 타일에서 재사용
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const pendingIndexRef = useRef<number>(-1);
 
@@ -22,18 +23,14 @@ export default function DiaryWritePage() {
     if (!file) return;
 
     const url = URL.createObjectURL(file);
-
     setImages((prev) => {
       const next = [...prev];
-      if (pendingIndexRef.current >= 0 && pendingIndexRef.current < prev.length) {
-        next[pendingIndexRef.current] = url; // 교체
-      } else {
-        next.push(url); // 추가
-      }
+      const i = pendingIndexRef.current;
+      if (i >= 0 && i < prev.length) next[i] = url;
+      else next.push(url);
       return next;
     });
 
-    // 동일 파일 또 선택하려면 value 초기화 필요
     e.currentTarget.value = "";
   };
 
@@ -41,10 +38,43 @@ export default function DiaryWritePage() {
     setImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleSubmit = () => {
-    console.log("제출!", { text, images });
-    // 실제로는 API 호출 후 라우팅 등
-    router.history.back();
+  const handleSubmit = async () => {
+    const trimmed = text.trim();
+    if (!trimmed) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    const title = trimmed.split("\n")[0].slice(0, 50);
+
+    try {
+      const res = await axios.post(
+        "https://danyeowatdaeng.p-e.kr/api/mypet/diaries",
+        {
+          title,
+          content: trimmed,
+          // imageUrl: "https://업로드된이미지.url" (업로드 기능 붙이면 여기에 넣음)
+        },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (res.status === 200 || res.status === 201) {
+        router.navigate({ to: "/mypet", replace: true });
+      } else {
+        alert("다이어리 작성에 실패했어요.");
+      }
+    } catch (e: any) {
+      if (e?.response?.status === 401) {
+        alert("로그인이 필요합니다.");
+        router.navigate({ to: "/login" });
+        return;
+      }
+      console.error("다이어리 작성 실패:", e?.response ?? e);
+      alert(e?.response?.data?.message ?? "오류가 발생했어요.");
+    }
   };
 
   return (
@@ -58,8 +88,6 @@ export default function DiaryWritePage() {
         onRemoveImageAt={handleRemoveAt}
         onSubmit={handleSubmit}
       />
-
-      {/* 숨김 파일 입력 */}
       <input
         ref={fileInputRef}
         type="file"

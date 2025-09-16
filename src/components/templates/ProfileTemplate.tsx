@@ -16,6 +16,7 @@ type Props = {
   // 스탯 박스
   point: number | string;
   stamp: number | string;
+  onClickStamp?: () => void;
 };
 
 export default function ProfileTemplate({
@@ -27,6 +28,7 @@ export default function ProfileTemplate({
   onClickCoupon,
   point,
   stamp,
+  onClickStamp,
 }: Props) {
   return (
     <div className="p-6 my-5">
@@ -48,8 +50,11 @@ export default function ProfileTemplate({
       <hr className="my-8 border-[#D9D9D9]" />
 
       {/* 스탯 박스 */}
-      <ProfileStats point={point} stamp={stamp} />
-
+      <ProfileStats
+        point={point}
+        stamp={stamp}
+        onClickStamp={onClickStamp}
+      />
     </div>
   );
 }
