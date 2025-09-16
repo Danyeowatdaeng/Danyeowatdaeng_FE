@@ -32,7 +32,7 @@ export default function DailyQuestTemplate({
           src="/Assets/icons/Pet.svg"
           alt=""
           aria-hidden
-          className="w-[188px] h-[188px] object-contain"
+          className="w-[160px] h-[160px] object-contain"
         />
       </div>
 
