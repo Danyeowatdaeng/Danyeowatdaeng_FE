@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import axios from "axios";
 import PermissionCheckLayout from "../../components/templates/PermissionCheckLayout";
 
 export default function CheckPermissionPage() {
@@ -23,7 +24,35 @@ export default function CheckPermissionPage() {
   };
 
   const handleSubmit = async () => {
-    navigate({ to: "/" });
+    try {
+      const res = await axios.post(
+        "https://danyeowatdaeng.p-e.kr/api/terms/agree-terms",
+        {
+          termsCodes: [],
+        },
+        {
+          withCredentials: true, // 쿠키 전송을 위해 필요
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.status !== 200) {
+        alert(
+          "android인 경우, 사이트 설정에서 쿠키 허용을 해주세요.\n ios인 경우, 설정에서 사파리 앱 설정에 들어가 크로스 사이트 추적 방지를 꺼주세요."
+        );
+        return;
+      }
+
+      console.log("약관 동의 완료");
+      navigate({ to: "/" });
+    } catch (error) {
+      console.error("API 요청 오류:", error);
+      alert(
+        "android인 경우, 사이트 설정에서 쿠키 허용을 해주세요.\n ios인 경우, 설정에서 사파리 앱 설정에 들어가 크로스 사이트 추적 방지를 꺼주세요."
+      );
+    }
   };
 
   return (
