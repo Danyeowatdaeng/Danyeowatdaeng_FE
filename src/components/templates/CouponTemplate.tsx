@@ -15,7 +15,7 @@ type Props = {
 
 export default function CouponTemplate({ onBack, coupons }: Props) {
   return (
-    <div className="h-dvh flex flex-col bg-white">
+    <div className="h-dvh flex flex-col ">
       {/* 헤더 (고정) */}
       <div className="mt-11 px-6 pt-[env(safe-area-inset-top)] flex-none">
         <BackHeader onBack={onBack} label="내 쿠폰함" />

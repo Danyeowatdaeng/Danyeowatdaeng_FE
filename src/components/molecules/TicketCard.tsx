@@ -25,9 +25,7 @@ export default function TicketCard({
       disabled={disabled}
       aria-label={`${title} 쿠폰`}
       className={[
-        // 버튼 자체를 배경 컨테이너로 사용
         "relative w-full h-[107px] p-0 bg-transparent rounded-none",
-        "active:scale-[.99] disabled:opacity-50",
         className,
       ].join(" ")}
     >
@@ -39,10 +37,9 @@ export default function TicketCard({
         className="absolute inset-0 h-full w-full pointer-events-none select-none"
       />
 
-      {/* 내용: 항상 티켓 안에서 중앙정렬 */}
-      {/* 오른쪽 톱니/점선 영역을 피하려고 right 여백 고정 */}
-      <div className="absolute inset-y-0 left-6 right-[112px] z-10 flex flex-col justify-center tes ">
-        <Label content={title} className="text-[14px]" />
+      {/* 티켓 내용 */}
+      <div className="absolute inset-y-0 left-10 right-[112px] z-10 flex flex-col justify-center text-left">
+        <Label content={title} className="text-[14px] " />
         <div className="text-[32px] font-extrabold leading-none text-[#00A3A5]">
           {highlight}
         </div>
