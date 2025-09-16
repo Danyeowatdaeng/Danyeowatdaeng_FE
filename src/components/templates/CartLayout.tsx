@@ -1,9 +1,11 @@
 import Title from "../atoms/Title";
 import PrimaryButton from "../molecules/PrimaryButton";
 import TabBar from "../molecules/TabBar";
+import { useWebControlStore } from "../../store/webControlStore";
 import MyGroup from "../organisms/cart/myGroup";
 
 export default function CartLayout() {
+  const isWide = useWebControlStore((state) => state.isWide);
   return (
     <div className="flex flex-col justify-between h-full">
       <div className=" mx-8">
@@ -14,7 +16,7 @@ export default function CartLayout() {
         </div>
         <Title className="mt-10">최근 찜한 장소</Title>
       </div>
-      <TabBar className="relative bottom-0 w-full z-30" />
+      {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
     </div>
   );
 }

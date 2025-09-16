@@ -26,7 +26,7 @@ export default function PermissionCheckLayout({
 }: CheckPermissionItemProps) {
   return (
     <>
-      <div className="p-10 gap-10 mx-auto">
+      <div className="py-10 px-7 gap-10 mx-auto">
         <BackHeader onBack={onBack} />
         <div>
           <Title className="mt-14">{pageTitle}</Title>
@@ -38,7 +38,7 @@ export default function PermissionCheckLayout({
           />
           <div
             className={cn(
-              "transition-opacity duration-200 opacity-0 pointer-events-none fixed left-0 bottom-25 w-full px-10",
+              "transition-opacity duration-200 opacity-0 pointer-events-none w-full",
               {
                 "opacity-100 pointer-events-auto": checkedList?.every((v) => v),
               }

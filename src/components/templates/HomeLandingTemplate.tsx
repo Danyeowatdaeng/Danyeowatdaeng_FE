@@ -5,6 +5,7 @@ import type { CategoryItemProps } from "../molecules/CategoryItem";
 import EventListSection from "../molecules/EventListSection";
 import type { EventListItemData } from "../molecules/EventListItem";
 import TabBar from "../molecules/TabBar";
+import { useWebControlStore } from "../../store/webControlStore";
 
 type Props = {
   categories: CategoryItemProps[];
@@ -31,6 +32,7 @@ export default function HomeLandingTemplate({
   const handleMapBackdropTap = () => {
     setMode("browse");
   };
+  const isWide = useWebControlStore((state) => state.isWide);
   return (
     <div className="min-h-full h-full flex flex-col relative">
       {/* 상단 Map */}
@@ -67,7 +69,7 @@ export default function HomeLandingTemplate({
           </div>
         </div>
       </div>
-      <TabBar className="sticky bottom-0 w-full z-30" />
+      {isWide && <TabBar className="sticky bottom-0 w-full z-30" />}
     </div>
   );
 }

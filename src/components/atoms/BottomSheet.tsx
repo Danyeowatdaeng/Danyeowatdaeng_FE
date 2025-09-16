@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { animated } from "@react-spring/web";
 import { useBottomSheet } from "../../hooks/useBottomSheet";
+import { useWebControlStore } from "../../store/webControlStore";
 
 type BottomSheetProps = {
   open: boolean;
@@ -21,17 +22,23 @@ export default function BottomSheet({
   title,
   className = "",
 }: BottomSheetProps) {
+  const isWide = useWebControlStore((state) => state.isWide);
   const MIN_HEIGHT = 400; // 기본 높이 (px)
-  // app-container의 height에서 50을 뺀 값으로 maxHeight 설정
   let MAX_HEIGHT = 600; // fallback
+
+  // web/app 높이 다르게 계산
   if (typeof document !== "undefined") {
-    const appContainer = document.getElementById("app-container");
-    if (appContainer) {
-      const style = window.getComputedStyle(appContainer);
-      const height = parseInt(style.height, 10);
-      if (!isNaN(height)) {
-        MAX_HEIGHT = height - 50;
+    if (isWide) {
+      const appContainer = document.getElementById("app-container");
+      if (appContainer) {
+        const style = window.getComputedStyle(appContainer);
+        const height = parseInt(style.height, 10);
+        if (!isNaN(height)) {
+          MAX_HEIGHT = height - 50;
+        }
       }
+    } else {
+      MAX_HEIGHT = window.innerHeight - 50;
     }
   }
 
@@ -82,6 +89,6 @@ export default function BottomSheet({
         <div className="px-2 pb-6">{children}</div>
       </animated.div>
     </div>,
-    document.getElementById("app-container")!
+    isWide ? document.getElementById("app-container")! : document.body
   );
 }

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import TabBar from "../components/molecules/TabBar";
+import { useWebControlStore } from "../store/webControlStore";
+import { cn } from "../utils/style";
 
 type Message = {
   id: string;
@@ -11,6 +13,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const listRef = useRef<HTMLDivElement | null>(null);
+  const isWide = useWebControlStore((state) => state.isWide);
 
   const hasConversationBegun = messages.length > 0;
 
@@ -116,7 +119,12 @@ export default function ChatPage() {
       </div>
 
       {/* 입력 영역 */}
-      <div className="relative inset-x-0 bottom-[72px] z-30">
+      <div
+        className={cn("inset-x-0 z-30", {
+          "relative bottom-0": isWide,
+          "fixed bottom-[72px]": !isWide,
+        })}
+      >
         <div className=" bg-white border border-black/5 shadow-[0_6px_24px_rgba(0,0,0,0.06)] rounded-t-[32px] px-6 h-[100px] flex items-center gap-4">
           <textarea
             value={input}
@@ -129,7 +137,7 @@ export default function ChatPage() {
             }}
             rows={2}
             placeholder="무엇이든 물어보세요"
-            className="flex-1 h-full resize-none outline-none bg-transparent text-[18px] leading-[100px] placeholder:text-gray-400 py-0"
+            className="overflow-visible flex-1 h-10 resize-none outline-none bg-transparent text-[18px] placeholder:text-gray-400 py-0"
             style={{ verticalAlign: "middle" }}
           />
           <button
@@ -147,7 +155,7 @@ export default function ChatPage() {
         </div>
         <div className="h-[12px]" />
       </div>
-      <TabBar className="sticky bottom-0 w-full z-30" />
+      {isWide && <TabBar className="sticky bottom-0 w-full z-30" />}
     </div>
   );
 }

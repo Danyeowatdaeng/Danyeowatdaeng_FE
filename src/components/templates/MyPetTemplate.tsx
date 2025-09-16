@@ -6,6 +6,7 @@ import ModalWrapper from "../molecules/ModalWrapper";
 import PetEditForm from "../organisms/mypet/PetEditForm";
 import type { DiaryItem } from "../molecules/DiaryCard";
 import TabBar from "../molecules/TabBar";
+import { useWebControlStore } from "../../store/webControlStore";
 
 type Props = {
   //헤더
@@ -32,10 +33,11 @@ export default function MyPetTemplate({
   onDiaryClick,
 }: Props) {
   const [isEditOpen, setEditOpen] = useState(false);
+  const isWide = useWebControlStore((state) => state.isWide);
 
   return (
     <div>
-      <div className="h-dvh flex flex-col p-6 my-5">
+      <div className="h-dvh flex flex-col p-6 pt-11">
         {/* 상단 고정 */}
         <div className="flex-none">
           <MyPetHeader
@@ -73,7 +75,7 @@ export default function MyPetTemplate({
           </ModalWrapper>
         )}
       </div>
-      <TabBar className="sticky bottom-0 w-full z-30" />
+      {isWide && <TabBar className="sticky bottom-0 w-full z-30" />}
     </div>
   );
 }

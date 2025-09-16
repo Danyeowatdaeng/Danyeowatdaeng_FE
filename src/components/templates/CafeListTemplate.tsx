@@ -4,6 +4,7 @@ import DistanceButton, { type Distance } from "../molecules/DistanceButton";
 import CafeGrid from "../molecules/CafeGrid";
 import type { CafeCardData } from "../molecules/CafeCard";
 import TabBar from "../molecules/TabBar";
+import { useWebControlStore } from "../../store/webControlStore";
 
 type CafeListTemplateProps = {
   // 헤더
@@ -27,6 +28,7 @@ export default function CafeListTemplate({
   cafes,
   onCafeClick,
 }: CafeListTemplateProps) {
+  const isWide = useWebControlStore((state) => state.isWide);
   return (
     <div className="h-dvh flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       {/* 상단 헤더 */}
@@ -52,7 +54,7 @@ export default function CafeListTemplate({
           <CafeGrid items={cafes} onItemClick={onCafeClick} />
         </div>
       </div>
-      <TabBar className="absolute bottom-0 w-full z-30" />
+      {isWide && <TabBar className="absolute bottom-0 w-full z-30" />}
     </div>
   );
 }

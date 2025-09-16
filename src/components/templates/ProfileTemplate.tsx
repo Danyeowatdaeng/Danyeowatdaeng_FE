@@ -2,6 +2,7 @@ import ProfileBox from "../organisms/profile/ProfileBox";
 import Coupon from "../molecules/CouponButton";
 import ProfileStats from "../organisms/profile/ProfileStats";
 import TabBar from "../molecules/TabBar";
+import { useWebControlStore } from "../../store/webControlStore";
 
 type Props = {
   // 프로필 박스
@@ -29,6 +30,7 @@ export default function ProfileTemplate({
   point,
   stamp,
 }: Props) {
+  const isWide = useWebControlStore((state) => state.isWide);
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="p-6 my-5">
@@ -52,7 +54,7 @@ export default function ProfileTemplate({
         {/* 스탯 박스 */}
         <ProfileStats point={point} stamp={stamp} />
       </div>
-      <TabBar className="relative bottom-0 w-full z-30" />
+      {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
     </div>
   );
 }
