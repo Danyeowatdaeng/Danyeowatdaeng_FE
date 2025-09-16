@@ -15,7 +15,7 @@ export default function QuestRow({ title, onClick, className = "" }: Props) {
       className={`w-full flex items-center justify-between ${className}`}
       aria-label={title}
     >
-      <Title className="text-[20px] font-bold">{title}</Title>
+      <Title className="text-[18px] font-bold">{title}</Title>
       <ChevronRight className="w-6 h-6" aria-hidden />
     </Button>
   );
