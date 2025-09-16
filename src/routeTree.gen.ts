@@ -17,6 +17,7 @@ import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
+import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
@@ -65,6 +66,11 @@ const ProfileStampRoute = ProfileStampRouteImport.update({
   path: '/profile/stamp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfilePointRoute = ProfilePointRouteImport.update({
+  id: '/profile/point',
+  path: '/profile/point',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileCouponRoute = ProfileCouponRouteImport.update({
   id: '/profile/coupon',
   path: '/profile/coupon',
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
   '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
   '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
   '/profile/coupon': typeof ProfileCouponRoute
+  '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
   '/cart/': typeof CartIndexRoute
   '/landing/': typeof LandingIndexRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/profile/point'
     | '/profile/stamp'
     | '/cart'
     | '/landing'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/profile/point'
     | '/profile/stamp'
     | '/cart'
     | '/landing'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/mypet/diary'
     | '/mypet/quest'
     | '/profile/coupon'
+    | '/profile/point'
     | '/profile/stamp'
     | '/cart/'
     | '/landing/'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   MypetDiaryRoute: typeof MypetDiaryRoute
   MypetQuestRoute: typeof MypetQuestRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
+  ProfilePointRoute: typeof ProfilePointRoute
   ProfileStampRoute: typeof ProfileStampRoute
   CartIndexRoute: typeof CartIndexRoute
   LandingIndexRoute: typeof LandingIndexRoute
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileStampRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/point': {
+      id: '/profile/point'
+      path: '/profile/point'
+      fullPath: '/profile/point'
+      preLoaderRoute: typeof ProfilePointRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile/coupon': {
       id: '/profile/coupon'
       path: '/profile/coupon'
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   MypetDiaryRoute: MypetDiaryRoute,
   MypetQuestRoute: MypetQuestRoute,
   ProfileCouponRoute: ProfileCouponRoute,
+  ProfilePointRoute: ProfilePointRoute,
   ProfileStampRoute: ProfileStampRoute,
   CartIndexRoute: CartIndexRoute,
   LandingIndexRoute: LandingIndexRoute,

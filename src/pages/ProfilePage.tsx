@@ -5,7 +5,8 @@ export default function ProfilePage() {
   const router = useRouter();
 
   const goToCoupon = () => router.navigate({ to: "/profile/coupon" });
-  const goToStamp  = () => router.navigate({ to: "/profile/stamp" }); // 라우트 경로는 프로젝트에 맞게
+  const goToStamp  = () => router.navigate({ to: "/profile/stamp" });
+  const goToPoint  = () => router.navigate({ to: "/profile/point" });
 
   return (
     <ProfileTemplate
@@ -17,6 +18,7 @@ export default function ProfilePage() {
       point={12345}
       stamp={4}
       onClickStamp={goToStamp}
+      onClickPoint={goToPoint}
     />
   );
 }

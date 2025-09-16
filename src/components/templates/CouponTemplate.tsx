@@ -11,9 +11,10 @@ type Coupon = {
 type Props = {
   onBack?: () => void;
   coupons: Coupon[];
+  onItemClick?: (id: Coupon["id"]) => void;
 };
 
-export default function CouponTemplate({ onBack, coupons }: Props) {
+export default function CouponTemplate({ onBack, coupons, onItemClick }: Props) {
   return (
     <div className="h-dvh flex flex-col ">
       {/* 헤더 (고정) */}
@@ -23,7 +24,10 @@ export default function CouponTemplate({ onBack, coupons }: Props) {
 
       {/* 리스트 영역 (스크롤) */}
       <div className="flex-1 min-h-0 overflow-y-auto mb-25 pb-[env(safe-area-inset-bottom)]">
-        <CouponList items={coupons} />
+        <CouponList 
+          items={coupons}
+          onItemClick={onItemClick}
+        />
       </div>
     </div>
   );
