@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { animated } from "@react-spring/web";
 import { useBottomSheet } from "../../hooks/useBottomSheet";
 import { useWebControlStore } from "../../store/webControlStore";
+import { cn } from "../../utils/style";
 
 type BottomSheetProps = {
   open: boolean;
@@ -61,7 +62,13 @@ export default function BottomSheet({
   return createPortal(
     <div
       aria-hidden={!open}
-      className={`absolute w-full left-0 bottom-0 z-[100] ${open ? "" : "pointer-events-none"}`}
+      className={cn(
+        `w-full left-0 bottom-0 z-[100] ${open ? "" : "pointer-events-none"}`,
+        {
+          fixed: !isWide,
+          absolute: isWide,
+        }
+      )}
     >
       {/* Sheet */}
       <animated.div
