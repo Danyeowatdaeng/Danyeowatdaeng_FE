@@ -11,7 +11,7 @@ export default function BackHeader({ onBack, label }: BackHeaderProps) {
       <Button aria-label="뒤로가기" onClick={onBack}>
         <ChevronLeft aria-label="chevron-left" aria-hidden />
       </Button>
-      <Label content={label ?? ""} className="text-[20px] font-bold"/>
+      <Label content={label ?? ""} className="text-[18px] font-bold"/>
     </header>
   );
 }
