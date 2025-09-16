@@ -25,7 +25,7 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
       {/* 검색바 */}
       <div
         className={`
-          z-10 w-[100vw] px-[5vw] transition-all duration-1200 ease-in-out
+          z-10 w-full px-5 transition-all duration-1200 ease-in-out
           ${expanded ? "absolute -translate-y-[95vh]" : "absolute -translate-y-1/2"}
         `}
       >

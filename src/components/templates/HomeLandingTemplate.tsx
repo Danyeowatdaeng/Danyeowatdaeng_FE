@@ -4,6 +4,7 @@ import CategoryGrid from "../molecules/CategoryGrid";
 import type { CategoryItemProps } from "../molecules/CategoryItem";
 import EventListSection from "../molecules/EventListSection";
 import type { EventListItemData } from "../molecules/EventListItem";
+import TabBar from "../molecules/TabBar";
 
 type Props = {
   categories: CategoryItemProps[];
@@ -31,7 +32,7 @@ export default function HomeLandingTemplate({
     setMode("browse");
   };
   return (
-    <div className=" gap-14 min-h-screen flex flex-col relative">
+    <div className="min-h-full h-full flex flex-col relative">
       {/* 상단 Map */}
       <div className={mapExpanded ? "flex-1" : "h-fit"}>
         <MapArea
@@ -43,8 +44,8 @@ export default function HomeLandingTemplate({
 
       {/* 하단 컨텐츠 */}
       <div
-        className={`fixed top-56 pt-8 left-0 right-0 bg-white 
-                    h-[calc(100vh-310px)] 
+        className={`relative bg-white 
+                    h-[calc(100vh-300px)] w-fit
                     transition-all duration-100 ease-in-out
                     ${
                       mapExpanded
@@ -66,6 +67,7 @@ export default function HomeLandingTemplate({
           </div>
         </div>
       </div>
+      <TabBar className="sticky bottom-0 w-full z-30" />
     </div>
   );
 }

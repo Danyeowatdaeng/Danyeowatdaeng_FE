@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+body {
+  background: #e4e8f6;
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app-container {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+  #app-container {
+    width: 340px;
+    height: 730px;
+    border-radius: 15px;
+    box-shadow: 0 0 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: white;
+  }
+}

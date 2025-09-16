@@ -22,7 +22,18 @@ export default function BottomSheet({
   className = "",
 }: BottomSheetProps) {
   const MIN_HEIGHT = 400; // 기본 높이 (px)
-  const MAX_HEIGHT = window.innerHeight - 50; // 전체 화면 높이에서 여유 공간
+  // app-container의 height에서 50을 뺀 값으로 maxHeight 설정
+  let MAX_HEIGHT = 600; // fallback
+  if (typeof document !== "undefined") {
+    const appContainer = document.getElementById("app-container");
+    if (appContainer) {
+      const style = window.getComputedStyle(appContainer);
+      const height = parseInt(style.height, 10);
+      if (!isNaN(height)) {
+        MAX_HEIGHT = height - 50;
+      }
+    }
+  }
 
   const { height, y, bind } = useBottomSheet({
     minHeight: MIN_HEIGHT,
@@ -39,18 +50,12 @@ export default function BottomSheet({
   }, [open]);
 
   if (typeof document === "undefined") return null;
+
   return createPortal(
     <div
       aria-hidden={!open}
-      className={`fixed inset-0 z-[1000] ${open ? "" : "pointer-events-none"}`}
+      className={`absolute w-full left-0 bottom-0 z-[100] ${open ? "" : "pointer-events-none"}`}
     >
-      {/* Overlay */}
-      <button
-        aria-label="닫기"
-        onClick={() => onOpenChange(false)}
-        className={`absolute inset-0 transition-opacity ${open ? "opacity-100" : "opacity-0"}`}
-      />
-
       {/* Sheet */}
       <animated.div
         {...bind()}
@@ -61,9 +66,8 @@ export default function BottomSheet({
           transform: y.to((py) => `translateY(${py}px)`),
           touchAction: "none",
         }}
-        className={`
-        bg-white
-          absolute left-0 right-0 bottom-0
+        className={`bg-white
+          relative bottom-0 max-w-full
           rounded-t-4xl shadow-xl
           transition-transform duration-500
           ${open ? "" : "translate-y-full"}
@@ -78,6 +82,6 @@ export default function BottomSheet({
         <div className="px-2 pb-6">{children}</div>
       </animated.div>
     </div>,
-    document.body
+    document.getElementById("app-container")!
   );
 }

@@ -14,8 +14,9 @@ export default function TabBar({ className = "" }: TabBarProps) {
   return (
     <nav
       className={`w-full bg-white border-t border-black/5
-                  pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]
+                  pt-3 pb-[calc(2vh+env(safe-area-inset-bottom))]
                   shadow-[0_-4px_12px_rgba(0,0,0,0.04)]
+                  rounded-b-2xl min-h-fit
                   ${className}`}
       aria-label="하단 탭"
     >

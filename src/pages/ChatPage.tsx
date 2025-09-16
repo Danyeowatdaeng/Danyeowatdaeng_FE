@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import TabBar from "../components/molecules/TabBar";
 
 type Message = {
   id: string;
@@ -59,7 +60,11 @@ export default function ChatPage() {
         aria-label="더보기"
         type="button"
       >
-        <img src="/Assets/icons/More%20circle.svg" alt="더보기" className="w-6 h-6" />
+        <img
+          src="/Assets/icons/More%20circle.svg"
+          alt="더보기"
+          className="w-6 h-6"
+        />
       </button>
 
       <div className="h-11" />
@@ -111,8 +116,8 @@ export default function ChatPage() {
       </div>
 
       {/* 입력 영역 */}
-      <div className="fixed inset-x-0 bottom-[72px] z-30">
-        <div className="bg-white border border-black/5 shadow-[0_6px_24px_rgba(0,0,0,0.06)] rounded-t-[32px] px-6 h-[100px] flex items-center gap-4">
+      <div className="relative inset-x-0 bottom-[72px] z-30">
+        <div className=" bg-white border border-black/5 shadow-[0_6px_24px_rgba(0,0,0,0.06)] rounded-t-[32px] px-6 h-[100px] flex items-center gap-4">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -124,7 +129,8 @@ export default function ChatPage() {
             }}
             rows={2}
             placeholder="무엇이든 물어보세요"
-            className="flex-1 h-full resize-none outline-none bg-transparent text-[18px] leading-6 placeholder:text-gray-400 pt-4"
+            className="flex-1 h-full resize-none outline-none bg-transparent text-[18px] leading-[100px] placeholder:text-gray-400 py-0"
+            style={{ verticalAlign: "middle" }}
           />
           <button
             className="ml-2 w-10 h-10 grid place-items-center"
@@ -132,13 +138,16 @@ export default function ChatPage() {
             aria-label="전송"
             type="button"
           >
-            <img src="/Assets/icons/Up%20circle.svg" alt="전송" className="w-10 h-10" />
+            <img
+              src="/Assets/icons/Up%20circle.svg"
+              alt="전송"
+              className="w-10 h-10"
+            />
           </button>
         </div>
         <div className="h-[12px]" />
       </div>
+      <TabBar className="sticky bottom-0 w-full z-30" />
     </div>
   );
 }
-
-

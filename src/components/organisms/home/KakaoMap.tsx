@@ -67,7 +67,7 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
   }, [locations]);
 
   return (
-    <>
+    <div className="relative w-full h-full">
       <Map
         key={shouldRerender ? "rerender" : "initial"}
         center={current}
@@ -87,7 +87,6 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
             />
           ))}
       </Map>
-
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen}>
         <PlacePreview
           position={selectedPlace}
@@ -97,6 +96,6 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
           }}
         />
       </BottomSheet>
-    </>
+    </div>
   );
 }
