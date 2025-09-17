@@ -11,9 +11,9 @@ export default function PillButton({ text, onClick, className = "" }: Props) {
   return (
     <Button
       onClick={onClick}
-      className={`h-7.5 px-5 rounded-full border border-[#D9D9D9] bg-white text-[#00A3A5] ${className}`}
+      className={`h-7 px-4 rounded-full border border-[#D9D9D9] bg-white text-[#00A3A5] ${className}`}
     >
-      <Label content={text} className="text-[13px] font-medium" />
+      <Label content={text} className="text-[12px] font-medium" />
     </Button>
   );
 }

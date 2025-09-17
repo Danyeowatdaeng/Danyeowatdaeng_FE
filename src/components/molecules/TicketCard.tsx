@@ -1,3 +1,5 @@
+// src/components/molecules/TicketCard.tsx
+import { useState } from "react"; // ⬅ 추가
 import Button from "../atoms/Button";
 import Label from "../atoms/Label";
 import Icon from "../atoms/Icon";
@@ -9,6 +11,13 @@ type Props = {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+
+  onDownload?: () => void;
+  downloadIcon?: string;           // 활성(주황) 아이콘
+  downloadIconDisabled?: string;   // 비활성(회색) 아이콘
+  downloadDisabled?: boolean;      // 부모가 강제 비활성화할 때
+
+  backgroundSrc?: string;
 };
 
 export default function TicketCard({
@@ -18,36 +27,81 @@ export default function TicketCard({
   onClick,
   disabled,
   className = "",
+  onDownload,
+  downloadIcon = "/Assets/icons/DownloadActive.svg",
+  downloadIconDisabled = "/Assets/icons/Download.svg",
+  downloadDisabled = false,
+  backgroundSrc = "/Assets/icons/Ticket.svg",
 }: Props) {
+  const showDownload = typeof onDownload === "function";
+
+  // ✅ 로컬 상태: 클릭하면 회색으로 바뀌도록 내부에서 관리
+  const [downloaded, setDownloaded] = useState(false);
+
+  // 부모 강제(disabled) 우선, 아니면 로컬 상태 사용
+  const isDownloaded = downloadDisabled || downloaded;
+
+  const handleDownload = () => {
+    // 먼저 UI 즉시 반영 (주황 -> 회색)
+    setDownloaded(true);
+    // 부모 콜백 호출
+    onDownload?.();
+  };
+
   return (
-    <Button
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={`${title} 쿠폰`}
+    <div
       className={[
-        // 버튼 자체를 배경 컨테이너로 사용
-        "relative w-full h-[107px] p-0 bg-transparent rounded-none",
-        "active:scale-[.99] disabled:opacity-50",
+        "relative w-full h-[107px] select-none",
+        "rounded-[16px] overflow-hidden",
         className,
       ].join(" ")}
     >
-      {/* 배경: 점선 포함된 SVG 한 장 */}
+      {/* 티켓 배경 */}
       <Icon
-        src="/Assets/icons/Ticket.svg"
+        src={backgroundSrc}
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full pointer-events-none select-none"
       />
 
-      {/* 내용: 항상 티켓 안에서 중앙정렬 */}
-      {/* 오른쪽 톱니/점선 영역을 피하려고 right 여백 고정 */}
-      <div className="absolute inset-y-0 left-6 right-[112px] z-10 flex flex-col justify-center tes ">
+      {/* 왼쪽(내용) 버튼 */}
+      <Button
+        onClick={onClick}
+        disabled={disabled}
+        aria-label={`${title} 쿠폰`}
+        className={[
+          "absolute inset-y-0 left-0",
+          showDownload ? "right-[10px]" : "right-0",
+          "px-10 text-left bg-transparent",
+        ].join(" ")}
+      >
         <Label content={title} className="text-[14px]" />
         <div className="text-[32px] font-extrabold leading-none text-[#00A3A5]">
           {highlight}
         </div>
         <Label content={`유효기간: ${expires}`} className="text-[12px] text-[#797979]" />
-      </div>
-    </Button>
+      </Button>
+
+      {/* 오른쪽 다운로드 버튼 */}
+      {showDownload && (
+        <div className="absolute inset-y-0 right-0 w-[68px] flex items-center justify-center">
+          <Button
+            onClick={handleDownload}
+            // 누른 뒤에도 다시 눌리게 할지 말지는 선택.
+            // "한 번 받으면 비활성" 원하면 아래 줄을 true로 바꿔도 됨.
+            // disabled={isDownloaded}
+            aria-label="쿠폰 다운로드"
+            className="h-[32px] w-[32px] flex items-center justify-center"
+          >
+            <Icon
+              src={isDownloaded ? downloadIconDisabled : downloadIcon}
+              alt=""
+              aria-hidden
+              className="h-7 w-7"
+            />
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }

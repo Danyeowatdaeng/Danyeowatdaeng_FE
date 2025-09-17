@@ -20,6 +20,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+
 export const post = async (url: string, data: unknown) => {
   try {
     const res = await api.post(url, data);
@@ -33,6 +34,28 @@ export const post = async (url: string, data: unknown) => {
 export const get = async (url: string, params?: unknown) => {
   try {
     const res = await api.get(url, { params });
+    return res.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    throw error;
+  }
+
+  
+};
+
+export const put = async (url: string, data?: unknown, config?: any) => {
+  try {
+    const res = await api.put(url, data, config);
+    return res.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    throw error;
+  }
+};
+
+export const del = async (url: string, params?: unknown) => {
+  try {
+    const res = await api.delete(url, { params });
     return res.data;
   } catch (error) {
     console.error("API 요청 오류:", error);

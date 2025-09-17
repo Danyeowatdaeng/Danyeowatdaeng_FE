@@ -15,4 +15,4 @@ export default function DiaryGrid({ items, onItemClick, className = "" }: Props)
       ))}
     </div>
   );
-}
+} 

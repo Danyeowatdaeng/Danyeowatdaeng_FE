@@ -22,7 +22,7 @@ export default function DiarySection({
     <section className={`flex flex-col h-full min-h-0 ${className}`}>
       {/* 헤더(고정) */}
       <div className="flex items-center justify-between flex-none">
-        <Title className="text-[20px] font-bold">{title}</Title>
+        <Title className="text-[18px] font-bold">{title}</Title>
         <PillButton text="작성하기" onClick={onWrite} />
       </div>
 

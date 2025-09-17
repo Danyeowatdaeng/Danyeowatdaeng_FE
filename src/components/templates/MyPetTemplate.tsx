@@ -9,7 +9,7 @@ import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
 
 type Props = {
-  //헤더
+  // 헤더
   avatarSrc?: string;
   name: string;
   subtitle?: string;
@@ -33,6 +33,14 @@ export default function MyPetTemplate({
   onDiaryClick,
 }: Props) {
   const [isEditOpen, setEditOpen] = useState(false);
+
+  // 프로필 표시용 로컬 상태
+  const [profile, setProfile] = useState({
+    avatarSrc: avatarSrc as string | undefined,
+    name,
+    subtitle: subtitle ?? "",
+  });
+
   const isWide = useWebControlStore((state) => state.isWide);
 
   return (
@@ -41,20 +49,20 @@ export default function MyPetTemplate({
         {/* 상단 고정 */}
         <div className="flex-none">
           <MyPetHeader
-            avatarSrc={avatarSrc}
-            name={name}
-            subtitle={subtitle}
+            avatarSrc={profile.avatarSrc}
+            name={profile.name}
+            subtitle={profile.subtitle}
             onEdit={() => setEditOpen(true)} // 아이콘 클릭 시 모달 열기
           />
           <QuestRow
-            className="mt-10"
+            className="mt-8"
             title="반려동물과 일일 퀘스트!"
             onClick={onQuestClick}
           />
         </div>
 
         {/* 다이어리 */}
-        <div className="flex-1 min-h-0 mt-8">
+        <div className="flex-1 min-h-0 mt-6">
           <DiarySection
             className="h-full"
             items={diaries}
@@ -67,14 +75,23 @@ export default function MyPetTemplate({
         {isEditOpen && (
           <ModalWrapper onClose={() => setEditOpen(false)}>
             <PetEditForm
-              avatarSrc={avatarSrc}
-              name={name}
-              subtitle={subtitle ?? ""}
-              onSave={() => setEditOpen(false)}
+              avatarSrc={profile.avatarSrc}
+              name={profile.name}
+              subtitle={profile.subtitle}
+              onSave={({ avatar, name, subtitle }) => {
+                // 저장 시 헤더에 즉시 반영
+                setProfile({
+                  avatarSrc: avatar,
+                  name,
+                  subtitle,
+                });
+                setEditOpen(false);
+              }}
             />
           </ModalWrapper>
         )}
       </div>
+
       {isWide && <TabBar className="sticky bottom-0 w-full z-30" />}
     </div>
   );

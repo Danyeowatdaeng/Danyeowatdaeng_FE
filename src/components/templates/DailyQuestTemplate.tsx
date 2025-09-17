@@ -29,10 +29,10 @@ export default function DailyQuestTemplate({
       {/* 펫 캐릭터 (임시) */}
       <div className="w-full flex justify-center mt-10">
         <img
-          src="/Assets/icons/Pet.svg"
+          src="/Assets/icons/PetAvatar1.svg"
           alt=""
           aria-hidden
-          className="w-[188px] h-[188px] object-contain"
+          className="w-[160px] h-[160px] object-contain"
         />
       </div>
 
