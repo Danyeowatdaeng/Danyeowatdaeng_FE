@@ -62,7 +62,7 @@ export default function DiaryWritePage() {
       );
 
       if (res.status === 200 || res.status === 201) {
-        router.navigate({ to: "/mypet", replace: true });
+        router.navigate({ to: "/mypet/quest", search: { completed: "diary" }, replace: true });
       } else {
         alert("다이어리 작성에 실패했어요.");
       }
