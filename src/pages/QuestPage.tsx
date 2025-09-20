@@ -5,13 +5,14 @@ export default function QuestPage() {
   const router = useRouter();
 
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
+  const goToWalk = () => router.navigate({ to: "/mypet/walk" });
 
   return (
     <DailyQuestTemplate
       onBack={() => router.history.back()}
       done={2}
       total={3}
-      onWalk={() => console.log("산책하기 이동")}
+      onWalk={goToWalk}
       onDiary={goToDiaryWrite}
       onReview={() => console.log("리뷰 이동")}
     />

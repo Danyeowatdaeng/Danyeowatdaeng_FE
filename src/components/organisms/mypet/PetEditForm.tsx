@@ -21,8 +21,6 @@ export default function PetEditForm({
   avatarOptions = [
     "/Assets/icons/PetProfile1.svg",
     "/Assets/icons/PetProfile2.svg",
-    "/Assets/icons/pet3.svg",
-    "/Assets/icons/pet4.svg",
   ],
   onUploadAvatar,
   onSave,

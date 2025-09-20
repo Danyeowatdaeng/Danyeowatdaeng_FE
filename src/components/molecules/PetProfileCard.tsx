@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function PetProfileCard({
-  avatarSrc,
+  avatarSrc = "/Assets/icons/PetProfile1.svg", // 처음 선택한 캐릭터
   name,
   subtitle,
   onEdit,
@@ -35,11 +35,10 @@ export default function PetProfileCard({
           />
         ) : (
           <Icon
-            src="/Assets/icons/PetProfile1.svg"
+            src={avatarSrc}
             aria-hidden
             alt=""
-            width={50}
-            height={50}
+            className="w-[60px] h-[60px]"
           />
         )}
       </div>
