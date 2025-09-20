@@ -79,7 +79,7 @@ export default function AvatarPicker({
         />
 
         {/* 옵션 3개 */}
-        {options.slice(0, 3).map((src) => (
+        {options.slice(0, 2).map((src) => (
           <Button
             key={src}
             aria-label="아바타 선택"

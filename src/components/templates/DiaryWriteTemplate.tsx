@@ -26,10 +26,10 @@ export default function DiaryWriteTemplate({
   return (
     <div className="p-6 my-5">
       {/* 헤더 */}
-      <BackHeader onBack={onBack} label="다이어리 작성하기" />
+      <BackHeader onBack={onBack} label="마이펫 다이어리" />
 
       {/* 에디터 */}
-      <div className="flex-1 px-2 mt-10">
+      <div className="flex-1 mt-10">
         <DiaryEditor
           text={text}
           onTextChange={onTextChange}

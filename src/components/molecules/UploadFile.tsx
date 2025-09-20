@@ -11,7 +11,7 @@ type Props = {
 
 export default function UploadFile({ imageSrc, onPick, onRemove, className = "" }: Props) {
   return (
-    <div className={`relative w-[96px] h-[96px] rounded-2xl bg-[#D9D9D9] overflow-hidden ${className}`}>
+    <div className={`relative w-[96px] h-[96px] rounded-2xl overflow-hidden ${className}`}>
       {imageSrc ? (
         <>
           <img src={imageSrc} alt="preview" className="w-full h-full object-cover" />
@@ -32,7 +32,11 @@ export default function UploadFile({ imageSrc, onPick, onRemove, className = "" 
           className="w-full h-full grid place-items-center"
         >
 
-          <Icon src="/Assets/icons/Plus.svg" alt="" aria-hidden />
+          <Icon 
+            src="/Assets/icons/Plus.svg" 
+            alt="" 
+            aria-hidden
+            className="w-[35px] h-[35px]" />
         </Button>
       )}
     </div>

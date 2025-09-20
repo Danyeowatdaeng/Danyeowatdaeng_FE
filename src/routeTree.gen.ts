@@ -19,6 +19,7 @@ import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
 import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
+import { Route as MypetWalkRouteImport } from './routes/mypet/walk'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
@@ -76,6 +77,11 @@ const ProfileCouponRoute = ProfileCouponRouteImport.update({
   path: '/profile/coupon',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MypetWalkRoute = MypetWalkRouteImport.update({
+  id: '/mypet/walk',
+  path: '/mypet/walk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MypetQuestRoute = MypetQuestRouteImport.update({
   id: '/mypet/quest',
   path: '/mypet/quest',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByTo {
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
     | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
     | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
@@ -208,6 +219,7 @@ export interface FileRouteTypes {
     | '/login/makeCharacter'
     | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
@@ -227,6 +239,7 @@ export interface RootRouteChildren {
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
   MypetDiaryRoute: typeof MypetDiaryRoute
   MypetQuestRoute: typeof MypetQuestRoute
+  MypetWalkRoute: typeof MypetWalkRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
   ProfilePointRoute: typeof ProfilePointRoute
   ProfileStampRoute: typeof ProfileStampRoute
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileCouponRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mypet/walk': {
+      id: '/mypet/walk'
+      path: '/mypet/walk'
+      fullPath: '/mypet/walk'
+      preLoaderRoute: typeof MypetWalkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mypet/quest': {
       id: '/mypet/quest'
       path: '/mypet/quest'
@@ -363,6 +383,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
   MypetDiaryRoute: MypetDiaryRoute,
   MypetQuestRoute: MypetQuestRoute,
+  MypetWalkRoute: MypetWalkRoute,
   ProfileCouponRoute: ProfileCouponRoute,
   ProfilePointRoute: ProfilePointRoute,
   ProfileStampRoute: ProfileStampRoute,
