@@ -4,11 +4,21 @@ import { useRouter } from "@tanstack/react-router";
 import DiaryWriteTemplate from "../components/templates/DiaryWriteTemplate";
 import type { DiaryCreateResponse } from "../api/diary";
 
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve((reader.result as string) || "");
+    reader.onerror = reject;
+    reader.readAsDataURL(file); // data:[mime];base64,XXXX...
+  });
+}
+
 export default function MyPetDiaryWritePage() {
   const router = useRouter();
 
   const [text, setText] = useState("");
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]); // 미리보기용 URL
+  const [firstFile, setFirstFile] = useState<File | undefined>(undefined); // 서버 전송용 원본 파일(대표 1장)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const pendingIndexRef = useRef<number>(-1);
@@ -33,6 +43,12 @@ export default function MyPetDiaryWritePage() {
       }
       return next;
     });
+
+    // 대표 이미지는 첫 번째 것만 서버로 전송한다고 가정
+    if (!firstFile || pendingIndexRef.current === 0) {
+      setFirstFile(file);
+    }
+
     e.currentTarget.value = "";
   };
 
@@ -40,7 +56,10 @@ export default function MyPetDiaryWritePage() {
     setImages((prev) => {
       const target = prev[idx];
       if (target?.startsWith("blob:")) URL.revokeObjectURL(target);
-      return prev.filter((_, i) => i !== idx);
+      const next = prev.filter((_, i) => i !== idx);
+      // 대표(0번)를 지웠다면 firstFile도 비움
+      if (idx === 0) setFirstFile(undefined);
+      return next;
     });
   };
 
@@ -53,8 +72,19 @@ export default function MyPetDiaryWritePage() {
     }
 
     const derivedTitle = text.split("\n")[0].trim().slice(0, 60) || "무제";
-    const first = images[0];
-    const imageUrl = first && /^https?:\/\//i.test(first) ? first : "";
+
+    // ✅ Base64(Data URL) 변환
+    let imageUrl: string | undefined = undefined;
+    if (firstFile) {
+      try {
+        const dataUrl = await fileToDataUrl(firstFile);
+        // 서버가 '순수 Base64'만 원한다면 아래 주석 해제:
+        // imageUrl = dataUrl.split(",")[1];
+        imageUrl = dataUrl; // Data URL 전체를 받는다면 이대로
+      } catch {
+        console.warn("이미지 인코딩 실패 — 이미지 없이 전송합니다.");
+      }
+    }
 
     try {
       setSubmitting(true);
@@ -63,7 +93,7 @@ export default function MyPetDiaryWritePage() {
         {
           title: derivedTitle,
           content: text,
-          imageUrl: imageUrl || undefined,
+          imageUrl, // Base64 or Data URL
         },
         {
           withCredentials: true,
