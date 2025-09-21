@@ -31,11 +31,11 @@ export default function CheckCharacterPage() {
             petImage: petImage,
           });
 
-          if (res.status !== 200) {
+          if (res.isSuccess === false) {
             alert("회원가입에 실패했습니다. 다시 시도해주세요.");
           }
 
-          if (res.status === 200) {
+          if (res.isSuccess) {
             setIsLogin(true);
             navigate({ to: "/" });
           }

@@ -121,7 +121,7 @@ export default function MakeCharacterPage() {
             const res = await post("/members/pet-avatar", {
               petAvatarId: petAvatarId,
             });
-            if (res.status === 200) {
+            if (res.isSuccess) {
               navigate({ to: "/login/checkCharacter" });
             }
           }}
