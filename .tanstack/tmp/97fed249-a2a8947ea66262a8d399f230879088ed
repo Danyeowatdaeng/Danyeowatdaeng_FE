@@ -20,10 +20,10 @@ import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
 import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetWalkRouteImport } from './routes/mypet/walk'
+import { Route as MypetReviewRouteImport } from './routes/mypet/review'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
-import { Route as LoginCheckCharacterRouteImport } from './routes/login/checkCharacter'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 import { Route as MypetDiaryIndexRouteImport } from './routes/mypet/diary/index'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
@@ -84,6 +84,11 @@ const MypetWalkRoute = MypetWalkRouteImport.update({
   path: '/mypet/walk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MypetReviewRoute = MypetReviewRouteImport.update({
+  id: '/mypet/review',
+  path: '/mypet/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MypetQuestRoute = MypetQuestRouteImport.update({
   id: '/mypet/quest',
   path: '/mypet/quest',
@@ -97,11 +102,6 @@ const LoginMakeCharacterRoute = LoginMakeCharacterRouteImport.update({
 const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
   id: '/login/checkPermission',
   path: '/login/checkPermission',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginCheckCharacterRoute = LoginCheckCharacterRouteImport.update({
-  id: '/login/checkCharacter',
-  path: '/login/checkCharacter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingCafeRoute = LandingCafeRouteImport.update({
@@ -129,10 +129,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
-  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -150,10 +150,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
-  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -172,10 +172,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
-  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -195,10 +195,10 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
-    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -216,10 +216,10 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
-    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -237,10 +237,10 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
-    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -259,10 +259,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   LandingCafeRoute: typeof LandingCafeRoute
-  LoginCheckCharacterRoute: typeof LoginCheckCharacterRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
   MypetQuestRoute: typeof MypetQuestRoute
+  MypetReviewRoute: typeof MypetReviewRoute
   MypetWalkRoute: typeof MypetWalkRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
   ProfilePointRoute: typeof ProfilePointRoute
@@ -356,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetWalkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mypet/review': {
+      id: '/mypet/review'
+      path: '/mypet/review'
+      fullPath: '/mypet/review'
+      preLoaderRoute: typeof MypetReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mypet/quest': {
       id: '/mypet/quest'
       path: '/mypet/quest'
@@ -375,13 +382,6 @@ declare module '@tanstack/react-router' {
       path: '/login/checkPermission'
       fullPath: '/login/checkPermission'
       preLoaderRoute: typeof LoginCheckPermissionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/checkCharacter': {
-      id: '/login/checkCharacter'
-      path: '/login/checkCharacter'
-      fullPath: '/login/checkCharacter'
-      preLoaderRoute: typeof LoginCheckCharacterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/landing/cafe': {
@@ -419,10 +419,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   LandingCafeRoute: LandingCafeRoute,
-  LoginCheckCharacterRoute: LoginCheckCharacterRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
   MypetQuestRoute: MypetQuestRoute,
+  MypetReviewRoute: MypetReviewRoute,
   MypetWalkRoute: MypetWalkRoute,
   ProfileCouponRoute: ProfileCouponRoute,
   ProfilePointRoute: ProfilePointRoute,

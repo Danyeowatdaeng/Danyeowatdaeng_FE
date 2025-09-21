@@ -23,7 +23,10 @@ export default function DiaryCard({
     <button
       type="button"
       className={`text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A3A5] rounded-xl ${className}`}
-      onClick={() => onClick?.(item.id)}
+      onClick={() => {
+        console.log("card click", item.id);      // ✅
+        onClick?.(item.id);
+      }}
       aria-label={item.caption ?? "다이어리"}
     >
       <div className="w-full aspect-square rounded-xl overflow-hidden bg-gray-100">

@@ -19,8 +19,8 @@ export default function PetEditForm({
   name,
   subtitle,
   avatarOptions = [
-    "/Assets/icons/PetProfile1.svg",
     "/Assets/icons/PetProfile2.svg",
+    "/Assets/icons/PetProfile3.svg",
   ],
   onUploadAvatar,
   onSave,
