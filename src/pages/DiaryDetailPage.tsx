@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import DiaryDetailTemplate from "../components/templates/DiaryDetailTemplate";
+import ConfirmModal from "../components/molecules/ConfirmModal"; // ✅ 추가: 모달
 
 type DiaryDetail = {
   id: number;
@@ -18,7 +19,7 @@ export default function DiaryDetailPage() {
   const params = useParams({ strict: false }) as { id?: string };
   const id = Number(params.id);
 
-  // ✅ 목록에서 전달된 인접 id들(쿼리) — 라우트의 validateSearch로 타입 보장됨
+  // ✅ 목록에서 전달된 인접 id들(쿼리)
   const { orderedIds = [] } = useSearch({ from: "/mypet/diary/$id" });
 
   const [detail, setDetail] = useState<DiaryDetail | null>(null);
@@ -26,6 +27,10 @@ export default function DiaryDetailPage() {
   const [images, setImages] = useState<string[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // 삭제 모달/상태
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // 현재/이전/다음 계산
   const currentIndex = useMemo(
@@ -115,8 +120,6 @@ export default function DiaryDetailPage() {
 
     try {
       const derivedTitle = (text.split("\n")[0] || detail.title || "무제").slice(0, 60);
-
-      // blob: 은 서버에서 접근 불가 → 기존 URL 유지
       const first = images[0];
       const imageUrl = first && /^https?:\/\//i.test(first) ? first : detail.imageUrl;
 
@@ -137,23 +140,29 @@ export default function DiaryDetailPage() {
     }
   };
 
-  // 삭제
-  const handleDelete = async () => {
-    if (!detail) return;
-    if (!confirm("정말 삭제하시겠어요?")) return;
+  // 삭제 — 버튼 클릭 시: 모달만 오픈
+  const handleDeleteClick = () => setConfirmOpen(true);
+
+  // 삭제 — 모달에서 실제 실행
+  const handleConfirmDelete = async () => {
+    if (!detail || deleting) return;
     try {
+      setDeleting(true);
       await axios.delete(
         `https://danyeowatdaeng.p-e.kr/api/mypet/diaries/${detail.id}`,
         { withCredentials: true }
       );
+      setConfirmOpen(false);
       navigate({ to: "/mypet" });
     } catch (e) {
       console.error("삭제 실패:", e);
       alert("삭제에 실패했습니다.");
+    } finally {
+      setDeleting(false);
     }
   };
 
-  // 이전/다음 이동 — ✅ 같은 orderedIds를 search로 유지
+  // 이전/다음 이동 — 같은 orderedIds 유지
   const handlePrev = () => {
     if (prevId) navigate({ to: `/mypet/diary/${prevId}`, search: { orderedIds } });
   };
@@ -175,7 +184,7 @@ export default function DiaryDetailPage() {
         avatarSrc="/Assets/icons/PetProfile1.svg"
         isEditing={isEditing}
         onToggleEdit={handleToggleEdit}
-        onDelete={handleDelete}
+        onDelete={handleDeleteClick}    // ✅ 여기서 모달 오픈
         onSubmit={handleSubmit}
         onPrev={handlePrev}
         onNext={handleNext}
@@ -183,12 +192,27 @@ export default function DiaryDetailPage() {
         canNext={!!nextId}
       />
 
+      {/* 숨김 파일 입력 */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
         className="hidden"
         onChange={handleChangeFile}
+      />
+
+      {/* ✅ 삭제 확인 모달 */}
+      <ConfirmModal
+        open={isConfirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="정말 삭제하시겠습니까?"
+        iconSrc=""                      // 디자인처럼 아이콘 없이
+        confirmLabel={deleting ? "삭제 중..." : "삭제"}
+        confirmBgColor="#00A3A5"
+        confirmTextColor="#FFFFFF"
+        size="md"
+        showClose
       />
     </>
   );
