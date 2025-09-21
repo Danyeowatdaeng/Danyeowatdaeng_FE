@@ -22,6 +22,7 @@ export default function ChatPage() {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
+    console.log("messages:", messages);
   }, [messages]);
 
   const suggestions = useMemo(
@@ -77,7 +78,7 @@ export default function ChatPage() {
         className="flex-1 overflow-y-auto px-4 pt-4 pb-[200px]"
       >
         {!hasConversationBegun ? (
-          <div className="mt-10 flex flex-col items-center text-center text-gray-400">
+          <div className=" mt-10 flex flex-col items-center text-center text-gray-400">
             <div className="w-12 h-12 rounded-full bg-gray-300 mb-3" />
             <p className="text-sm">무엇이든 물어보세요</p>
           </div>
@@ -121,7 +122,7 @@ export default function ChatPage() {
       {/* 입력 영역 */}
       <div
         className={cn("inset-x-0 z-30", {
-          "relative bottom-0": isWide,
+          "relative bottom-23": isWide,
           "fixed bottom-[72px]": !isWide,
         })}
       >
