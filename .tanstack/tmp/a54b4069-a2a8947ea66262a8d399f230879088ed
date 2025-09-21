@@ -20,11 +20,12 @@ import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
 import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetWalkRouteImport } from './routes/mypet/walk'
+import { Route as MypetReviewRouteImport } from './routes/mypet/review'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
+import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
-import { Route as MypetDiaryIndexRouteImport } from './routes/mypet/diary/index'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 import { Route as MypetDiaryIdRouteImport } from './routes/mypet/diary/$id'
 
@@ -83,9 +84,19 @@ const MypetWalkRoute = MypetWalkRouteImport.update({
   path: '/mypet/walk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MypetReviewRoute = MypetReviewRouteImport.update({
+  id: '/mypet/review',
+  path: '/mypet/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MypetQuestRoute = MypetQuestRouteImport.update({
   id: '/mypet/quest',
   path: '/mypet/quest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MypetDiaryRoute = MypetDiaryRouteImport.update({
+  id: '/mypet/diary',
+  path: '/mypet/diary',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginMakeCharacterRoute = LoginMakeCharacterRouteImport.update({
@@ -103,20 +114,15 @@ const LandingCafeRoute = LandingCafeRouteImport.update({
   path: '/landing/cafe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MypetDiaryIndexRoute = MypetDiaryIndexRouteImport.update({
-  id: '/mypet/diary/',
-  path: '/mypet/diary/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PlacePlaceIdReviewRoute = PlacePlaceIdReviewRouteImport.update({
   id: '/place/$placeId/review',
   path: '/place/$placeId/review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MypetDiaryIdRoute = MypetDiaryIdRouteImport.update({
-  id: '/mypet/diary/$id',
-  path: '/mypet/diary/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => MypetDiaryRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -125,7 +131,9 @@ export interface FileRoutesByFullPath {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -137,7 +145,6 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileIndexRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
-  '/mypet/diary': typeof MypetDiaryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -145,7 +152,9 @@ export interface FileRoutesByTo {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -157,7 +166,6 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileIndexRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
-  '/mypet/diary': typeof MypetDiaryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -166,7 +174,9 @@ export interface FileRoutesById {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -178,7 +188,6 @@ export interface FileRoutesById {
   '/profile/': typeof ProfileIndexRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
-  '/mypet/diary/': typeof MypetDiaryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,7 +197,9 @@ export interface FileRouteTypes {
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/login/makeCharacter'
+    | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -200,7 +211,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
-    | '/mypet/diary'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,7 +218,9 @@ export interface FileRouteTypes {
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/login/makeCharacter'
+    | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -220,7 +232,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
-    | '/mypet/diary'
   id:
     | '__root__'
     | '/'
@@ -228,7 +239,9 @@ export interface FileRouteTypes {
     | '/landing/cafe'
     | '/login/checkPermission'
     | '/login/makeCharacter'
+    | '/mypet/diary'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -240,7 +253,6 @@ export interface FileRouteTypes {
     | '/profile/'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
-    | '/mypet/diary/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,7 +261,9 @@ export interface RootRouteChildren {
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
+  MypetDiaryRoute: typeof MypetDiaryRouteWithChildren
   MypetQuestRoute: typeof MypetQuestRoute
+  MypetReviewRoute: typeof MypetReviewRoute
   MypetWalkRoute: typeof MypetWalkRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
   ProfilePointRoute: typeof ProfilePointRoute
@@ -259,9 +273,7 @@ export interface RootRouteChildren {
   LoginIndexRoute: typeof LoginIndexRoute
   MypetIndexRoute: typeof MypetIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
-  MypetDiaryIdRoute: typeof MypetDiaryIdRoute
   PlacePlaceIdReviewRoute: typeof PlacePlaceIdReviewRoute
-  MypetDiaryIndexRoute: typeof MypetDiaryIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -343,11 +355,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetWalkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mypet/review': {
+      id: '/mypet/review'
+      path: '/mypet/review'
+      fullPath: '/mypet/review'
+      preLoaderRoute: typeof MypetReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mypet/quest': {
       id: '/mypet/quest'
       path: '/mypet/quest'
       fullPath: '/mypet/quest'
       preLoaderRoute: typeof MypetQuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mypet/diary': {
+      id: '/mypet/diary'
+      path: '/mypet/diary'
+      fullPath: '/mypet/diary'
+      preLoaderRoute: typeof MypetDiaryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/makeCharacter': {
@@ -371,13 +397,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingCafeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/mypet/diary/': {
-      id: '/mypet/diary/'
-      path: '/mypet/diary'
-      fullPath: '/mypet/diary'
-      preLoaderRoute: typeof MypetDiaryIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/place/$placeId/review': {
       id: '/place/$placeId/review'
       path: '/place/$placeId/review'
@@ -387,13 +406,25 @@ declare module '@tanstack/react-router' {
     }
     '/mypet/diary/$id': {
       id: '/mypet/diary/$id'
-      path: '/mypet/diary/$id'
+      path: '/$id'
       fullPath: '/mypet/diary/$id'
       preLoaderRoute: typeof MypetDiaryIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MypetDiaryRoute
     }
   }
 }
+
+interface MypetDiaryRouteChildren {
+  MypetDiaryIdRoute: typeof MypetDiaryIdRoute
+}
+
+const MypetDiaryRouteChildren: MypetDiaryRouteChildren = {
+  MypetDiaryIdRoute: MypetDiaryIdRoute,
+}
+
+const MypetDiaryRouteWithChildren = MypetDiaryRoute._addFileChildren(
+  MypetDiaryRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -401,7 +432,9 @@ const rootRouteChildren: RootRouteChildren = {
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
+  MypetDiaryRoute: MypetDiaryRouteWithChildren,
   MypetQuestRoute: MypetQuestRoute,
+  MypetReviewRoute: MypetReviewRoute,
   MypetWalkRoute: MypetWalkRoute,
   ProfileCouponRoute: ProfileCouponRoute,
   ProfilePointRoute: ProfilePointRoute,
@@ -411,9 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginIndexRoute: LoginIndexRoute,
   MypetIndexRoute: MypetIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
-  MypetDiaryIdRoute: MypetDiaryIdRoute,
   PlacePlaceIdReviewRoute: PlacePlaceIdReviewRoute,
-  MypetDiaryIndexRoute: MypetDiaryIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

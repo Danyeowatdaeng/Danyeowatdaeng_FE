@@ -20,6 +20,7 @@ import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
 import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
 import { Route as MypetWalkRouteImport } from './routes/mypet/walk'
+import { Route as MypetReviewRouteImport } from './routes/mypet/review'
 import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
@@ -83,6 +84,11 @@ const MypetWalkRoute = MypetWalkRouteImport.update({
   path: '/mypet/walk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MypetReviewRoute = MypetReviewRouteImport.update({
+  id: '/mypet/review',
+  path: '/mypet/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MypetQuestRoute = MypetQuestRouteImport.update({
   id: '/mypet/quest',
   path: '/mypet/quest',
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/quest': typeof MypetQuestRoute
+  '/mypet/review': typeof MypetReviewRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/quest'
+    | '/mypet/review'
     | '/mypet/walk'
     | '/profile/coupon'
     | '/profile/point'
@@ -250,6 +262,7 @@ export interface RootRouteChildren {
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
   MypetQuestRoute: typeof MypetQuestRoute
+  MypetReviewRoute: typeof MypetReviewRoute
   MypetWalkRoute: typeof MypetWalkRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
   ProfilePointRoute: typeof ProfilePointRoute
@@ -343,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetWalkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mypet/review': {
+      id: '/mypet/review'
+      path: '/mypet/review'
+      fullPath: '/mypet/review'
+      preLoaderRoute: typeof MypetReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mypet/quest': {
       id: '/mypet/quest'
       path: '/mypet/quest'
@@ -402,6 +422,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
   MypetQuestRoute: MypetQuestRoute,
+  MypetReviewRoute: MypetReviewRoute,
   MypetWalkRoute: MypetWalkRoute,
   ProfileCouponRoute: ProfileCouponRoute,
   ProfilePointRoute: ProfilePointRoute,
