@@ -87,20 +87,15 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
             />
           ))}
       </Map>
-      {placeInfo && (
-        <BottomSheet
-          open={isBottomSheetOpen}
-          onOpenChange={setIsBottomSheetOpen}
-        >
-          <PlacePreview
-            position={selectedPlace}
-            placeInfo={placeInfo}
-            onReviewClick={() => {
-              // TODO: 리뷰 페이지로 이동하는 로직 추가
-            }}
-          />
-        </BottomSheet>
-      )}
+      <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen}>
+        <PlacePreview
+          position={selectedPlace}
+          placeInfo={placeInfo}
+          onReviewClick={() => {
+            // TODO: 리뷰 페이지로 이동하는 로직 추가
+          }}
+        />
+      </BottomSheet>
     </div>
   );
 }

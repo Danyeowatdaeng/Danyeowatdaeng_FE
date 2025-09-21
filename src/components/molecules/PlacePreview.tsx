@@ -4,6 +4,7 @@ import { MapPinCheckInside } from "lucide-react";
 import CartButton from "./CartButton";
 import FlagIcon from "../atoms/Icon/FlagIcon";
 import StarIcon from "../atoms/Icon/StarIcon";
+import { Loader } from "@googlemaps/js-api-loader";
 
 interface KakaoPlace {
   place_name: string;
@@ -31,6 +32,70 @@ export default function PlacePreview({
 }: PlacePreviewProps) {
   const [kakaoPlaceInfo, setKakaoPlaceInfo] = useState<KakaoPlace | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [urls, setUrls] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>("");
+  const maxWidth = 400;
+
+  useEffect(() => {
+    const run = async () => {
+      const loader = new Loader({
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY as string,
+        libraries: ["places"],
+      });
+      const google = await loader.load();
+
+      const service = new google.maps.places.PlacesService(
+        document.createElement("div")
+      );
+      const nearbyReq = {
+        keyword: placeInfo?.name,
+        location: new google.maps.LatLng(
+          placeInfo?.latitude as number,
+          placeInfo?.longitude as number
+        ),
+        radius: 10,
+      };
+      service.nearbySearch(nearbyReq, (results, status) => {
+        if (
+          status !== google.maps.places.PlacesServiceStatus.OK ||
+          !results?.length
+        ) {
+          setUrls([]);
+          return;
+        }
+        const placeId = results[0].place_id;
+        if (!placeId) {
+          setUrls([]);
+          return;
+        }
+        const detailReq = { placeId, fields: ["photos", "reviews"] };
+        service.getDetails(detailReq, (place, dStatus) => {
+          if (
+            dStatus === google.maps.places.PlacesServiceStatus.OK &&
+            place?.photos?.length
+          ) {
+            const photoUrls = place.photos.map((photo) =>
+              photo.getUrl({
+                maxWidth,
+                maxHeight: Math.round(maxWidth * 0.75),
+              })
+            );
+            setUrls(photoUrls);
+            // 리뷰 설명 저장
+            if (place.reviews && place.reviews.length > 0) {
+              setDescription(place.reviews[0].text);
+            } else {
+              setDescription("");
+            }
+          } else {
+            setUrls([]);
+            setDescription("");
+          }
+        });
+      });
+    };
+    run();
+  }, [placeInfo?.latitude, placeInfo?.longitude, placeInfo?.name]);
 
   useEffect(() => {
     const searchPlace = async () => {
@@ -39,7 +104,7 @@ export default function PlacePreview({
       setIsLoading(true);
 
       try {
-        if (!placeInfo?.title) {
+        if (!placeInfo?.name) {
           setKakaoPlaceInfo(null);
           return;
         }
@@ -47,7 +112,7 @@ export default function PlacePreview({
         const places = new window.kakao.maps.services.Places();
         const result = await new Promise<KakaoPlace[]>((resolve) => {
           places.keywordSearch(
-            placeInfo.title,
+            placeInfo.name,
             (data, status) => {
               if (status === window.kakao.maps.services.Status.OK) {
                 resolve(data);
@@ -60,15 +125,15 @@ export default function PlacePreview({
                 position.lat,
                 position.lng
               ),
-              radius: 1000, // 1km 반경 내에서 검색
+              radius: 10,
               sort: window.kakao.maps.services.SortBy.DISTANCE,
             }
           );
         });
 
         if (result.length > 0) {
-          console.log("검색된 장소:", result[0]);
           setKakaoPlaceInfo(result[0]);
+          console.log("카카오 장소 정보:", result[0]);
         } else {
           setKakaoPlaceInfo(null);
         }
@@ -81,7 +146,7 @@ export default function PlacePreview({
     };
 
     searchPlace();
-  }, [position, placeInfo?.title]);
+  }, [position, placeInfo?.name]);
 
   if (isLoading) {
     return (
@@ -100,25 +165,30 @@ export default function PlacePreview({
       {placeInfo ? (
         <>
           <div>
-            <div className="w-full overflow-x-scroll flex">
-              <img
-                src={placeInfo.imageUrl1}
-                alt={placeInfo.title}
-                onClick={() => {
-                  window.open(kakaoPlaceInfo?.place_url, "_blank");
-                }}
-                className="w-full h-[160px] object-cover mr-2 rounded-lg"
-              />
+            <div className="w-full overflow-x-auto flex gap-2">
+              {urls.map((imgUrl) => (
+                <img
+                  key={imgUrl}
+                  src={imgUrl}
+                  alt={placeInfo.name}
+                  onClick={() => {
+                    window.open(placeInfo?.homepage, "_blank");
+                  }}
+                  className="h-[160px] object-cover rounded-lg"
+                  style={{ minWidth: "100%", maxWidth: "100%" }}
+                />
+              ))}
             </div>
             <div className="flex mt-4 mb-2 items-center">
               <div className="w-fit text-xl font-bold text-[16px]">
-                {placeInfo.title}
+                {placeInfo.name}
               </div>
-              {kakaoPlaceInfo && (
-                <span className=" text-[#797979] text-[12px] ml-2">
-                  {kakaoPlaceInfo.category_name}
-                </span>
-              )}
+              <span className=" text-[#797979] text-[12px] ml-2">
+                {placeInfo.category3}
+              </span>
+            </div>
+            <div className="text-[#797979] text-[12px] mb-1">
+              {placeInfo.openingHours}
             </div>
             {/* 별점 area */}
             <div className="flex mb-2 items-center">
@@ -155,10 +225,8 @@ export default function PlacePreview({
                   장소 정보
                 </div>
                 <div>
-                  {placeInfo.description && (
-                    <p className="text-sm text-gray-600">
-                      {placeInfo.description}
-                    </p>
+                  {description && (
+                    <p className="text-sm text-gray-600">{description}</p>
                   )}
                 </div>
               </div>

@@ -5,14 +5,13 @@ import { useWebControlStore } from "../store/webControlStore";
 
 // 탭바를 숨길 경로 목록
 const HIDDEN_TAB_ROUTES = [
-  "/login", 
+  "/login",
   "/login/checkPermission",
-  "/landing/cafe",
   "/mypet/diary",
   "/mypet/quest",
   "/profile/coupon",
   "/profile/stamp",
-  ];
+];
 
 export const Route = createRootRoute({
   component: RootComponent,
