@@ -21,8 +21,8 @@ export default function TextAreaBox({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         maxLength={maxLength}
-        className="w-full min-h-[140px] rounded-2xl bg-[#F3F3F3] px-5 py-4
-                   text-[14px] placeholder:text-[#858585] outline-none"
+        className="w-full h-[100px] rounded-2xl bg-[#F3F3F3] px-5 py-4
+                   text-[16px] placeholder:text-[#858585] outline-none"
       />
     </div>
   );
