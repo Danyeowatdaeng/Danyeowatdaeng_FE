@@ -12,7 +12,7 @@ interface UserInfo {
 const useUserInfoStore = create<UserInfo>((set) => ({
   isLogin: false,
   setIsLogin: (value) => set({ isLogin: value }),
-  petAvatarId: 0,
+  petAvatarId: 1,
   setPetAvatarId: (id: number) => set({ petAvatarId: id }),
   petImage: null,
   setPetImage: (image: null | File) => set({ petImage: image }),
