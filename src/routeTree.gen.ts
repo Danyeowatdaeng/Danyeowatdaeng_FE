@@ -23,6 +23,7 @@ import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as MypetDiaryRouteImport } from './routes/mypet/diary'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
+import { Route as LoginCheckCharacterRouteImport } from './routes/login/checkCharacter'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 
@@ -96,6 +97,11 @@ const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
   path: '/login/checkPermission',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginCheckCharacterRoute = LoginCheckCharacterRouteImport.update({
+  id: '/login/checkCharacter',
+  path: '/login/checkCharacter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LandingCafeRoute = LandingCafeRouteImport.update({
   id: '/landing/cafe',
   path: '/landing/cafe',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
+  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
+  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/landing/cafe': typeof LandingCafeRoute
+  '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
   '/mypet/diary': typeof MypetDiaryRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
+    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/diary'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
+    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/diary'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/landing/cafe'
+    | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
     | '/mypet/diary'
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   LandingCafeRoute: typeof LandingCafeRoute
+  LoginCheckCharacterRoute: typeof LoginCheckCharacterRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
   MypetDiaryRoute: typeof MypetDiaryRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCheckPermissionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/checkCharacter': {
+      id: '/login/checkCharacter'
+      path: '/login/checkCharacter'
+      fullPath: '/login/checkCharacter'
+      preLoaderRoute: typeof LoginCheckCharacterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/landing/cafe': {
       id: '/landing/cafe'
       path: '/landing/cafe'
@@ -359,6 +379,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   LandingCafeRoute: LandingCafeRoute,
+  LoginCheckCharacterRoute: LoginCheckCharacterRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
   MypetDiaryRoute: MypetDiaryRoute,

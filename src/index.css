@@ -19,7 +19,7 @@ body {
 
 @media (min-width: 600px) {
   #app-container {
-    width: 340px;
+    width: 360px;
     height: 730px;
     border-radius: 15px;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.2);

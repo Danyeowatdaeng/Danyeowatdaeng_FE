@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import MakeCharacterPage from "../../pages/login/MakeCharacterPage";
 
 export const Route = createFileRoute("/login/makeCharacter")({
-  component: RouteComponent,
+  component: MakeCharacterPage,
 });
-
-function RouteComponent() {
-  return <div>Hello "/login/makeCharacter"!</div>;
-}

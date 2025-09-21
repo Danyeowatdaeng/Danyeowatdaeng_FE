@@ -20,10 +20,13 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-
-export const post = async (url: string, data: unknown) => {
+export const post = async (
+  url: string,
+  data: unknown,
+  headers?: Record<string, string>
+) => {
   try {
-    const res = await api.post(url, data);
+    const res = await api.post(url, data, { headers });
     return res.data;
   } catch (error) {
     console.error("API 요청 오류:", error);
@@ -39,13 +42,12 @@ export const get = async (url: string, params?: unknown) => {
     console.error("API 요청 오류:", error);
     throw error;
   }
-
-  
 };
 
-export const put = async (url: string, data?: unknown, config?: any) => {
+// put 함수 시그니처를 post와 동일하게 url, data만 받도록 수정
+export const put = async (url: string, data: unknown) => {
   try {
-    const res = await api.put(url, data, config);
+    const res = await api.put(url, data);
     return res.data;
   } catch (error) {
     console.error("API 요청 오류:", error);
