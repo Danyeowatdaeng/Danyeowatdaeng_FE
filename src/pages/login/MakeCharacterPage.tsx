@@ -118,13 +118,12 @@ export default function MakeCharacterPage() {
         )}
         <PrimaryButton
           onClick={async () => {
-            // const res = await post("/members/pet-avatar", {
-            //   petAvatarId: petAvatarId,
-            // });
-            // if (res.status === 200) {
-
-            navigate({ to: "/login/checkCharacter" });
-            // }
+            const res = await post("/members/pet-avatar", {
+              petAvatarId: petAvatarId,
+            });
+            if (res.status === 200) {
+              navigate({ to: "/login/checkCharacter" });
+            }
           }}
         >
           선택
