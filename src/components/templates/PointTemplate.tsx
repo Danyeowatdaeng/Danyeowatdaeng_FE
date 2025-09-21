@@ -8,7 +8,7 @@ import type { Coupon } from "../organisms/profile/CouponList";
 
 type Props = {
   onBack?: () => void;
-  points: number;
+  point: number;
   coupons: Coupon[];
   onDownloadAll?: () => void;
   onCouponClick?: (id: Coupon["id"]) => void;
@@ -17,7 +17,7 @@ type Props = {
 
 export default function PointTemplate({
   onBack,
-  points,
+  point,
   coupons,
   onDownloadAll,
   onCouponClick,
@@ -62,7 +62,7 @@ export default function PointTemplate({
           <div className="text-[12px] opacity-90">보유 포인트</div>
           <div className="mt-2 flex items-baseline gap-2">
             <div className="text-[30px] leading-none font-extrabold">
-              {fmt.format(points)}
+              {fmt.format(point)}
             </div>
             <div className="text-[16px]">P</div>
           </div>

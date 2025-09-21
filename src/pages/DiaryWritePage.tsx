@@ -1,15 +1,18 @@
+// src/pages/MyPetDiaryWritePage.tsx
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "@tanstack/react-router";
 import DiaryWriteTemplate from "../components/templates/DiaryWriteTemplate";
+import ConfirmModal from "../components/molecules/ConfirmModal";
 import type { DiaryCreateResponse } from "../api/diary";
 
+// 파일 → Data URL(Base64) 인코딩
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve((reader.result as string) || "");
     reader.onerror = reject;
-    reader.readAsDataURL(file); // data:[mime];base64,XXXX...
+    reader.readAsDataURL(file);
   });
 }
 
@@ -17,9 +20,14 @@ export default function MyPetDiaryWritePage() {
   const router = useRouter();
 
   const [text, setText] = useState("");
-  const [images, setImages] = useState<string[]>([]); // 미리보기용 URL
-  const [firstFile, setFirstFile] = useState<File | undefined>(undefined); // 서버 전송용 원본 파일(대표 1장)
+  const [images, setImages] = useState<string[]>([]);
+  const [firstFile, setFirstFile] = useState<File | undefined>(undefined);
+  const [submitting, setSubmitting] = useState(false);
 
+  // ✅ 저장 성공 시 표시할 모달
+  const [open, setOpen] = useState(false);
+
+  // 숨김 파일 입력
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const pendingIndexRef = useRef<number>(-1);
 
@@ -44,11 +52,10 @@ export default function MyPetDiaryWritePage() {
       return next;
     });
 
-    // 대표 이미지는 첫 번째 것만 서버로 전송한다고 가정
+    // 대표 이미지는 0번으로 간주
     if (!firstFile || pendingIndexRef.current === 0) {
       setFirstFile(file);
     }
-
     e.currentTarget.value = "";
   };
 
@@ -57,13 +64,10 @@ export default function MyPetDiaryWritePage() {
       const target = prev[idx];
       if (target?.startsWith("blob:")) URL.revokeObjectURL(target);
       const next = prev.filter((_, i) => i !== idx);
-      // 대표(0번)를 지웠다면 firstFile도 비움
       if (idx === 0) setFirstFile(undefined);
       return next;
     });
   };
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!text.trim()) {
@@ -73,14 +77,12 @@ export default function MyPetDiaryWritePage() {
 
     const derivedTitle = text.split("\n")[0].trim().slice(0, 60) || "무제";
 
-    // ✅ Base64(Data URL) 변환
-    let imageUrl: string | undefined = undefined;
+    // 대표 이미지 Base64/Data URL
+    let imageUrl: string | undefined;
     if (firstFile) {
       try {
         const dataUrl = await fileToDataUrl(firstFile);
-        // 서버가 '순수 Base64'만 원한다면 아래 주석 해제:
-        // imageUrl = dataUrl.split(",")[1];
-        imageUrl = dataUrl; // Data URL 전체를 받는다면 이대로
+        imageUrl = dataUrl; // 필요 시 dataUrl.split(",")[1] 만 보내도록 변경
       } catch {
         console.warn("이미지 인코딩 실패 — 이미지 없이 전송합니다.");
       }
@@ -88,13 +90,10 @@ export default function MyPetDiaryWritePage() {
 
     try {
       setSubmitting(true);
+
       const res = await axios.post<DiaryCreateResponse>(
         "https://danyeowatdaeng.p-e.kr/api/mypet/diaries",
-        {
-          title: derivedTitle,
-          content: text,
-          imageUrl, // Base64 or Data URL
-        },
+        { title: derivedTitle, content: text, imageUrl },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
@@ -102,7 +101,8 @@ export default function MyPetDiaryWritePage() {
       );
 
       if (res.data?.isSuccess) {
-        router.navigate({ to: "/mypet" });
+        // ✅ 바로 이동하지 말고 모달 먼저 열기
+        setOpen(true);
       } else {
         alert("저장에 실패했습니다. 쿠키/크로스사이트 추적 설정을 확인해주세요.");
       }
@@ -126,12 +126,27 @@ export default function MyPetDiaryWritePage() {
         onSubmit={submitting ? undefined : handleSubmit}
       />
 
+      {/* 숨김 파일 입력 */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
         className="hidden"
         onChange={handleChangeFile}
+      />
+
+      {/* ✅ 저장 성공 모달 */}
+      <ConfirmModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onConfirm={() => {
+          setOpen(false);
+          // 일일퀘스트로 이동 + 다이어리 완료 표시
+          router.history.back();
+        }}
+        title="다이어리 퀘스트 완료!"
+        iconSrc="/Assets/icons/PawIconActive.svg"
+        confirmLabel="확인"
       />
     </>
   );

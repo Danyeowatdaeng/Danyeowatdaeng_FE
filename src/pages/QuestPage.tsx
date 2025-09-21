@@ -39,7 +39,7 @@ export default function QuestPage() {
 
   return (
     <DailyQuestTemplate
-      onBack={() => router.history.back()}
+      onBack={() => router.navigate({ to: "/mypet"})}
       done={done}
       total={total}
       onWalk={goToWalk}
