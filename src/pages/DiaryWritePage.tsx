@@ -1,100 +1,73 @@
-// src/pages/DiaryWritePage.tsx
-import { useRef, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
+// src/pages/MyPetDiaryWritePage.tsx
+import { useState } from "react";
 import axios from "axios";
-import DiaryWriteTemplate from "../components/templates/DiaryWriteTemplate";
+import { useRouter } from "@tanstack/react-router";
+import type { DiaryCreateResponse } from "../api/diary";
 
-export default function DiaryWritePage() {
+export default function MyPetDiaryWritePage() {
   const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const [text, setText] = useState("");
-  const [images, setImages] = useState<string[]>([]); // preview 전용
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const pendingIndexRef = useRef<number>(-1);
-
-  const handlePickAt = (idx: number) => {
-    pendingIndexRef.current = idx;
-    fileInputRef.current?.click();
-  };
-
-  const handleChangeFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const url = URL.createObjectURL(file);
-    setImages((prev) => {
-      const next = [...prev];
-      const i = pendingIndexRef.current;
-      if (i >= 0 && i < prev.length) next[i] = url;
-      else next.push(url);
-      return next;
-    });
-
-    e.currentTarget.value = "";
-  };
-
-  const handleRemoveAt = (idx: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== idx));
-  };
-
-  const handleSubmit = async () => {
-    const trimmed = text.trim();
-    if (!trimmed) {
-      alert("내용을 입력해주세요.");
-      return;
-    }
-
-    const title = trimmed.split("\n")[0].slice(0, 50);
-
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const res = await axios.post(
+      setSubmitting(true);
+      const res = await axios.post<DiaryCreateResponse>(
         "https://danyeowatdaeng.p-e.kr/api/mypet/diaries",
-        {
-          title,
-          content: trimmed,
-          // imageUrl: "https://업로드된이미지.url" (업로드 기능 붙이면 여기에 넣음)
-        },
+        { title, content, imageUrl },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
 
-      if (res.status === 200 || res.status === 201) {
-        router.navigate({ to: "/mypet/quest", search: { completed: "diary" }, replace: true });
+      if (res.data?.isSuccess) {
+        // 성공 후 목록으로
+        router.navigate({ to: "/mypet" });
       } else {
-        alert("다이어리 작성에 실패했어요.");
+        alert("저장에 실패했습니다. 쿠키/크로스사이트 추적 설정도 확인해주세요.");
       }
-    } catch (e: any) {
-      if (e?.response?.status === 401) {
-        alert("로그인이 필요합니다.");
-        router.navigate({ to: "/login" });
-        return;
-      }
-      console.error("다이어리 작성 실패:", e?.response ?? e);
-      alert(e?.response?.data?.message ?? "오류가 발생했어요.");
+    } catch (err) {
+      console.error("다이어리 작성 실패:", err);
+      alert("저장 중 오류가 발생했습니다.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <>
-      <DiaryWriteTemplate
-        onBack={() => router.history.back()}
-        text={text}
-        onTextChange={setText}
-        images={images}
-        onPickImageAt={handlePickAt}
-        onRemoveImageAt={handleRemoveAt}
-        onSubmit={handleSubmit}
+    <form onSubmit={handleSubmit} className="p-4 flex flex-col gap-3">
+      <input
+        className="border p-2 rounded"
+        placeholder="제목"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <textarea
+        className="border p-2 rounded"
+        placeholder="내용"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        rows={4}
+        required
       />
       <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleChangeFile}
+        className="border p-2 rounded"
+        placeholder="이미지 URL"
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
       />
-    </>
+      <button
+        type="submit"
+        disabled={submitting}
+        className="bg-black text-white rounded px-4 py-2"
+      >
+        {submitting ? "작성 중..." : "작성하기"}
+      </button>
+    </form>
   );
 }
