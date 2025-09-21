@@ -1,9 +1,11 @@
+import { useNavigate } from "@tanstack/react-router";
 import { post } from "../../api";
 import BackHeader from "../../components/molecules/BackHeader";
 import PrimaryButton from "../../components/molecules/PrimaryButton";
 import useUserInfoStore from "../../store/userInfoStore";
 
 export default function CheckCharacterPage() {
+  const navigate = useNavigate();
   const { petAvatarId, petImage, setIsLogin } = useUserInfoStore();
 
   return (
@@ -29,9 +31,13 @@ export default function CheckCharacterPage() {
             petImage: petImage,
           });
 
+          if (res.status !== 200) {
+            alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          }
+
           if (res.status === 200) {
             setIsLogin(true);
-            window.location.href = "/";
+            navigate({ to: "/" });
           }
         }}
       >
