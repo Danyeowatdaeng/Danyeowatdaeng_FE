@@ -1,42 +1,41 @@
-import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearch } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import DailyQuestTemplate from "../components/templates/DailyQuestTemplate";
+import { usePointStore } from "../store/pointStore"; // 👈 추가
 
 type CompletedKey = "walk" | "diary" | "review";
 
 export default function QuestPage() {
   const router = useRouter();
-  // /quest?completed=walk 또는 diary 로 돌아옴
   const search = useSearch({ strict: false }) as { completed?: CompletedKey };
 
-  // 각 퀘스트 완료 플래그 (중복 방지)
-  const [walkDone, setWalkDone]   = useState(false);
+  const addPoint = usePointStore((s) => s.add); // 👈 +20 할 때 사용
+
+  const [walkDone, setWalkDone] = useState(false);
   const [diaryDone, setDiaryDone] = useState(false);
   const [reviewDone, setReviewDone] = useState(false);
 
-  // 돌아올 때 completed 파라미터로 상태 반영
   useEffect(() => {
-    if (search?.completed === "walk")  setWalkDone(true);
+    if (search?.completed === "walk") {
+      setWalkDone(true);
+      addPoint(20); // 👈 여기서 20 포인트 적립
+    }
     if (search?.completed === "diary") setDiaryDone(true);
     if (search?.completed === "review") setReviewDone(true);
 
-    // URL 깔끔히: 파라미터 제거 (replace)
-    if (search?.completed) {
-      router.navigate({ to: "/mypet/quest", replace: true });
-    }
-  }, [search?.completed, router]);
+    // 파라미터 제거(중복 적립 방지)
+    if (search?.completed) router.navigate({ to: "/mypet/quest", replace: true });
+  }, [search?.completed, router, addPoint]);
 
-  // 진행률 계산
   const total = 3;
   const done = useMemo(
     () => Number(walkDone) + Number(diaryDone) + Number(reviewDone),
     [walkDone, diaryDone, reviewDone]
   );
 
-  // 이동 핸들러
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
-  const goToWalk       = () => router.navigate({ to: "/mypet/walk" });
-  const goToReview     = () => router.navigate({ to: "/mypet" });
+  const goToWalk = () => router.navigate({ to: "/mypet/walk" });
+  const goToReview = () => router.navigate({ to: "/mypet" });
 
   return (
     <DailyQuestTemplate

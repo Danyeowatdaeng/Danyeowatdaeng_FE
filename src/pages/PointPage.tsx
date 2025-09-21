@@ -1,25 +1,26 @@
 import { useRouter } from "@tanstack/react-router";
-import PointTemplate from "../components/templates/PointTemplate";
-import type { Coupon } from "../components/organisms/profile/CouponList";
+import ProfileTemplate from "../components/templates/ProfileTemplate";
+import { usePointStore } from "../store/pointStore"; // 👈 추가
 
-export default function PointsPage() {
+export default function ProfilePage() {
   const router = useRouter();
+  const point = usePointStore((s) => s.point); // 👈 전역 포인트 값
 
-  // 더미 데이터
-  const coupons: Coupon[] = [
-    { id: 1, title: "음료 무료쿠폰", highlight: "FREE", expires: "~2025.09.30" },
-    { id: 2, title: "반려견 미용 할인쿠폰", highlight: "10%", expires: "~2025.09.30" },
-    { id: 3, title: "음료 무료 쿠폰", highlight: "20%", expires: "~2025.09.30", disabled: true },
-  ];
+  const goToCoupon = () => router.navigate({ to: "/profile/coupon" });
+  const goToStamp  = () => router.navigate({ to: "/profile/stamp" });
+  const goToPoint  = () => router.navigate({ to: "/profile/point" });
 
   return (
-    <PointTemplate
-      onBack={() => router.history.back()}
-      points={12345}
-      coupons={coupons}
-      onDownloadAll={() => alert("모두 다운로드!")}
-      onCouponClick={(id) => console.log("쿠폰 클릭:", id)}
-      onCouponDownload={(id) => console.log("쿠폰 다운로드:", id)}
+    <ProfileTemplate
+      name="USER01"
+      subtitle="지역, 반려동물 정보 등"
+      onInfo={() => console.log("프로필 가이드 클릭")}
+      onEditAvatar={() => console.log("아바타 수정")}
+      onClickCoupon={goToCoupon}
+      point={point}     // 👈 전역 상태에서 읽은 값 전달
+      stamp={4}
+      onClickStamp={goToStamp}
+      onClickPoint={goToPoint}
     />
   );
 }
