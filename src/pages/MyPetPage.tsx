@@ -11,6 +11,15 @@ export default function MyPetPage() {
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
   const goToDailyQuest = () => router.navigate({ to: "/mypet/quest" });
 
+  // ✅ 상세 이동 (id 전달)
+  const goToDiaryDetail = (id: string | number) => {
+    // 방법 1) 문자열 경로로 바로 이동
+    router.navigate({ to: `/mypet/diary/${id}` });
+
+    // 만약 파일 라우팅에 "/mypet/diary/$id" 로 route id를 쓰는 프로젝트라면:
+    // router.navigate({ to: "/mypet/diary/$id", params: { id: String(id) } });
+  };
+
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -58,7 +67,7 @@ export default function MyPetPage() {
       onQuestClick={goToDailyQuest}
       diaries={diaries}
       onWriteDiary={goToDiaryWrite}
-      onDiaryClick={(id) => console.log("다이어리 클릭:", id)}
+      onDiaryClick={goToDiaryDetail}   // ✅ 여기만 바꿔주면 카드 클릭 → 상세 이동
     />
   );
 }

@@ -26,6 +26,7 @@ import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeChara
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
+import { Route as MypetDiaryIdRouteImport } from './routes/mypet/diary/$id'
 
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
@@ -112,6 +113,11 @@ const PlacePlaceIdReviewRoute = PlacePlaceIdReviewRouteImport.update({
   path: '/place/$placeId/review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MypetDiaryIdRoute = MypetDiaryIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => MypetDiaryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -119,7 +125,7 @@ export interface FileRoutesByFullPath {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
-  '/mypet/diary': typeof MypetDiaryRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRoutesByTo {
@@ -138,7 +145,7 @@ export interface FileRoutesByTo {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
-  '/mypet/diary': typeof MypetDiaryRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRoutesById {
@@ -158,7 +166,7 @@ export interface FileRoutesById {
   '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
-  '/mypet/diary': typeof MypetDiaryRoute
+  '/mypet/diary': typeof MypetDiaryRouteWithChildren
   '/mypet/quest': typeof MypetQuestRoute
   '/mypet/walk': typeof MypetWalkRoute
   '/profile/coupon': typeof ProfileCouponRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/mypet/': typeof MypetIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
 }
 export interface FileRouteTypes {
@@ -190,6 +199,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mypet'
     | '/profile'
+    | '/mypet/diary/$id'
     | '/place/$placeId/review'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mypet'
     | '/profile'
+    | '/mypet/diary/$id'
     | '/place/$placeId/review'
   id:
     | '__root__'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/login/'
     | '/mypet/'
     | '/profile/'
+    | '/mypet/diary/$id'
     | '/place/$placeId/review'
   fileRoutesById: FileRoutesById
 }
@@ -237,7 +249,7 @@ export interface RootRouteChildren {
   LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
-  MypetDiaryRoute: typeof MypetDiaryRoute
+  MypetDiaryRoute: typeof MypetDiaryRouteWithChildren
   MypetQuestRoute: typeof MypetQuestRoute
   MypetWalkRoute: typeof MypetWalkRoute
   ProfileCouponRoute: typeof ProfileCouponRoute
@@ -372,8 +384,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlacePlaceIdReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mypet/diary/$id': {
+      id: '/mypet/diary/$id'
+      path: '/$id'
+      fullPath: '/mypet/diary/$id'
+      preLoaderRoute: typeof MypetDiaryIdRouteImport
+      parentRoute: typeof MypetDiaryRoute
+    }
   }
 }
+
+interface MypetDiaryRouteChildren {
+  MypetDiaryIdRoute: typeof MypetDiaryIdRoute
+}
+
+const MypetDiaryRouteChildren: MypetDiaryRouteChildren = {
+  MypetDiaryIdRoute: MypetDiaryIdRoute,
+}
+
+const MypetDiaryRouteWithChildren = MypetDiaryRoute._addFileChildren(
+  MypetDiaryRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -381,7 +412,7 @@ const rootRouteChildren: RootRouteChildren = {
   LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
-  MypetDiaryRoute: MypetDiaryRoute,
+  MypetDiaryRoute: MypetDiaryRouteWithChildren,
   MypetQuestRoute: MypetQuestRoute,
   MypetWalkRoute: MypetWalkRoute,
   ProfileCouponRoute: ProfileCouponRoute,

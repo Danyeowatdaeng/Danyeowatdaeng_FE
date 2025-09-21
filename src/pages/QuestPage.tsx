@@ -36,7 +36,7 @@ export default function QuestPage() {
   // 이동 핸들러
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
   const goToWalk       = () => router.navigate({ to: "/mypet/walk" });
-  const goToReview     = () => console.log("리뷰 이동");
+  const goToReview     = () => router.navigate({ to: "/mypet" });
 
   return (
     <DailyQuestTemplate
