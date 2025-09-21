@@ -18,62 +18,38 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const isWide = useWebControlStore((state) => state.isWide);
 
   const hasConversationBegun = messages.length > 0;
 
-  // 인증 상태 확인
+  // 대화 기록 불러오기 - 인증 체크 제거
   useEffect(() => {
-    const checkAuth = () => {
-      // 쿠키에서 access_token 확인
-      const cookies = document.cookie.split(';');
-      const hasToken = cookies.some(cookie => 
-        cookie.trim().startsWith('access_token=')
-      );
-      setIsAuthenticated(hasToken);
+    const loadChatHistory = async () => {
+      try {
+        setIsLoadingHistory(true);
+        const response = await getChatHistory();
+        
+        if (response.isSuccess && response.data?.messages) {
+          const historyMessages: Message[] = response.data.messages.map((msg) => ({
+            id: msg.messageId.toString(),
+            role: msg.role === "USER" ? "user" : "bot",
+            text: msg.content,
+            timestamp: msg.createdAt,
+          }));
+          setMessages(historyMessages);
+        }
+      } catch (error) {
+        console.error("대화 기록 로딩 실패:", error);
+        // 에러가 발생해도 빈 상태로 시작
+        setMessages([]);
+      } finally {
+        setIsLoadingHistory(false);
+      }
     };
 
-    checkAuth();
+    loadChatHistory();
   }, []);
-
-  // 대화 기록 불러오기
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      setIsLoadingHistory(false);
-      return;
-    }
-
-    if (isAuthenticated === true) {
-      const loadChatHistory = async () => {
-        try {
-          setIsLoadingHistory(true);
-          const response = await getChatHistory();
-          
-          if (response.isSuccess && response.data?.messages) {
-            const historyMessages: Message[] = response.data.messages.map((msg) => ({
-              id: msg.messageId.toString(),
-              role: msg.role === "USER" ? "user" : "bot",
-              text: msg.content,
-              timestamp: msg.createdAt,
-            }));
-            setMessages(historyMessages);
-          }
-        } catch (error) {
-          console.error("대화 기록 로딩 실패:", error);
-          // 401 에러인 경우 인증 상태를 false로 변경
-          if ((error as any)?.response?.status === 401) {
-            setIsAuthenticated(false);
-          }
-        } finally {
-          setIsLoadingHistory(false);
-        }
-      };
-
-      loadChatHistory();
-    }
-  }, [isAuthenticated]);
 
   // 새 메시지가 추가되면 하단으로 스크롤
   useEffect(() => {
@@ -89,7 +65,7 @@ export default function ChatPage() {
 
   const handleSend = async () => {
     const trimmed = input.trim();
-    if (!trimmed || isLoading || !isAuthenticated) return;
+    if (!trimmed || isLoading) return;
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
@@ -119,14 +95,14 @@ export default function ChatPage() {
     } catch (error) {
       console.error("메시지 전송 실패:", error);
       
-      // 401 에러인 경우 인증 상태 업데이트
+      // 401 에러인 경우 로그인 페이지로 이동
       if ((error as any)?.response?.status === 401) {
-        setIsAuthenticated(false);
-        setMessages((prev) => [...prev.slice(0, -1)]); // 사용자 메시지 제거
+        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+        router.navigate({ to: "/login" });
         return;
       }
       
-      // 에러 메시지를 봇 응답으로 표시
+      // 기타 에러는 사용자 메시지 유지하고 에러 메시지 표시
       const errorMessage: Message = {
         id: crypto.randomUUID(),
         role: "bot",
@@ -148,6 +124,14 @@ export default function ChatPage() {
       setMessages([]);
     } catch (error) {
       console.error("대화 기록 삭제 실패:", error);
+      
+      // 401 에러인 경우 로그인 페이지로 이동
+      if ((error as any)?.response?.status === 401) {
+        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+        router.navigate({ to: "/login" });
+        return;
+      }
+      
       alert("대화 기록 삭제에 실패했습니다.");
     }
   };
@@ -160,27 +144,6 @@ export default function ChatPage() {
     return (
       <div className="mx-auto max-w-[560px] min-h-dvh bg-[#F7F8FA] flex items-center justify-center">
         <div className="text-gray-400">대화 기록을 불러오는 중...</div>
-      </div>
-    );
-  }
-
-  // 인증되지 않은 경우 로그인 안내
-  if (isAuthenticated === false) {
-    return (
-      <div className="mx-auto max-w-[560px] min-h-dvh bg-[#F7F8FA] flex flex-col items-center justify-center p-6">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-full bg-gray-300 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">로그인이 필요합니다</h2>
-          <p className="text-gray-500 mb-6">
-            AI 챗봇 서비스를 이용하려면 로그인이 필요합니다.
-          </p>
-          <button
-            onClick={() => router.navigate({ to: "/login" })}
-            className="bg-[#00A3A5] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#008A8C] transition-colors"
-          >
-            로그인하기
-          </button>
-        </div>
       </div>
     );
   }
@@ -296,10 +259,10 @@ export default function ChatPage() {
           <button
             className={cn(
               "ml-2 w-10 h-10 grid place-items-center transition-opacity",
-              { "opacity-50 cursor-not-allowed": isLoading || !input.trim() || !isAuthenticated }
+              { "opacity-50 cursor-not-allowed": isLoading || !input.trim() }
             )}
             onClick={handleSend}
-            disabled={isLoading || !input.trim() || !isAuthenticated}
+            disabled={isLoading || !input.trim()}
             aria-label="전송"
             type="button"
           >
