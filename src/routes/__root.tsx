@@ -11,6 +11,7 @@ const HIDDEN_TAB_ROUTES = [
   "/mypet/quest",
   "/profile/coupon",
   "/profile/stamp",
+  "/profile/point",
 ];
 
 export const Route = createRootRoute({

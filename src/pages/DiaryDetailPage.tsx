@@ -201,7 +201,7 @@ export default function DiaryDetailPage() {
         onChange={handleChangeFile}
       />
 
-      {/* ✅ 삭제 확인 모달 */}
+      {/* 삭제 확인 모달 */}
       <ConfirmModal
         open={isConfirmOpen}
         onClose={() => setConfirmOpen(false)}

@@ -1,9 +1,11 @@
 import { useRouter } from "@tanstack/react-router";
 import PointTemplate from "../components/templates/PointTemplate";
 import type { Coupon } from "../components/organisms/profile/CouponList";
+import { usePointStore } from "../store/pointStore"; // 👈 추가
 
 export default function PointsPage() {
   const router = useRouter();
+  const point = usePointStore((s) => s.point); // 👈 전역 포인트 값
 
   // 더미 데이터
   const coupons: Coupon[] = [
@@ -15,7 +17,7 @@ export default function PointsPage() {
   return (
     <PointTemplate
       onBack={() => router.history.back()}
-      points={12345}
+      point={point}
       coupons={coupons}
       onDownloadAll={() => alert("모두 다운로드!")}
       onCouponClick={(id) => console.log("쿠폰 클릭:", id)}
