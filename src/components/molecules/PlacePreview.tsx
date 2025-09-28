@@ -231,13 +231,39 @@ export default function PlacePreview({
                 </div>
               </div>
             )}
-            <button
-              onClick={onReviewClick}
-              className="flex-1 bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors"
-            >
-              리뷰 작성하기
-            </button>
+            
+            
+
           </div>
+
+          {/* 리뷰 섹션 */}
+          <section className="pt-3 border-t border-[#EAEAEA]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[#444444]">
+                
+                <span className="font-medium">
+                  리뷰
+                </span>
+              </div>
+
+              {/* 오른쪽 링크 버튼 */}
+              <button
+                onClick={onReviewClick}
+                className="text-[13px] text-[#6B7280] hover:text-[#111] transition"
+              >
+                리뷰 남기기 &gt;
+              </button>
+            </div>
+
+            {/* (선택) 미리보기 리뷰가 있다면 여기에 노출 */}
+            {/* <ul className="mt-3 space-y-2">
+              <li className="text-sm text-gray-700">
+                반려견 간식도 서비스로 주셔서 만족했어요
+              </li>
+            </ul> */}
+          </section>
+          
+
         </>
       ) : (
         <div className="text-center text-gray-600">
