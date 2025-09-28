@@ -71,7 +71,7 @@ export default function QuestPage() {
 
   const goToDiaryWrite = () => router.navigate({ to: "/mypet/diary" });
   const goToWalk = () => router.navigate({ to: "/mypet/walk" });
-  const goToReview = () => router.navigate({ to: "/mypet" }); // TODO: 리뷰 페이지 연결
+  const goToReview = () => router.navigate({ to: "/place" }); // TODO: 리뷰 페이지 연결
 
   return (
     <DailyQuestTemplate
