@@ -142,7 +142,7 @@ export default function MyPetDiaryWritePage() {
         onConfirm={() => {
           setOpen(false);
           // 일일퀘스트로 이동 + 다이어리 완료 표시
-          router.history.back();
+          router.navigate({ to: "/mypet/quest", search: { completed: "diary" } });
         }}
         title="다이어리 퀘스트 완료!"
         iconSrc="/Assets/icons/PawIconActive.svg"
