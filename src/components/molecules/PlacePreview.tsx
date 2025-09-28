@@ -1,7 +1,7 @@
 // src/components/molecules/PlacePreview.tsx
 import { useEffect, useState } from "react";
 import type { SearchResult } from "../../store/searchResultStore";
-import { MapPinCheckInside, MessageSquare } from "lucide-react";
+import { MapPinCheckInside, MessageSquare, Bell } from "lucide-react";
 import CartButton from "./CartButton";
 import FlagIcon from "../atoms/Icon/FlagIcon";
 import StarIcon from "../atoms/Icon/StarIcon";
@@ -92,7 +92,7 @@ export default function PlacePreview({
 
         const detailReq: google.maps.places.PlaceDetailsRequest = {
           placeId,
-          // ✅ readonly 배열 타입 에러 방지 캐스팅
+          // readonly 배열 타입 캐스팅
           fields: ["photos", "reviews"] as unknown as Array<
             keyof google.maps.places.PlaceResult
           >,
@@ -172,7 +172,6 @@ export default function PlacePreview({
         const size = 3;
         const res = await fetchReviewsByContentId({ contentId: cid, page, size });
 
-        // ✅ Page<Review> 형태라 res.content에서 바로 꺼냄
         const items: ReviewLite[] = (res?.content ?? []).map((r: any) => ({
           id: r.id,
           rating: r.rating,
@@ -193,6 +192,16 @@ export default function PlacePreview({
 
     load();
   }, [placeInfo]);
+
+  // ✅ 예약 버튼 클릭 핸들러
+  const reserveUrl = kakaoPlaceInfo?.place_url || placeInfo?.homepage || "";
+  const onReserve = () => {
+    if (reserveUrl) {
+      window.open(reserveUrl, "_blank");
+    } else {
+      alert("예약 페이지가 아직 준비되지 않았어요.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -265,8 +274,25 @@ export default function PlacePreview({
               </div>
             )}
 
-            {/* 구분선 + 기능 버튼 */}
-            <div className="transition-colors pt-3 pb-5 duration-300 border-b border-[#D9D9D9] w-full flex justify-end">
+            {/* ✅ 구분선 + 예약/찜 버튼 */}
+            <div className="transition-colors pt-3 pb-5 duration-300 border-b border-[#D9D9D9] w-full flex items-center justify-between">
+              {/* 예약하기 */}
+              <button
+                type="button"
+                onClick={onReserve}
+                className={[
+                  "h-10 px-4 rounded-full border border-[#D9D9D9] bg-white",
+                  "text-[#111] text-[14px] font-medium shadow-sm",
+                  "flex items-center gap-2 active:scale-[.99]",
+                ].join(" ")}
+              >
+                <span className="grid place-items-center w-6 h-6 rounded-full bg-[#F3F4F6]">
+                  <Bell className="w-3.5 h-3.5 text-[#6B7280]" />
+                </span>
+                예약하기
+              </button>
+
+              {/* 찜하기 (기존) */}
               <CartButton />
             </div>
           </div>
@@ -304,7 +330,6 @@ export default function PlacePreview({
               </button>
             </div>
 
-            {/* 미리보기 목록 */}
             <div className="mt-3">
               {reviewLoading && (
                 <div className="text-sm text-gray-500">리뷰 불러오는 중…</div>
