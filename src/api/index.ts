@@ -11,12 +11,12 @@ const api = axios.create({
 
 // 쿠키에서 토큰을 가져오는 함수
 function getTokenFromCookie(): string | null {
-  if (typeof document === 'undefined') return null;
-  
-  const cookies = document.cookie.split(';');
-  for (let cookie of cookies) {
-    const [name, value] = cookie.trim().split('=');
-    if (name === 'access_token') {
+  if (typeof document === "undefined") return null;
+
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "access_token") {
       return decodeURIComponent(value);
     }
   }

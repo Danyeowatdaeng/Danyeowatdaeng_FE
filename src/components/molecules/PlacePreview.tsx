@@ -135,6 +135,7 @@ export default function PlacePreview({
           setKakaoPlaceInfo(result[0]);
           console.log("카카오 장소 정보:", result[0]);
         } else {
+          console.log("카카오 장소 정보 없음");
           setKakaoPlaceInfo(null);
         }
       } catch (error) {

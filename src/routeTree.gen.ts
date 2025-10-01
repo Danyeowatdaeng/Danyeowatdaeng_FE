@@ -24,10 +24,10 @@ import { Route as MypetQuestRouteImport } from './routes/mypet/quest'
 import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeCharacter'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LoginCheckCharacterRouteImport } from './routes/login/checkCharacter'
-import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 import { Route as MypetDiaryIndexRouteImport } from './routes/mypet/diary/index'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 import { Route as MypetDiaryIdRouteImport } from './routes/mypet/diary/$id'
+import { Route as LandingCategoryCategoryRouteImport } from './routes/landing/category/$category'
 
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
@@ -104,11 +104,6 @@ const LoginCheckCharacterRoute = LoginCheckCharacterRouteImport.update({
   path: '/login/checkCharacter',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingCafeRoute = LandingCafeRouteImport.update({
-  id: '/landing/cafe',
-  path: '/landing/cafe',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MypetDiaryIndexRoute = MypetDiaryIndexRouteImport.update({
   id: '/mypet/diary/',
   path: '/mypet/diary/',
@@ -124,11 +119,15 @@ const MypetDiaryIdRoute = MypetDiaryIdRouteImport.update({
   path: '/mypet/diary/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingCategoryCategoryRoute = LandingCategoryCategoryRouteImport.update({
+  id: '/landing/category/$category',
+  path: '/landing/category/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
-  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
@@ -142,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
   '/mypet/diary': typeof MypetDiaryIndexRoute
@@ -149,7 +149,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
-  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
@@ -163,6 +162,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
   '/mypet/diary': typeof MypetDiaryIndexRoute
@@ -171,7 +171,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
-  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkCharacter': typeof LoginCheckCharacterRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/login/makeCharacter': typeof LoginMakeCharacterRoute
@@ -185,6 +184,7 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/mypet/': typeof MypetIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
   '/mypet/diary/': typeof MypetDiaryIndexRoute
@@ -194,7 +194,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/chat'
-    | '/landing/cafe'
     | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
@@ -208,6 +207,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mypet'
     | '/profile'
+    | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
     | '/mypet/diary'
@@ -215,7 +215,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/chat'
-    | '/landing/cafe'
     | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
@@ -229,6 +228,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mypet'
     | '/profile'
+    | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
     | '/mypet/diary'
@@ -236,7 +236,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/chat'
-    | '/landing/cafe'
     | '/login/checkCharacter'
     | '/login/checkPermission'
     | '/login/makeCharacter'
@@ -250,6 +249,7 @@ export interface FileRouteTypes {
     | '/login/'
     | '/mypet/'
     | '/profile/'
+    | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
     | '/mypet/diary/'
@@ -258,7 +258,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
-  LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckCharacterRoute: typeof LoginCheckCharacterRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LoginMakeCharacterRoute: typeof LoginMakeCharacterRoute
@@ -272,6 +271,7 @@ export interface RootRouteChildren {
   LoginIndexRoute: typeof LoginIndexRoute
   MypetIndexRoute: typeof MypetIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
+  LandingCategoryCategoryRoute: typeof LandingCategoryCategoryRoute
   MypetDiaryIdRoute: typeof MypetDiaryIdRoute
   PlacePlaceIdReviewRoute: typeof PlacePlaceIdReviewRoute
   MypetDiaryIndexRoute: typeof MypetDiaryIndexRoute
@@ -384,13 +384,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCheckCharacterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/landing/cafe': {
-      id: '/landing/cafe'
-      path: '/landing/cafe'
-      fullPath: '/landing/cafe'
-      preLoaderRoute: typeof LandingCafeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/mypet/diary/': {
       id: '/mypet/diary/'
       path: '/mypet/diary'
@@ -412,13 +405,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetDiaryIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/category/$category': {
+      id: '/landing/category/$category'
+      path: '/landing/category/$category'
+      fullPath: '/landing/category/$category'
+      preLoaderRoute: typeof LandingCategoryCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
-  LandingCafeRoute: LandingCafeRoute,
   LoginCheckCharacterRoute: LoginCheckCharacterRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LoginMakeCharacterRoute: LoginMakeCharacterRoute,
@@ -432,6 +431,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginIndexRoute: LoginIndexRoute,
   MypetIndexRoute: MypetIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
+  LandingCategoryCategoryRoute: LandingCategoryCategoryRoute,
   MypetDiaryIdRoute: MypetDiaryIdRoute,
   PlacePlaceIdReviewRoute: PlacePlaceIdReviewRoute,
   MypetDiaryIndexRoute: MypetDiaryIndexRoute,

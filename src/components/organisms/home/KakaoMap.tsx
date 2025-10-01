@@ -45,6 +45,9 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
 
   // 컴포넌트 마운트 시 현재 위치 가져오기
   useEffect(() => {
+    console.log("KakaoMap 컴포넌트 마운트됨");
+    console.log("navigator.geolocation 사용 가능:", !!navigator.geolocation);
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -52,11 +55,15 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
           });
+
+          console.log("현재 위치:", pos.coords.latitude, pos.coords.longitude);
         },
         (error) => {
           console.error("현재 위치를 가져올 수 없습니다:", error);
         }
       );
+    } else {
+      console.error("navigator.geolocation을 사용할 수 없습니다.");
     }
   }, []);
 

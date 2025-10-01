@@ -2,7 +2,6 @@ import BackHeader from "../molecules/BackHeader";
 import { ChevronRight } from "lucide-react";
 import DistanceButton, { type Distance } from "../molecules/DistanceButton";
 import CafeGrid from "../molecules/CafeGrid";
-import type { CafeCardData } from "../molecules/CafeCard";
 import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
 
@@ -14,14 +13,12 @@ type CafeListTemplateProps = {
   // 거리 선택
   distanceLabel?: Distance;
   onDistanceClick?: (d: Distance) => void;
-
-  // 카페 리스트
-  cafes: CafeCardData[];
+  cafes: [];
   onCafeClick?: (id: string | number) => void;
 };
 
 export default function CafeListTemplate({
-  title = "애견동반카페",
+  title = "카페",
   onBack,
   distanceLabel = "500m",
   onDistanceClick,

@@ -1,94 +1,38 @@
 import { useState } from "react";
 import CafeListTemplate from "../components/templates/CafeListTemplate";
-import type { CafeCardData } from "../components/molecules/CafeCard";
 import { useRouter } from "@tanstack/react-router";
+import { Route } from "../routes/landing/category/$category";
 
 export default function CafeListPage() {
   const router = useRouter();
-  const [distance, setDistance] = useState<"500m" | "1km" | "2km" | "4km">("500m");
+  const [distance, setDistance] = useState<"500m" | "1km" | "2km" | "4km">(
+    "500m"
+  );
 
-  const cafes: CafeCardData[] = [
-    {
-      id: 1,
-      title: "달빛 애견카페",
-      star: "⭐⭐⭐⭐",
-      image: "/Assets/images/cafe1.jpg",
-      rating: 4.0,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 2,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },    
-    {
-      id: 3,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 4,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 5,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 6,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 7,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-    {
-      id: 8,
-      title: "멍멍멍멍",
-      star: "⭐⭐⭐⭐⭐",
-      image: "/Assets/images/cafe2.jpg",
-      rating: 4.4,
-      reviewCount: 25,
-      address: "서울 마포구 월드펫로 25",
-    },
-  ];
+  const { category } = Route.useParams();
+  console.log("선택된 카테고리:", category);
+
+  // 카테고리에 따른 제목 매핑
+  const categoryTitleMap: Record<string, string> = {
+    tourist: "관광지",
+    accommodation: "숙박",
+    experience: "체험/레저",
+    restaurant: "음식점",
+    cafe: "카페",
+    shopping: "쇼핑",
+    culture: "문화시설",
+    festival: "공연/축제",
+  };
+
+  const title = categoryTitleMap[category] || "관광지";
 
   return (
     <CafeListTemplate
-      title="애견동반카페"
-      onBack={() => router.history.back()}     // 혹은 router.navigate({ to: "/landing" })
+      title={title}
+      onBack={() => router.history.back()}
       distanceLabel={distance}
       onDistanceClick={setDistance}
-      cafes={cafes}
+      cafes={[]}
       onCafeClick={(id) => console.log("카페 클릭:", id)}
     />
   );
