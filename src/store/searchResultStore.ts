@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export interface SearchResult {
   id: number;
+  contentId?: number;
   name: "string";
   category3: "string";
   roadAddress: "string";

@@ -104,19 +104,11 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
           onReviewClick={() => {
             if (!placeInfo) return;
 
-            // SearchResult 안의 식별자 키에 맞게 수정하세요 (예: id, kakaoId 등)
-            const placeId =
-              (placeInfo as any).id ??
-              (placeInfo as any).kakaoId ??
-              String(Math.round(selectedPlace.lat * 1e6)); // 임시 fallback
-
             router.navigate({
               to: "/place/$placeId/review",
-              params: { placeId: String(placeId) },
-              search: { name: placeInfo.name }, // 상단 타이틀에 표시용
+              params: { placeId: String(placeInfo.id) },
+              search: { name: placeInfo.name },
             });
-
-            
           }}
         />
       </BottomSheet>

@@ -6,7 +6,7 @@ import CartButton from "./CartButton";
 import FlagIcon from "../atoms/Icon/FlagIcon";
 import StarIcon from "../atoms/Icon/StarIcon";
 import { Loader } from "@googlemaps/js-api-loader";
-import { fetchReviewsByContentId } from "../../api/review";
+import { fetchReviewsByContentId, type Review } from "../../api/review";
 
 interface KakaoPlace {
   place_name: string;
@@ -167,7 +167,7 @@ export default function PlacePreview({
 
   /** 리뷰 미리보기: contentId 기준 최신 목록 */
   useEffect(() => {
-    const cid = (placeInfo as any)?.contentId as number | undefined;
+    const cid = placeInfo?.contentId;
     if (!cid) {
       setReviews([]);
       setReviewError(null);
@@ -187,7 +187,7 @@ export default function PlacePreview({
           size,
         });
 
-        const items: ReviewLite[] = (res?.content ?? []).map((r: any) => ({
+        const items: ReviewLite[] = (res?.content ?? []).map((r: Review) => ({
           id: r.id,
           rating: r.rating,
           content: r.content,
@@ -196,7 +196,7 @@ export default function PlacePreview({
         }));
 
         setReviews(items);
-      } catch (e: any) {
+      } catch (e) {
         console.error("리뷰 목록 조회 실패:", e);
         setReviewError("리뷰를 불러오지 못했어요.");
         setReviews([]);
@@ -272,7 +272,7 @@ export default function PlacePreview({
               <StarIcon width={13} height={13} />
               <StarIcon width={13} height={13} />
               <StarIcon width={13} height={13} />
-              <div className="text-[#797979] ml-1">(0)</div>
+              <div className="text-[#797979] ml-1 text-[13px]">(0)</div>
             </div>
 
             {/* 주소/거리 */}
