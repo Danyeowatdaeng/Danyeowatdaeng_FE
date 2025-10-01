@@ -4,6 +4,7 @@ import BottomSheet from "../../atoms/BottomSheet";
 import PlacePreview from "../../molecules/PlacePreview";
 import { useSearchResultStore } from "../../../store/searchResultStore";
 import type { SearchResult } from "../../../store/searchResultStore";
+import { useRouter } from "@tanstack/react-router";
 
 type KakaoMapProps = {
   expanded: boolean;
@@ -12,6 +13,8 @@ type KakaoMapProps = {
 export default function KakaoMap({ expanded }: KakaoMapProps) {
   // 지도의 크기가 변경될 때 지도를 다시 렌더링하기 위한 상태
   const { searchResults } = useSearchResultStore();
+
+  const router = useRouter();
 
   // 검색 결과의 위치 정보만 추출
   type Location = { lat: number; lng: number };
@@ -99,7 +102,21 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
           position={selectedPlace}
           placeInfo={placeInfo}
           onReviewClick={() => {
-            // TODO: 리뷰 페이지로 이동하는 로직 추가
+            if (!placeInfo) return;
+
+            // SearchResult 안의 식별자 키에 맞게 수정하세요 (예: id, kakaoId 등)
+            const placeId =
+              (placeInfo as any).id ??
+              (placeInfo as any).kakaoId ??
+              String(Math.round(selectedPlace.lat * 1e6)); // 임시 fallback
+
+            router.navigate({
+              to: "/place/$placeId/review",
+              params: { placeId: String(placeId) },
+              search: { name: placeInfo.name }, // 상단 타이틀에 표시용
+            });
+
+            
           }}
         />
       </BottomSheet>

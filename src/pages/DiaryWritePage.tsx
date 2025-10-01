@@ -24,7 +24,7 @@ export default function MyPetDiaryWritePage() {
   const [firstFile, setFirstFile] = useState<File | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
 
-  // ✅ 저장 성공 시 표시할 모달
+  // 저장 성공 시 표시할 모달
   const [open, setOpen] = useState(false);
 
   // 숨김 파일 입력
@@ -101,7 +101,7 @@ export default function MyPetDiaryWritePage() {
       );
 
       if (res.data?.isSuccess) {
-        // ✅ 바로 이동하지 말고 모달 먼저 열기
+        // 바로 이동하지 말고 모달 먼저 열기
         setOpen(true);
       } else {
         alert("저장에 실패했습니다. 쿠키/크로스사이트 추적 설정을 확인해주세요.");
@@ -135,14 +135,14 @@ export default function MyPetDiaryWritePage() {
         onChange={handleChangeFile}
       />
 
-      {/* ✅ 저장 성공 모달 */}
+      {/* 저장 성공 모달 */}
       <ConfirmModal
         open={open}
         onClose={() => setOpen(false)}
         onConfirm={() => {
           setOpen(false);
           // 일일퀘스트로 이동 + 다이어리 완료 표시
-          router.history.back();
+          router.navigate({ to: "/mypet/quest", search: { completed: "diary" } });
         }}
         title="다이어리 퀘스트 완료!"
         iconSrc="/Assets/icons/PawIconActive.svg"

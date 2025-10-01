@@ -4,6 +4,7 @@ type Props = {
   images: string[];
   onPickAt: (idx: number) => void;
   onRemoveAt: (idx: number) => void;
+  size?: "large" | "small"; // 사이즈 옵션
   className?: string;
 };
 
@@ -11,17 +12,25 @@ export default function PhotoSection({
   images,
   onPickAt,
   onRemoveAt,
+  size = "large", // 기본값은 큰 박스
   className = "",
 }: Props) {
+  // 사이즈별 스타일 지정
+  const boxClass =
+    size === "large"
+      ? "w-full h-[270px] rounded-2xl"
+      : "w-[120px] h-[120px] rounded-xl";
+
   return (
     <section className={className}>
-      {/* 한 개의 큰 박스 (정사각형 느낌) */}
-      <div className="w-full h-[270px] rounded-2xl bg-[#D9D9D9] overflow-hidden">
+      <div
+        className={`${boxClass} bg-[#D9D9D9] overflow-hidden flex items-center justify-center`}
+      >
         <UploadFile
-          imageSrc={images[0]}          // 이미지가 없으면 플러스 버튼만 보임
+          imageSrc={images[0]} // 이미지 없으면 플러스 버튼만
           onRemove={() => onRemoveAt(0)}
           onPick={() => onPickAt(0)}
-          className="w-full h-full"      // 내부 업로드 컴포넌트를 꽉 채우기
+          className="w-full h-full"
         />
       </div>
     </section>

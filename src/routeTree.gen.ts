@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as PlaceIndexRouteImport } from './routes/place/index'
 import { Route as MypetIndexRouteImport } from './routes/mypet/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
@@ -42,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaceIndexRoute = PlaceIndexRouteImport.update({
+  id: '/place/',
+  path: '/place/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MypetIndexRoute = MypetIndexRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
+  '/place': typeof PlaceIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
   '/mypet': typeof MypetIndexRoute
+  '/place': typeof PlaceIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/landing/': typeof LandingIndexRoute
   '/login/': typeof LoginIndexRoute
   '/mypet/': typeof MypetIndexRoute
+  '/place/': typeof PlaceIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/mypet'
+    | '/place'
     | '/profile'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/landing'
     | '/login'
     | '/mypet'
+    | '/place'
     | '/profile'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/landing/'
     | '/login/'
     | '/mypet/'
+    | '/place/'
     | '/profile/'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   LandingIndexRoute: typeof LandingIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   MypetIndexRoute: typeof MypetIndexRoute
+  PlaceIndexRoute: typeof PlaceIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   LandingCategoryCategoryRoute: typeof LandingCategoryCategoryRoute
   MypetDiaryIdRoute: typeof MypetDiaryIdRoute
@@ -298,6 +311,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/place/': {
+      id: '/place/'
+      path: '/place'
+      fullPath: '/place'
+      preLoaderRoute: typeof PlaceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mypet/': {
@@ -430,6 +450,7 @@ const rootRouteChildren: RootRouteChildren = {
   LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   MypetIndexRoute: MypetIndexRoute,
+  PlaceIndexRoute: PlaceIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   LandingCategoryCategoryRoute: LandingCategoryCategoryRoute,
   MypetDiaryIdRoute: MypetDiaryIdRoute,
