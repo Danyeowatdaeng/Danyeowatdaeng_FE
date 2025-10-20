@@ -7,23 +7,26 @@ import {
 } from "../utils/categoryMapping";
 import type { CafeCardData } from "../components/molecules/CafeCard";
 
-// API 응답 타입 정의
+// API 응답 타입 정의 (실제 API 응답 구조에 맞게 수정)
 export interface MapSearchResponse {
-  items: Array<{
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: Array<{
+    id: number;
     title: string;
-    addr1: string;
-    addr2?: string;
-    firstimage?: string;
-    contentid: string;
-    contenttypeid: string;
-    mapx: string;
-    mapy: string;
-    tel?: string;
-    overview?: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+    category: number;
+    imageUrl1?: string;
+    imageUrl2?: string;
+    description?: string;
+    distance?: number;
+    homepageUrl?: string;
+    phoneNumber?: string;
   }>;
-  totalCount: number;
-  pageNo: number;
-  numOfRows: number;
+  success: boolean;
 }
 
 // 훅의 파라미터 타입
@@ -60,29 +63,32 @@ export function useMapSearch({
     lng: number;
   }> => {
     return new Promise((resolve, reject) => {
+      console.log("getCurrentPosition 함수 시작");
+
       if (!navigator.geolocation) {
+        console.log("Geolocation이 지원되지 않음");
         reject(new Error("Geolocation is not supported"));
         return;
       }
 
+      console.log("Geolocation 요청 시작");
+      // 8초 타임아웃(fallback)
+      const hardTimeout = setTimeout(() => {
+        console.warn("Geolocation timeout → using default coord");
+        resolve({ lat: 37.5665, lng: 126.978 }); // fallback(서울)
+      }, 8000);
+
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
+        (pos) => {
+          clearTimeout(hardTimeout);
+          resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         },
-        (error) => {
-          // 기본값으로 서울 중심 좌표 사용
-          console.warn(
-            "위치 정보를 가져올 수 없습니다. 기본 위치를 사용합니다.",
-            error
-          );
-          resolve({
-            lat: 37.5665, // 서울시청
-            lng: 126.978,
-          });
-        }
+        (err) => {
+          clearTimeout(hardTimeout);
+          console.warn("Geolocation error:", err);
+          resolve({ lat: 37.5665, lng: 126.978 }); // fallback
+        },
+        { enableHighAccuracy: true, timeout: 80000 }
       );
     });
   }, []);
@@ -100,12 +106,17 @@ export function useMapSearch({
     setLoading(true);
     setError(null);
 
+    console.log("setLoading, setError 완료");
+
     try {
       // 현재 위치 가져오기
+      console.log("위치 정보 가져오기 시작");
       const position =
         centerLat && centerLng
           ? { lat: centerLat, lng: centerLng }
           : await getCurrentPosition();
+
+      console.log("위치 정보:", position);
 
       // 거리를 기반으로 bounds 계산 (간단한 원형 영역)
       const distanceInMeters = DISTANCE_MAPPING[distance] || 1000;
@@ -141,17 +152,15 @@ export function useMapSearch({
 
         console.log("API 응답:", response);
 
-        // 데이터 변환
-        const transformedData: CafeCardData[] = response.items.map((item) => ({
-          id: item.contentid,
+        // 데이터 변환 (실제 API 응답 구조에 맞게 수정)
+        const transformedData: CafeCardData[] = response.data.map((item) => ({
+          id: item.id.toString(),
           title: item.title,
           star: "4.5", // API에서 별점 정보가 없으므로 기본값
-          image:
-            item.firstimage ||
-            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik01MCAzMEMzNS42NDE0IDMwIDI0IDQxLjY0MTQgMjQgNTZDMjQgNzAuMzU4NiAzNS42NDE0IDgyIDUwIDgyQzY0LjM1ODYgODIgNzYgNzAuMzU4NiA3NiA1NkM3NiA0MS42NDE0IDY0LjM1ODYgMzAgNTAgMzBaIiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik01MCA0MEM0Mi4yNjg0IDQwIDM2IDQ2LjI2ODQgMzYgNTRDMzYgNjEuNzMxNiA0Mi4yNjg0IDY4IDUwIDY4QzU3LjczMTYgNjggNjQgNjEuNzMxNiA2NCA1NEM2NCA0Ni4yNjg0IDU3LjczMTYgNDAgNTAgNDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+          image: item.imageUrl1 || "",
           rating: 4.5,
           reviewCount: Math.floor(Math.random() * 100) + 1, // 임시 리뷰 수
-          address: `${item.addr1} ${item.addr2 || ""}`.trim(),
+          address: item.address,
         }));
 
         setData(transformedData);
@@ -164,8 +173,7 @@ export function useMapSearch({
             id: "1",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 1`,
             star: "4.5",
-            image:
-              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik01MCAzMEMzNS42NDE0IDMwIDI0IDQxLjY0MTQgMjQgNTZDMjQgNzAuMzU4NiAzNS42NDE0IDgyIDUwIDgyQzY0LjM1ODYgODIgNzYgNzAuMzU4NiA3NiA1NkM3NiA0MS42NDE0IDY0LjM1ODYgMzAgNTAgMzBaIiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik01MCA0MEM0Mi4yNjg0IDQwIDM2IDQ2LjI2ODQgMzYgNTRDMzYgNjEuNzMxNiA0Mi4yNjg0IDY4IDUwIDY4QzU3LjczMTYgNjggNjQgNjEuNzMxNiA2NCA1NEM2NCA0Ni4yNjg0IDU3LjczMTYgNDAgNTAgNDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+            image: "",
             rating: 4.5,
             reviewCount: 23,
             address: "서울시 강남구 테헤란로 123",
@@ -174,8 +182,7 @@ export function useMapSearch({
             id: "2",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 2`,
             star: "4.2",
-            image:
-              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik01MCAzMEMzNS42NDE0IDMwIDI0IDQxLjY0MTQgMjQgNTZDMjQgNzAuMzU4NiAzNS42NDE0IDgyIDUwIDgyQzY0LjM1ODYgODIgNzYgNzAuMzU4NiA3NiA1NkM3NiA0MS42NDE0IDY0LjM1ODYgMzAgNTAgMzBaIiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik01MCA0MEM0Mi4yNjg0IDQwIDM2IDQ2LjI2ODQgMzYgNTRDMzYgNjEuNzMxNiA0Mi4yNjg0IDY4IDUwIDY4QzU3LjczMTYgNjggNjQgNjEuNzMxNiA2NCA1NEM2NCA0Ni4yNjg0IDU3LjczMTYgNDAgNTAgNDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+            image: "",
             rating: 4.2,
             reviewCount: 15,
             address: "서울시 서초구 서초대로 456",
@@ -184,8 +191,7 @@ export function useMapSearch({
             id: "3",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 3`,
             star: "4.8",
-            image:
-              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik01MCAzMEMzNS42NDE0IDMwIDI0IDQxLjY0MTQgMjQgNTZDMjQgNzAuMzU4NiAzNS42NDE0IDgyIDUwIDgyQzY0LjM1ODYgODIgNzYgNzAuMzU4NiA3NiA1NkM3NiA0MS42NDE0IDY0LjM1ODYgMzAgNTAgMzBaIiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik01MCA0MEM0Mi4yNjg0IDQwIDM2IDQ2LjI2ODQgMzYgNTRDMzYgNjEuNzMxNiA0Mi4yNjg0IDY4IDUwIDY4QzU3LjczMTYgNjggNjQgNjEuNzMxNiA2NCA1NEM2NCA0Ni4yNjg0IDU3LjczMTYgNDAgNTAgNDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+            image: "",
             rating: 4.8,
             reviewCount: 42,
             address: "서울시 마포구 홍대입구역 789",

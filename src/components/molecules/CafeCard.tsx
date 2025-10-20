@@ -1,7 +1,6 @@
 import Button from "../atoms/Button";
 import Label from "../atoms/Label";
 
-
 export type CafeCardData = {
   id: string | number;
   title: string;
@@ -28,7 +27,7 @@ export default function CafeCard({ item, onClick }: Props) {
       <img
         src={item.image}
         alt={item.title}
-        className="w-full h-[99px] rounded-2xl object-cover bg-purple-100"
+        className="w-full h-[99px] rounded-2xl object-cover bg-gray-200"
       />
 
       {/* 텍스트 */}
@@ -37,7 +36,6 @@ export default function CafeCard({ item, onClick }: Props) {
           content={item.title}
           className="text-[16px] font-medium text-black leading-[1.2] line-clamp-1"
         />
-
 
         <Label
           content={item.star}
