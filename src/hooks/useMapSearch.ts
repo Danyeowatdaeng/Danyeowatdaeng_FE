@@ -88,7 +88,7 @@ export function useMapSearch({
           console.warn("Geolocation error:", err);
           resolve({ lat: 37.5665, lng: 126.978 }); // fallback
         },
-        { enableHighAccuracy: true, timeout: 80000 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     });
   }, []);
