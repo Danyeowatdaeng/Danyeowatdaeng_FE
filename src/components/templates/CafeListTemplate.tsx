@@ -4,6 +4,7 @@ import DistanceButton, { type Distance } from "../molecules/DistanceButton";
 import CafeGrid from "../molecules/CafeGrid";
 import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
+import type { CafeCardData } from "../molecules/CafeCard";
 
 type CafeListTemplateProps = {
   // 헤더
@@ -13,8 +14,11 @@ type CafeListTemplateProps = {
   // 거리 선택
   distanceLabel?: Distance;
   onDistanceClick?: (d: Distance) => void;
-  cafes: [];
+  cafes: CafeCardData[];
+  loading?: boolean;
+  error?: string | null;
   onCafeClick?: (id: string | number) => void;
+  onRetry?: () => void;
 };
 
 export default function CafeListTemplate({
@@ -23,9 +27,50 @@ export default function CafeListTemplate({
   distanceLabel = "500m",
   onDistanceClick,
   cafes,
+  loading = false,
+  error = null,
   onCafeClick,
+  onRetry,
 }: CafeListTemplateProps) {
   const isWide = useWebControlStore((state) => state.isWide);
+
+  // 로딩 상태 렌더링
+  const renderLoading = () => (
+    <div className="flex-1 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-gray-500">데이터를 불러오는 중...</p>
+      </div>
+    </div>
+  );
+
+  // 에러 상태 렌더링
+  const renderError = () => (
+    <div className="flex-1 flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-red-500 mb-4">{error}</p>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            다시 시도
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
+  // 빈 데이터 상태 렌더링
+  const renderEmpty = () => (
+    <div className="flex-1 flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-gray-500">해당 지역에 {title}이 없습니다.</p>
+        <p className="text-gray-400 text-sm mt-2">다른 거리를 선택해보세요.</p>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <div className="h-dvh flex flex-col pt-[env(safe-area-inset-top)] px-6 pb-[env(safe-area-inset-bottom)]">
@@ -51,7 +96,15 @@ export default function CafeListTemplate({
           className={`flex-1 overflow-y-auto py-4 ${isWide ? "mb-53" : "mb-22"}`}
         >
           <div className="max-w-[560px] mx-auto">
-            <CafeGrid items={cafes} onItemClick={onCafeClick} />
+            {loading ? (
+              renderLoading()
+            ) : error ? (
+              renderError()
+            ) : cafes.length === 0 ? (
+              renderEmpty()
+            ) : (
+              <CafeGrid items={cafes} onItemClick={onCafeClick} />
+            )}
           </div>
         </div>
       </div>
