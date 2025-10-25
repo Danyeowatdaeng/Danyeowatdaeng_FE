@@ -48,7 +48,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       console.warn("인증 실패 - 로그인이 필요합니다.");
       // 필요시 로그인 페이지로 리다이렉트
-      // window.location.href = '/login';
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

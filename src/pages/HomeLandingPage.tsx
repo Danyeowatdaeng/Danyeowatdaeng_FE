@@ -2,9 +2,17 @@ import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
 import type { CategoryItemProps } from "../components/molecules/CategoryItem";
 import type { EventListItemData } from "../components/molecules/EventListItem";
 import { useRouter } from "@tanstack/react-router";
+import { useMapSearch } from "../hooks/useMapSearch";
 
 export default function HomeLandingPage() {
   const router = useRouter();
+
+  // 축제 데이터 가져오기
+  const { data: festivalData } = useMapSearch({
+    category: "festival",
+    distance: "2km",
+    enabled: true,
+  });
 
   // 카테고리
   const categories: CategoryItemProps[] = [
@@ -98,30 +106,28 @@ export default function HomeLandingPage() {
     },
   ];
 
-  // 이벤트 리스트 더미 데이터
-  const events: EventListItemData[] = [
-    {
-      id: 1,
-      title: "해피독 여름 물놀이 축제",
+  // 축제 API 데이터를 EventListItemData 형식으로 변환
+  const events: EventListItemData[] = festivalData
+    .slice(0, 3)
+    .map((festival) => ({
+      id: festival.id,
+      title: festival.title,
       tag: "축제",
-      subtitle: "경기도 가평군 청평면 물빛로 123",
-      thumbnailSrc: "/Assets/images/event1.jpg",
-    },
-    {
-      id: 2,
-      title: "펫스파 힐링데이",
-      tag: "스파",
-      subtitle: "서울 강남구 반려로 45",
-      thumbnailSrc: "/Assets/images/event2.jpg",
-    },
-  ];
+      subtitle: festival.address,
+      thumbnailSrc: festival.image,
+    }));
 
   return (
     <HomeLandingTemplate
       categories={categories}
       eventTitle="7월의 펫 이벤트"
       events={events}
-      onMoreEvents={() => console.log("전체보기 클릭")}
+      onMoreEvents={() => {
+        router.navigate({
+          to: "/landing/category/$category",
+          params: { category: "festival" },
+        });
+      }}
       onEventClick={(id) => console.log("아이템 클릭:", id)}
     />
   );

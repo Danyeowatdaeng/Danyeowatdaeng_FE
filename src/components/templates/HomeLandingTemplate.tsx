@@ -6,6 +6,7 @@ import EventListSection from "../molecules/EventListSection";
 import type { EventListItemData } from "../molecules/EventListItem";
 import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
+import { cn } from "../../utils/style";
 
 type Props = {
   categories: CategoryItemProps[];
@@ -46,14 +47,15 @@ export default function HomeLandingTemplate({
 
       {/* 하단 컨텐츠 */}
       <div
-        className={`relative bg-white 
-                    h-[calc(100vh-300px)] w-fit
-                    transition-all duration-100 ease-in-out
-                    ${
-                      mapExpanded
-                        ? "opacity-0 translate-y-full invisible"
-                        : "opacity-100 translate-y-0 visible"
-                    }`}
+        className={cn(
+          `relative bg-white w-fit transition-all duration-100 ease-in-out
+        ${
+          mapExpanded
+            ? "opacity-0 translate-y-full invisible"
+            : "opacity-100 translate-y-0 visible"
+        }`,
+          window.innerHeight > 600 ? "h-[374px]" : "h-[calc(100vh-300px)]"
+        )}
       >
         <div className="h-full overflow-y-auto">
           <div className="px-4 pt-4">
