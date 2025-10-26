@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "@tanstack/react-router";
 import Title from "../atoms/Title";
 import PrimaryButton from "../molecules/PrimaryButton";
 import TabBar from "../molecules/TabBar";
@@ -30,6 +31,7 @@ export default function CartLayout({
   onRemoveItem,
 }: Props) {
   const isWide = useWebControlStore((state) => state.isWide);
+  const location = useLocation();
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [editBottomSheetOpen, setEditBottomSheetOpen] = useState(false);
   const [groups, setGroups] = useState<WishlistGroup[]>([]);
@@ -50,9 +52,11 @@ export default function CartLayout({
     }
   };
 
+  // 페이지 진입 시 그룹 목록 불러오기
   useEffect(() => {
+    console.log("🔄 CartLayout - 그룹 목록 새로고침");
     fetchGroups();
-  }, []);
+  }, [location.pathname]); // 경로가 변경될 때마다 새로고침
 
   const handleCreateGroup = async (data: {
     name: string;
