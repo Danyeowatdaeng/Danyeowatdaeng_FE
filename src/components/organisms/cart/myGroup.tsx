@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import ShowMoreIcon from "../../atoms/Icon/ShowMoreIcon";
-import CategoryItem from "../../molecules/category/CategoryItem";
+import Icon from "../../atoms/Icon";
 import type { WishlistGroup } from "../../../api";
 
 type MyGroupProps = {
@@ -66,14 +66,9 @@ export default function MyGroup({ group, onClick, onEdit, onDelete }: MyGroupPro
       onClick={handleGroupClick}
     >
       <div className="flex gap-5 items-center">
-        <CategoryItem
-          style="bg-white border-1 border-[#D9D9D9]"
-          iconSrc={group.categoryImageUrl}
-          label=""
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
+        <div className="w-[61px] h-[61px] rounded-xl bg-white border-1 border-[#D9D9D9] flex items-center justify-center flex-shrink-0">
+          <Icon src={group.categoryImageUrl} alt={group.name} width={42} height={42} />
+        </div>
         <div className="gap-y-3 h-full">
           <div className="text-[16px]">{group.name}</div>
           <div className="text-[#858585] text-[14px]">
