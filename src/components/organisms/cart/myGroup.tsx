@@ -66,14 +66,14 @@ export default function MyGroup({ group, onClick, onEdit, onDelete }: MyGroupPro
       onClick={handleGroupClick}
     >
       <div className="flex gap-5 items-center">
-        <CategoryItem
-          style="bg-white border-1 border-[#D9D9D9]"
-          iconSrc={group.categoryImageUrl}
-          label=""
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
+        <div className="pointer-events-none">
+          <CategoryItem
+            style="bg-white border-1 border-[#D9D9D9]"
+            iconSrc={group.categoryImageUrl}
+            label=""
+            onClick={() => {}}
+          />
+        </div>
         <div className="gap-y-3 h-full">
           <div className="text-[16px]">{group.name}</div>
           <div className="text-[#858585] text-[14px]">
