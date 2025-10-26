@@ -9,7 +9,7 @@ import { isPartnerPlace } from "../../../utils/partnerPlaces";
 
 type KakaoMapProps = {
   expanded: boolean;
-  center?: { lat: number; lng: number; originalLat?: number } | null;
+  center?: { lat: number; lng: number } | null;
 };
 
 export default function KakaoMap({ expanded, center }: KakaoMapProps) {
@@ -36,7 +36,10 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
     lat: 33.450701,
     lng: 126.570667,
   });
-  const [selectedPlace, setSelectedPlace] = useState<{ lat: number; lng: number } | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   const [placeInfo, setPlaceInfo] = useState<SearchResult | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -152,18 +155,22 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
         {locations.length > 0 &&
           locations.map((loc, index) => {
             const placeInfo = searchResults[index];
-            const isPartner = placeInfo ? isPartnerPlace(placeInfo.name) : false;
-            
+            const isPartner = placeInfo
+              ? isPartnerPlace(placeInfo.name)
+              : false;
+
             return (
               <MapMarker
                 key={`location-${index}`}
                 position={loc}
                 image={{
-                  src: isPartner ? '/Assets/icons/PawPrint.svg' : '/Assets/icons/Location.svg',
+                  src: isPartner
+                    ? "/Assets/icons/PawPrint.svg"
+                    : "/Assets/icons/Location.svg",
                   size: { width: 40, height: 40 },
                   options: {
-                    offset: { x: 20, y: 20 }
-                  }
+                    offset: { x: 20, y: 20 },
+                  },
                 }}
                 onClick={() => {
                   console.log("마커 클릭됨:", { loc, placeInfo, index });
@@ -175,20 +182,6 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
               />
             );
           })}
-        {/* center에 originalLat가 있으면 원본 위치에 추가 마커 표시 */}
-        {center?.originalLat && (
-          <MapMarker
-            key="original-marker"
-            position={{ lat: center.originalLat, lng: center.lng }}
-            image={{
-              src: '/Assets/icons/Location.svg',
-              size: { width: 40, height: 40 },
-              options: {
-                offset: { x: 20, y: 20 }
-              }
-            }}
-          />
-        )}
       </Map>
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen}>
         {selectedPlace && placeInfo && (

@@ -23,7 +23,6 @@ type MapAreaProps = {
 interface MapCenter {
   lat: number;
   lng: number;
-  originalLat?: number; // 원본 위도
 }
 
 function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
@@ -40,14 +39,11 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
   };
 
   const handleLocationClick = (lat: number, lng: number) => {
-    // 지도를 해당 위치로 이동시키는 로직
-    // 바텀시트에 가리지 않도록 위도를 조금 낮춰서(아래로) 이동
-    const adjustedLat = lat - 0.005;
-    console.log("위치로 이동:", adjustedLat, lng);
+    // 지도를 해당 위치로 이동 - 정중앙으로
+    console.log("위치로 이동 (중앙):", lat, lng);
     setSelectedLocation({
-      lat: adjustedLat,
+      lat,
       lng,
-      originalLat: lat, // 원본 위도 저장
     });
     // 지도가 확장되지 않았다면 확장
     if (!expanded) {
