@@ -183,7 +183,13 @@ export default function ChatPage() {
         )}
       </div>
 
-      <div ref={listRef} className="flex-1 overflow-y-auto px-4 pt-4">
+      <div 
+        ref={listRef} 
+        className={cn("overflow-y-auto px-4 pt-4", {
+          "h-[calc(100vh-200px)]": isWide,
+          "h-[calc(100vh-184px)]": !isWide,
+        })}
+      >
         {!hasConversationBegun ? (
           <div className="mt-10 flex flex-col items-center text-center text-gray-400 pb-[200px]">
             <div className="w-12 h-12 rounded-full bg-gray-300 mb-3" />
