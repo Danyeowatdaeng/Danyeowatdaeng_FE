@@ -16,6 +16,7 @@ export default function ReservationPage() {
         return {
           title: "냐옹냐옹고양이까페",
           subtitle: "고양이 카페",
+          imageSrc: "/Assets/images/nayeong.jpg",
           fields: [
             { label: "방문 날짜", name: "date", options: ["2024.07.15", "2024.07.16", "2024.07.17"] },
             { label: "인원", name: "people", options: ["1명", "2명", "3명", "4명"] },
@@ -26,6 +27,7 @@ export default function ReservationPage() {
         return {
           title: "광주애견호텔유치원",
           subtitle: "펫 호텔",
+          imageSrc: "/Assets/images/hotel.jpg",
           fields: [
             { label: "기간", name: "period", options: ["1박", "2박", "3박"] },
             { label: "객실 수", name: "rooms", options: ["1개", "2개", "3개"] },
@@ -36,6 +38,7 @@ export default function ReservationPage() {
         return {
           title: "24시 애견 미용",
           subtitle: "반려동물 미용",
+          imageSrc: "/Assets/images/24.jpg",
           fields: [
             { label: "예약 날짜", name: "date", options: ["2024.07.15", "2024.07.16", "2024.07.17"] },
             { label: "시간", name: "time", options: ["10:00", "11:00", "14:00", "15:00"] },
@@ -46,6 +49,7 @@ export default function ReservationPage() {
         return {
           title: "제휴 업체",
           subtitle: "예약",
+          imageSrc: "/Assets/images/placeholder.jpg",
           fields: []
         };
     }
@@ -105,8 +109,12 @@ export default function ReservationPage() {
         <div className="mb-6">
           <h1 className="text-xl font-bold text-gray-900 mb-1">{config.title}</h1>
           <p className="text-gray-600 mb-4">{config.subtitle}</p>
-          <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-            <span className="text-gray-500">이미지</span>
+          <div className="w-full h-48 rounded-lg mb-4 overflow-hidden">
+            <img 
+              src={config.imageSrc} 
+              alt={config.title}
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
 
