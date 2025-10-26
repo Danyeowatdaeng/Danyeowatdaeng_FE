@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 interface DateRangeCalendarProps {
   onDateRangeChange: (startDate: Date | null, endDate: Date | null) => void;
@@ -7,10 +12,10 @@ interface DateRangeCalendarProps {
   defaultCollapsed?: boolean;
 }
 
-export default function DateRangeCalendar({ 
-  onDateRangeChange, 
+export default function DateRangeCalendar({
+  onDateRangeChange,
   className = "",
-  defaultCollapsed = true
+  defaultCollapsed = true,
 }: DateRangeCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
@@ -75,8 +80,10 @@ export default function DateRangeCalendar({
   };
 
   const isDateSelected = (date: Date) => {
-    return (selectedStartDate && date.getTime() === selectedStartDate.getTime()) ||
-           (selectedEndDate && date.getTime() === selectedEndDate.getTime());
+    return (
+      (selectedStartDate && date.getTime() === selectedStartDate.getTime()) ||
+      (selectedEndDate && date.getTime() === selectedEndDate.getTime())
+    );
   };
 
   const goToPreviousMonth = () => {
@@ -96,17 +103,27 @@ export default function DateRangeCalendar({
   };
 
   const monthNames = [
-    '1월', '2월', '3월', '4월', '5월', '6월',
-    '7월', '8월', '9월', '10월', '11월', '12월'
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+    "12월",
   ];
 
-  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
   return (
     <div className={`bg-white rounded-lg border border-gray-200 ${className}`}>
       {/* 헤더 - 접기/펼치기 가능 */}
-      <div 
-        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+      <div
+        className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         <div className="flex items-center gap-2">
@@ -115,12 +132,11 @@ export default function DateRangeCalendar({
           </h3>
           {(selectedStartDate || selectedEndDate) && (
             <span className="text-sm text-gray-500">
-              {selectedStartDate && selectedEndDate 
-                ? `${selectedStartDate.toLocaleDateString('ko-KR')} - ${selectedEndDate.toLocaleDateString('ko-KR')}`
-                : selectedStartDate 
-                ? `시작: ${selectedStartDate.toLocaleDateString('ko-KR')}`
-                : ''
-              }
+              {selectedStartDate && selectedEndDate
+                ? `${selectedStartDate.toLocaleDateString("ko-KR")} - ${selectedEndDate.toLocaleDateString("ko-KR")}`
+                : selectedStartDate
+                  ? `시작: ${selectedStartDate.toLocaleDateString("ko-KR")}`
+                  : ""}
             </span>
           )}
         </div>
@@ -154,7 +170,11 @@ export default function DateRangeCalendar({
             }}
             className="p-1 hover:bg-gray-200 rounded"
           >
-            {isCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+            {isCollapsed ? (
+              <ChevronDown className="w-5 h-5" />
+            ) : (
+              <ChevronUp className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>
@@ -165,7 +185,10 @@ export default function DateRangeCalendar({
           {/* 요일 헤더 */}
           <div className="grid grid-cols-7 gap-1 mb-2">
             {dayNames.map((day) => (
-              <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
+              <div
+                key={day}
+                className="text-center text-sm font-medium text-gray-500 py-2"
+              >
                 {day}
               </div>
             ))}
@@ -187,11 +210,11 @@ export default function DateRangeCalendar({
                   disabled={isPast}
                   className={`
                     h-8 w-8 text-sm rounded-full flex items-center justify-center
-                    ${!isCurrentMonth ? 'text-gray-300' : ''}
-                    ${isPast ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100'}
-                    ${isSelected ? 'bg-orange-500 text-white' : ''}
-                    ${isInRange && !isSelected ? 'bg-orange-100' : ''}
-                    ${isTodayDate && !isSelected ? 'bg-blue-100 text-blue-600 font-semibold' : ''}
+                    ${!isCurrentMonth ? "text-gray-300" : ""}
+                    ${isPast ? "text-gray-300 cursor-not-allowed" : "hover:bg-gray-100"}
+                    ${isSelected ? "bg-orange-500 text-white" : ""}
+                    ${isInRange && !isSelected ? "bg-orange-100" : ""}
+                    ${isTodayDate && !isSelected ? "bg-blue-100 text-blue-600 font-semibold" : ""}
                   `}
                 >
                   {day.date.getDate()}
