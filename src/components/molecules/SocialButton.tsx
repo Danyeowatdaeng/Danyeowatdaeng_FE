@@ -14,7 +14,7 @@ export function SocialButton({ provider, label, ...rest }: SocialButtonProps) {
       {provider === "kakao" && <Icon />}
       {provider === "naver" && <Icon />}
       {provider === "google" && <Icon />}
-      <span className="font-bold text-[0.9rem] text-white">{label}</span>
+      <span className="font-semibold text-[0.95rem] text-white tracking-wide">{label}</span>
     </PrimaryButton>
   );
 }

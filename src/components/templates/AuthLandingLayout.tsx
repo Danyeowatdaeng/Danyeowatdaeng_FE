@@ -23,8 +23,11 @@ export default function AuthLandingTemplate({
       <div className="">
         <BackHeader onBack={onBack} />
       </div>
-      <div className="flex h-[45vh] flex-8 w-full items-center justify-center">
+      <div className="flex h-[45vh] flex-8 w-full items-center justify-center flex-col">
         <Icon src={logo} />
+        <p className="text-sm text-gray-500 mt-2 font-normal">
+          반려동물과 함께하는 특별한 여행
+        </p>
       </div>
       <div className="flex h-[40vh] flex-col gap-5 w-full mx-auto justify-start items-center">
         <SocialButton
