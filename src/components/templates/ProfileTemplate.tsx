@@ -3,6 +3,8 @@ import Coupon from "../molecules/CouponButton";
 import ProfileStats from "../organisms/profile/ProfileStats";
 import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
+import Button from "../atoms/Button";
+import Label from "../atoms/Label";
 
 type Props = {
   // 프로필 박스
@@ -20,6 +22,9 @@ type Props = {
   stamp: number | string;
   onClickPoint?: () => void;
   onClickStamp?: () => void;
+
+  // 로그아웃
+  onLogout?: () => void;
 };
 
 export default function ProfileTemplate({
@@ -33,6 +38,7 @@ export default function ProfileTemplate({
   stamp,
   onClickPoint,
   onClickStamp,
+  onLogout,
 }: Props) {
   const isWide = useWebControlStore((state) => state.isWide);
 
@@ -63,6 +69,16 @@ export default function ProfileTemplate({
           onClickPoint={onClickPoint}
           onClickStamp={onClickStamp}
         />
+
+        {/* 로그아웃 버튼 */}
+        {onLogout && (
+          <Button
+            onClick={onLogout}
+            className="w-full h-[45px] mt-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center"
+          >
+            <Label content="로그아웃" className="text-[15px] font-medium" />
+          </Button>
+        )}
       </div>
 
       {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
