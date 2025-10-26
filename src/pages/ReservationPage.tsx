@@ -122,17 +122,17 @@ export default function ReservationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20">
       <BackHeader 
         onBack={() => router.history.go(-1)} 
         label="예약하기"
       />
       
-      <div className="px-4 py-3">
-        {/* 가게 정보 - 컴팩트하게 */}
-        <div className="mb-4">
-          <h1 className="text-xl font-bold text-gray-900 mb-2">{config.title}</h1>
-          <div className="w-full h-32 rounded-lg mb-3 overflow-hidden">
+      <div className="px-4 py-3 space-y-4">
+        {/* 가게 정보 - 더 컴팩트하게 */}
+        <div className="bg-white rounded-lg p-4 shadow-sm">
+          <h1 className="text-lg font-bold text-gray-900 mb-3">{config.title}</h1>
+          <div className="w-full h-24 rounded-lg overflow-hidden">
             <img 
               src={config.imageSrc} 
               alt={config.title}
@@ -142,40 +142,43 @@ export default function ReservationPage() {
         </div>
 
         {/* 날짜 선택 - 캘린더 */}
-        <div className="mb-4">
-          <Label content="방문 날짜" />
-          <DateRangeCalendar 
-            onDateRangeChange={(startDate, endDate) => {
-              setSelectedDateRange({ startDate, endDate });
-            }}
-            className="mt-2"
-          />
-        </div>
+        <DateRangeCalendar 
+          onDateRangeChange={(startDate, endDate) => {
+            setSelectedDateRange({ startDate, endDate });
+          }}
+          defaultCollapsed={true}
+        />
 
         {/* 예약 정보 입력 - 날짜 필드 제외 */}
-        <div className="space-y-3 mb-4">
-          {config.fields
-            .filter(field => !field.name.includes('date') && !field.name.includes('period'))
-            .map((field) => (
-            <div key={field.name}>
-              <Label content={field.label} />
-              <select
-                value={reservationInfo[field.name] || ""}
-                onChange={(e) => setReservationInfo(prev => ({ ...prev, [field.name]: e.target.value }))}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                <option value="">선택</option>
-                {field.options.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </div>
-          ))}
+        <div className="bg-white rounded-lg p-4 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">예약 정보</h3>
+          <div className="space-y-3">
+            {config.fields
+              .filter(field => !field.name.includes('date') && !field.name.includes('period'))
+              .map((field) => (
+              <div key={field.name}>
+                <Label content={field.label} />
+                <select
+                  value={reservationInfo[field.name] || ""}
+                  onChange={(e) => setReservationInfo(prev => ({ ...prev, [field.name]: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <option value="">선택</option>
+                  {field.options.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* 금액 정보 */}
-        <div className="bg-gray-50 p-4 rounded-lg mb-4">
-          <div className="space-y-2">
+        {/* 금액 및 쿠폰 정보 */}
+        <div className="bg-white rounded-lg p-4 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">결제 정보</h3>
+          
+          {/* 금액 정보 */}
+          <div className="space-y-2 mb-4">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">기본 금액</span>
               <span className="text-sm text-gray-600">{basePrice.toLocaleString()}원</span>
@@ -201,10 +204,8 @@ export default function ReservationPage() {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 쿠폰 사용 버튼 */}
-        <div className="mb-4">
+          {/* 쿠폰 사용 버튼 */}
           <button
             onClick={() => setShowCouponModal(true)}
             className={`w-full py-3 rounded-lg text-sm font-medium transition-all duration-200 ${

@@ -1,18 +1,21 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface DateRangeCalendarProps {
   onDateRangeChange: (startDate: Date | null, endDate: Date | null) => void;
   className?: string;
+  defaultCollapsed?: boolean;
 }
 
 export default function DateRangeCalendar({ 
   onDateRangeChange, 
-  className = "" 
+  className = "",
+  defaultCollapsed = true
 }: DateRangeCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
   const today = new Date();
   const year = currentMonth.getFullYear();
@@ -100,74 +103,101 @@ export default function DateRangeCalendar({
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 p-4 ${className}`}>
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-4">
-        <button
-          onClick={goToPreviousMonth}
-          className="p-1 hover:bg-gray-100 rounded"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <h3 className="text-lg font-semibold">
-          {year}년 {monthNames[month]}
-        </h3>
-        <button
-          onClick={goToNextMonth}
-          className="p-1 hover:bg-gray-100 rounded"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+    <div className={`bg-white rounded-lg border border-gray-200 ${className}`}>
+      {/* 헤더 - 접기/펼치기 가능 */}
+      <div 
+        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        <div className="flex items-center gap-2">
+          <h3 className="text-lg font-semibold">
+            {year}년 {monthNames[month]}
+          </h3>
+          {(selectedStartDate || selectedEndDate) && (
+            <span className="text-sm text-gray-500">
+              {selectedStartDate && selectedEndDate 
+                ? `${selectedStartDate.toLocaleDateString('ko-KR')} - ${selectedEndDate.toLocaleDateString('ko-KR')}`
+                : selectedStartDate 
+                ? `시작: ${selectedStartDate.toLocaleDateString('ko-KR')}`
+                : ''
+              }
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {!isCollapsed && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToPreviousMonth();
+                }}
+                className="p-1 hover:bg-gray-200 rounded"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToNextMonth();
+                }}
+                className="p-1 hover:bg-gray-200 rounded"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </>
+          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsCollapsed(!isCollapsed);
+            }}
+            className="p-1 hover:bg-gray-200 rounded"
+          >
+            {isCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
-      {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 gap-1 mb-2">
-        {dayNames.map((day) => (
-          <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
-            {day}
+      {/* 캘린더 본체 - 접혀있을 때는 숨김 */}
+      {!isCollapsed && (
+        <div className="px-4 pb-4">
+          {/* 요일 헤더 */}
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {dayNames.map((day) => (
+              <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
+                {day}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* 날짜 그리드 */}
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((day, index) => {
-          const isCurrentMonth = day.isCurrentMonth;
-          const isSelected = isDateSelected(day.date);
-          const isInRange = isDateInRange(day.date);
-          const isTodayDate = isToday(day.date);
-          const isPast = isPastDate(day.date);
+          {/* 날짜 그리드 */}
+          <div className="grid grid-cols-7 gap-1">
+            {days.map((day, index) => {
+              const isCurrentMonth = day.isCurrentMonth;
+              const isSelected = isDateSelected(day.date);
+              const isInRange = isDateInRange(day.date);
+              const isTodayDate = isToday(day.date);
+              const isPast = isPastDate(day.date);
 
-          return (
-            <button
-              key={index}
-              onClick={() => !isPast && handleDateClick(day.date)}
-              disabled={isPast}
-              className={`
-                h-8 w-8 text-sm rounded-full flex items-center justify-center
-                ${!isCurrentMonth ? 'text-gray-300' : ''}
-                ${isPast ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100'}
-                ${isSelected ? 'bg-orange-500 text-white' : ''}
-                ${isInRange && !isSelected ? 'bg-orange-100' : ''}
-                ${isTodayDate && !isSelected ? 'bg-blue-100 text-blue-600 font-semibold' : ''}
-              `}
-            >
-              {day.date.getDate()}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 선택된 날짜 범위 표시 */}
-      {(selectedStartDate || selectedEndDate) && (
-        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-          <div className="text-sm text-gray-600">
-            {selectedStartDate && (
-              <div>시작: {selectedStartDate.toLocaleDateString('ko-KR')}</div>
-            )}
-            {selectedEndDate && (
-              <div>종료: {selectedEndDate.toLocaleDateString('ko-KR')}</div>
-            )}
+              return (
+                <button
+                  key={index}
+                  onClick={() => !isPast && handleDateClick(day.date)}
+                  disabled={isPast}
+                  className={`
+                    h-8 w-8 text-sm rounded-full flex items-center justify-center
+                    ${!isCurrentMonth ? 'text-gray-300' : ''}
+                    ${isPast ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100'}
+                    ${isSelected ? 'bg-orange-500 text-white' : ''}
+                    ${isInRange && !isSelected ? 'bg-orange-100' : ''}
+                    ${isTodayDate && !isSelected ? 'bg-blue-100 text-blue-600 font-semibold' : ''}
+                  `}
+                >
+                  {day.date.getDate()}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
