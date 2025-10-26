@@ -45,11 +45,11 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
     console.log("BottomSheet 상태 변화:", isBottomSheetOpen);
   }, [isBottomSheetOpen]);
 
-  // expanded 변경 시 지도 리렌더링
+  // expanded 변경 시 지도 리렌더링 (지연 시간 단축)
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRerender((prev) => !prev);
-    }, 1200);
+    }, 300); // 1.2초 → 0.3초로 단축
     return () => clearTimeout(timer);
   }, [expanded]);
 
@@ -129,6 +129,8 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
   useEffect(() => {
     if (locations.length > 0) {
       setCurrent(locations[0]);
+      // 검색 결과가 변경되면 지도 즉시 리렌더링
+      setShouldRerender((prev) => !prev);
     }
   }, [locations]);
 
