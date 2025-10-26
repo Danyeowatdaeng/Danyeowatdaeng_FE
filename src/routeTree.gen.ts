@@ -29,6 +29,7 @@ import { Route as MypetDiaryIndexRouteImport } from './routes/mypet/diary/index'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 import { Route as MypetDiaryIdRouteImport } from './routes/mypet/diary/$id'
 import { Route as LandingCategoryCategoryRouteImport } from './routes/landing/category/$category'
+import { Route as CartGroupGroupIdRouteImport } from './routes/cart/group.$groupId'
 
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
@@ -130,6 +131,11 @@ const LandingCategoryCategoryRoute = LandingCategoryCategoryRouteImport.update({
   path: '/landing/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartGroupGroupIdRoute = CartGroupGroupIdRouteImport.update({
+  id: '/cart/group/$groupId',
+  path: '/cart/group/$groupId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/mypet': typeof MypetIndexRoute
   '/place': typeof PlaceIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/cart/group/$groupId': typeof CartGroupGroupIdRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/mypet': typeof MypetIndexRoute
   '/place': typeof PlaceIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/cart/group/$groupId': typeof CartGroupGroupIdRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
@@ -193,6 +201,7 @@ export interface FileRoutesById {
   '/mypet/': typeof MypetIndexRoute
   '/place/': typeof PlaceIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/cart/group/$groupId': typeof CartGroupGroupIdRoute
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
@@ -217,6 +226,7 @@ export interface FileRouteTypes {
     | '/mypet'
     | '/place'
     | '/profile'
+    | '/cart/group/$groupId'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/mypet'
     | '/place'
     | '/profile'
+    | '/cart/group/$groupId'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/mypet/'
     | '/place/'
     | '/profile/'
+    | '/cart/group/$groupId'
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
@@ -284,6 +296,7 @@ export interface RootRouteChildren {
   MypetIndexRoute: typeof MypetIndexRoute
   PlaceIndexRoute: typeof PlaceIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
+  CartGroupGroupIdRoute: typeof CartGroupGroupIdRoute
   LandingCategoryCategoryRoute: typeof LandingCategoryCategoryRoute
   MypetDiaryIdRoute: typeof MypetDiaryIdRoute
   PlacePlaceIdReviewRoute: typeof PlacePlaceIdReviewRoute
@@ -432,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingCategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cart/group/$groupId': {
+      id: '/cart/group/$groupId'
+      path: '/cart/group/$groupId'
+      fullPath: '/cart/group/$groupId'
+      preLoaderRoute: typeof CartGroupGroupIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -452,6 +472,7 @@ const rootRouteChildren: RootRouteChildren = {
   MypetIndexRoute: MypetIndexRoute,
   PlaceIndexRoute: PlaceIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
+  CartGroupGroupIdRoute: CartGroupGroupIdRoute,
   LandingCategoryCategoryRoute: LandingCategoryCategoryRoute,
   MypetDiaryIdRoute: MypetDiaryIdRoute,
   PlacePlaceIdReviewRoute: PlacePlaceIdReviewRoute,

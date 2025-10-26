@@ -208,3 +208,119 @@ export const addWishlistAtMap = async (data: {
 export const deleteWishlist = async (contentId: number) => {
   return await del(`/wishlist/${contentId}`);
 };
+
+// 찜하기 그룹 관련 인터페이스
+export interface WishlistInGroup {
+  id: number;
+  contentId: number;
+  contentTypeId: number;
+  title: string;
+  address: string;
+  imageUrl: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+}
+
+export interface WishlistGroup {
+  id: number;
+  name: string;
+  isPublic: boolean;
+  categoryImageUrl: string;
+  wishlists?: WishlistInGroup[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 그룹 목록 조회
+export interface GetWishlistGroupsResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: WishlistGroup[];
+  success: boolean;
+}
+
+export const getWishlistGroups = async (params?: {
+  isPublic?: boolean;
+}): Promise<GetWishlistGroupsResponse> => {
+  return await get("/wishlist-groups", params);
+};
+
+// 그룹 생성
+export interface CreateWishlistGroupRequest {
+  name: string;
+  isPublic: boolean;
+  categoryImageUrl: string;
+}
+
+export interface CreateWishlistGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: WishlistGroup;
+  success: boolean;
+}
+
+export const createWishlistGroup = async (
+  data: CreateWishlistGroupRequest
+): Promise<CreateWishlistGroupResponse> => {
+  return await post("/wishlist-groups", data);
+};
+
+// 그룹 수정
+export interface UpdateWishlistGroupRequest {
+  name: string;
+  isPublic: boolean;
+  categoryImageUrl: string;
+}
+
+export interface UpdateWishlistGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: WishlistGroup;
+  success: boolean;
+}
+
+export const updateWishlistGroup = async (
+  groupId: number,
+  data: UpdateWishlistGroupRequest
+): Promise<UpdateWishlistGroupResponse> => {
+  return await put(`/wishlist-groups/${groupId}`, data);
+};
+
+// 그룹 삭제
+export interface DeleteWishlistGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: Record<string, unknown>;
+  success: boolean;
+}
+
+export const deleteWishlistGroup = async (
+  groupId: number
+): Promise<DeleteWishlistGroupResponse> => {
+  return await del(`/wishlist-groups/${groupId}`);
+};
+
+// 그룹에 찜하기 추가
+export interface AddWishlistToGroupRequest {
+  wishlistIds: number[];
+}
+
+export interface AddWishlistToGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: Record<string, unknown>;
+  success: boolean;
+}
+
+export const addWishlistToGroup = async (
+  groupId: number,
+  wishlistIds: number[]
+): Promise<AddWishlistToGroupResponse> => {
+  return await post(`/wishlist-groups/${groupId}/items`, { wishlistIds });
+};

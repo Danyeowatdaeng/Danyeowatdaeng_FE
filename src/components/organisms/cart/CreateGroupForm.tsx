@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import PrimaryButton from "../../molecules/PrimaryButton";
@@ -6,12 +6,26 @@ import Icon from "../../atoms/Icon";
 
 type CreateGroupFormProps = {
   onSubmit: (data: { name: string; icon: string; isPublic: boolean }) => void;
+  initialData?: {
+    name: string;
+    icon: string;
+    isPublic: boolean;
+  };
 };
 
-export default function CreateGroupForm({ onSubmit }: CreateGroupFormProps) {
-  const [newGroupName, setNewGroupName] = useState("");
-  const [newGroupIcon, setNewGroupIcon] = useState("");
-  const [isPublic, setIsPublic] = useState(false); // false = 비공개, true = 공개
+export default function CreateGroupForm({ onSubmit, initialData }: CreateGroupFormProps) {
+  const [newGroupName, setNewGroupName] = useState(initialData?.name || "");
+  const [newGroupIcon, setNewGroupIcon] = useState(initialData?.icon || "");
+  const [isPublic, setIsPublic] = useState(initialData?.isPublic || false); // false = 비공개, true = 공개
+
+  // initialData가 변경되면 폼 초기화
+  useEffect(() => {
+    if (initialData) {
+      setNewGroupName(initialData.name);
+      setNewGroupIcon(initialData.icon);
+      setIsPublic(initialData.isPublic);
+    }
+  }, [initialData]);
   const selected = "bg-[#00A3A5] text-white text-sm rounded-4xl px-4 h-8";
   const unselected =
     "border border-gray-300 bg-white text-gray-700 text-sm rounded-4xl px-4 h-8";
