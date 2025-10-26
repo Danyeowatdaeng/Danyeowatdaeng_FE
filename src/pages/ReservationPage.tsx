@@ -98,18 +98,17 @@ export default function ReservationPage() {
   };
 
   return (
-    <div className="h-screen bg-white">
+    <div className="min-h-screen bg-white pb-20">
       <BackHeader 
         onBack={() => router.history.go(-1)} 
         label="예약하기"
       />
       
-      <div className="p-6">
+      <div className="px-6 py-4">
         {/* 가게 정보 */}
         <div className="mb-6">
-          <h1 className="text-xl font-bold text-gray-900 mb-1">{config.title}</h1>
-          <p className="text-gray-600 mb-4">{config.subtitle}</p>
-          <div className="w-full h-48 rounded-lg mb-4 overflow-hidden">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{config.title}</h1>
+          <div className="w-full h-56 rounded-lg mb-4 overflow-hidden">
             <img 
               src={config.imageSrc} 
               alt={config.title}
@@ -119,7 +118,7 @@ export default function ReservationPage() {
         </div>
 
         {/* 예약 정보 입력 */}
-        <div className="space-y-4 mb-6">
+        <div className="space-y-3 mb-6">
           {config.fields.map((field) => (
             <div key={field.name}>
               <Label content={field.label} />
@@ -138,45 +137,35 @@ export default function ReservationPage() {
         </div>
 
         {/* 금액 정보 */}
-        <div className="bg-gray-50 p-4 rounded-lg mb-6">
-          <div className="flex justify-between items-center mb-2">
+        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <div className="flex justify-between items-center">
             <span className="text-lg font-bold text-gray-900">최종 금액</span>
             <span className="text-lg font-bold text-gray-900">{basePrice.toLocaleString()}원</span>
           </div>
-          
-          {selectedCoupon && (
-            <div className="flex justify-between items-center mb-2 text-green-600">
-              <span>쿠폰 할인</span>
-              <span>-{discountAmount.toLocaleString()}원</span>
-            </div>
-          )}
-          
-          {selectedCoupon && (
-            <div className="flex justify-between items-center text-lg font-bold text-gray-900">
-              <span>최종 금액</span>
-              <span>{finalPrice.toLocaleString()}원</span>
-            </div>
-          )}
         </div>
 
         {/* 쿠폰 사용 버튼 */}
-        <div className="mb-6">
+        <div className="mb-4">
           <button
             onClick={() => setShowCouponModal(true)}
-            className="w-full p-3 border-2 border-green-500 text-green-500 rounded-lg font-medium hover:bg-green-50"
+            className="w-full py-2 border-2 border-green-500 text-green-500 rounded-lg text-sm font-medium hover:bg-green-50"
           >
             {selectedCoupon ? `${selectedCoupon.name} 적용됨` : '쿠폰 사용하기'}
           </button>
         </div>
+      </div>
 
-        {/* 예약 요청 버튼 */}
-        <PrimaryButton
-          variant="primary"
-          size="lg"
-          onClick={handleReservationRequest}
-        >
-          예약 요청하기
-        </PrimaryButton>
+      {/* 고정된 하단 예약 버튼 */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <div className="w-full">
+          <PrimaryButton
+            variant="primary"
+            size="lg"
+            onClick={handleReservationRequest}
+          >
+            예약 요청하기
+          </PrimaryButton>
+        </div>
       </div>
 
       {/* 쿠폰 모달 */}
