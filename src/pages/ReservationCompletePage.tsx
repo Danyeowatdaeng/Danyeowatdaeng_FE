@@ -44,14 +44,15 @@ export default function ReservationCompletePage() {
       </div>
 
       {/* 홈으로 가기 버튼 - 작게 */}
-      <PrimaryButton
-        variant="primary"
-        size="md"
-        onClick={handleGoHome}
-        className="w-full max-w-xs"
-      >
-        홈으로 가기
-      </PrimaryButton>
+      <div className="w-full max-w-xs">
+        <PrimaryButton
+          variant="primary"
+          size="md"
+          onClick={handleGoHome}
+        >
+          홈으로 가기
+        </PrimaryButton>
+      </div>
     </div>
   );
 }
