@@ -12,6 +12,8 @@ export default function MakeCharacterPage() {
     useUserInfoStore();
 
   const [preview, setPreview] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,20 +25,28 @@ export default function MakeCharacterPage() {
       alert("PNG, JPEG, WebP 파일만 업로드할 수 있습니다.");
       setPetImage(null);
       setPreview(null);
+      setOriginalImage(null);
       return;
     }
     setPetImage(file);
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => setPreview(reader.result as string);
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setPreview(dataUrl);
+        setOriginalImage(dataUrl); // 원본 이미지 저장
+      };
       reader.readAsDataURL(file);
     } else {
       setPreview(null);
+      setOriginalImage(null);
     }
   };
 
   const handleUpload = async () => {
     if (!petImage) return alert("이미지를 선택해주세요");
+
+    setIsGenerating(true);
     const formData = new FormData();
     formData.append("file", petImage);
     formData.append("key", "value");
@@ -65,6 +75,11 @@ export default function MakeCharacterPage() {
       });
     } catch (error) {
       console.error("Error uploading image:", error);
+      alert("캐릭터 생성에 실패했습니다. 다시 시도해주세요.");
+      // 실패 시 원본 이미지로 복원
+      setPreview(originalImage);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -112,8 +127,8 @@ export default function MakeCharacterPage() {
           </>
         )}
         {preview && (
-          <PrimaryButton onClick={handleUpload}>
-            캐릭터로 변환하기
+          <PrimaryButton onClick={handleUpload} disabled={isGenerating}>
+            {isGenerating ? "생성 중..." : "캐릭터로 변환하기"}
           </PrimaryButton>
         )}
         <PrimaryButton
