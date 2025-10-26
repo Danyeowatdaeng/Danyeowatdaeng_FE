@@ -13,19 +13,25 @@ export default function CartPage() {
       try {
         setLoading(true);
         const response = await getWishlist({ page: 0, size: 20 });
-        
+
         if (response.isSuccess && response.data) {
           // WishlistItem을 CafeCardData로 변환
-          const transformedData: CafeCardData[] = response.data.content.map((item: WishlistItem) => ({
-            id: item.placeId,
-            title: item.placeName,
-            star: "4.5", // 기본값
-            image: item.imageUrl || "",
-            rating: 4.5,
-            reviewCount: 0,
-            address: item.address,
-          }));
-          
+          const transformedData: CafeCardData[] = response.data.content.map(
+            (item: WishlistItem) => ({
+              id: item.placeId,
+              title: item.placeName,
+              star: "4.5", // 기본값
+              image: item.imageUrl || "",
+              rating: 4.5,
+              reviewCount: 0,
+              address: item.address,
+              latitude: 0,
+              longitude: 0,
+              phone: "",
+              source: "wishlist",
+            })
+          );
+
           setWishlistItems(transformedData);
         }
       } catch (err) {
@@ -39,5 +45,7 @@ export default function CartPage() {
     fetchWishlist();
   }, []);
 
-  return <CartLayout wishlistItems={wishlistItems} loading={loading} error={error} />;
+  return (
+    <CartLayout wishlistItems={wishlistItems} loading={loading} error={error} />
+  );
 }
