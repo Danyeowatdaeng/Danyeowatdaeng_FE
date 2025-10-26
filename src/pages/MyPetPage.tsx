@@ -5,6 +5,8 @@ import { useNavigate } from "@tanstack/react-router";   // ✅ useRouter → use
 import MyPetTemplate from "../components/templates/MyPetTemplate";
 import type { DiaryItem, DiaryListResponse } from "../api/diary";
 import { mapListItem } from "../api/diary";
+import { getMemberInfo, type MemberInfo } from "../api";
+import useUserInfoStore from "../store/userInfoStore";
 
 export default function MyPetPage() {
   const navigate = useNavigate();                       // ✅ 선언
@@ -13,6 +15,8 @@ export default function MyPetPage() {
   const [size] = useState(12);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [memberInfo, setMemberInfo] = useState<MemberInfo | null>(null);
+  const { petAvatarCdnUrl, setPetAvatarCdnUrl } = useUserInfoStore();
 
   const goToDiaryWrite = () => navigate({ to: "/mypet/diary" });   // ✅ 교체
   const goToDailyQuest = () => navigate({ to: "/mypet/quest" });   // ✅ 교체
@@ -43,13 +47,31 @@ export default function MyPetPage() {
   };
 
   useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await getMemberInfo();
+        if (response.isSuccess && response.data) {
+          setMemberInfo(response.data);
+          // 전역 상태에 petAvatarCdnUrl 저장
+          setPetAvatarCdnUrl(response.data.petAvatarCdnUrl);
+        }
+      } catch (error) {
+        console.error("회원 정보 조회 실패:", error);
+      }
+    };
+
+    fetchMemberInfo();
     fetchDiaries(0);
   }, []);
 
   return (
     <>
       <MyPetTemplate
-        avatarSrc="/Assets/icons/PetProfile1.svg"
+        avatarSrc={
+          petAvatarCdnUrl 
+            ? `https://${petAvatarCdnUrl}` 
+            : "/Assets/icons/PetProfile1.svg"
+        }
         name="초코"
         subtitle="3살/푸들"
         onQuestClick={goToDailyQuest}
