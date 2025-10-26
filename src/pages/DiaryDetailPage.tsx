@@ -164,10 +164,10 @@ export default function DiaryDetailPage() {
 
   // 이전/다음 이동 — 같은 orderedIds 유지
   const handlePrev = () => {
-    if (prevId) navigate({ to: `/mypet/diary/${prevId}`, search: { orderedIds } });
+    if (prevId) navigate({ to: `/mypet/diary/${prevId}`, search: { orderedIds: orderedIds.join(',') as any } });
   };
   const handleNext = () => {
-    if (nextId) navigate({ to: `/mypet/diary/${nextId}`, search: { orderedIds } });
+    if (nextId) navigate({ to: `/mypet/diary/${nextId}`, search: { orderedIds: orderedIds.join(',') as any } });
   };
 
   if (loading || !detail) return null;

@@ -8,7 +8,7 @@ import StarIcon from "../atoms/Icon/StarIcon";
 import { Loader } from "@googlemaps/js-api-loader";
 import { fetchReviewsByContentId, type Review } from "../../api/review";
 import { getWishlist } from "../../api/index";
-import { isPartnerPlace } from "../../utils/partnerPlaces";
+import { isPartnerPlace, getPlaceIdFromName } from "../../utils/partnerPlaces";
 import { useRouter } from "@tanstack/react-router";
 
 interface KakaoPlace {
@@ -256,12 +256,15 @@ export default function PlacePreview({
   const isPartner = placeInfo ? isPartnerPlace(placeInfo.name) : false;
   
   const onReserve = () => {
-    if (isPartner) {
+    if (isPartner && placeInfo) {
       // 제휴 장소인 경우 내부 예약 페이지로 이동
-      router.navigate({ 
-        to: "/reservation/$placeId", 
-        params: { placeId: String(placeInfo?.id || placeInfo?.contentId) }
-      });
+      const placeId = getPlaceIdFromName(placeInfo.name);
+      if (placeId) {
+        router.navigate({ 
+          to: "/reservation/$placeId", 
+          params: { placeId }
+        });
+      }
     } else if (reserveUrl) {
       // 일반 장소인 경우 외부 링크로 이동
       window.open(reserveUrl, "_blank");

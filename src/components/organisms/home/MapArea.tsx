@@ -6,7 +6,7 @@ import BottomSheet from "../../atoms/BottomSheet";
 import SearchResultCard from "../../molecules/SearchResultCard";
 import { useSearchResultStore } from "../../../store/searchResultStore";
 import { useRouter } from "@tanstack/react-router";
-import { isPartnerPlace } from "../../../utils/partnerPlaces";
+import { isPartnerPlace, getPlaceIdFromName } from "../../../utils/partnerPlaces";
 
 type MapAreaProps = {
   expanded: boolean;
@@ -49,10 +49,13 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
   const handleReservation = (result: any) => {
     if (isPartnerPlace(result.name)) {
       // 제휴 장소인 경우 내부 예약 페이지로 이동
-      router.navigate({ 
-        to: "/reservation/$placeId", 
-        params: { placeId: String(result.id || result.contentId) }
-      });
+      const placeId = getPlaceIdFromName(result.name);
+      if (placeId) {
+        router.navigate({ 
+          to: "/reservation/$placeId", 
+          params: { placeId }
+        });
+      }
     } else {
       // 일반 장소인 경우 외부 링크로 이동 (기존 로직)
       console.log("예약하기:", result.id);

@@ -31,9 +31,11 @@ export default function ReservationCompletePage() {
         <div className="bg-gray-50 p-4 rounded-lg text-left">
           <h3 className="font-medium text-gray-900 mb-2">예약 정보</h3>
           <div className="space-y-1 text-sm text-gray-600">
-            <div>기간: {search.period}</div>
-            <div>객실 수: {search.rooms}</div>
-            <div>인원: {search.people}</div>
+            {Object.entries(search)
+              .filter(([key]) => key !== 'couponId')
+              .map(([key, value]) => (
+                <div key={key}>{key}: {String(value)}</div>
+              ))}
             {search.couponId && <div>쿠폰 적용됨</div>}
           </div>
         </div>

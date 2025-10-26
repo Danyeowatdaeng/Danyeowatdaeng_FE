@@ -12,7 +12,7 @@ export default function ReservationInfoModal({ isOpen, onClose }: ReservationInf
   const reservationPlaces = [
     "냐옹냐옹고양이까페",
     "광주애견호텔유치원", 
-    "24시 애견 미용"
+    "24시 애견미용"
   ];
 
   return (
