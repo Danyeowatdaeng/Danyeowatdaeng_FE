@@ -115,6 +115,7 @@ export interface MemberInfo {
   profileImageUrl: string | null;
   signUpCompleted: boolean;
   petAvatarId: number;
+  petAvatarCdnUrl: string | null;
 }
 
 export interface MemberInfoResponse {

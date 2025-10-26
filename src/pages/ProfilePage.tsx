@@ -57,7 +57,7 @@ export default function ProfilePage() {
     <ProfileTemplate
       name={memberInfo?.nickname || memberInfo?.email || "USER01"}
       subtitle="지역, 반려동물 정보 등"
-      imageSrc={memberInfo?.profileImageUrl || undefined}
+      imageSrc={memberInfo?.petAvatarCdnUrl || memberInfo?.profileImageUrl || undefined}
       onInfo={() => console.log("프로필 가이드 클릭")}
       onEditAvatar={() => console.log("아바타 수정")}
       onClickCoupon={goToCoupon}
