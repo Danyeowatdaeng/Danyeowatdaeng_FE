@@ -131,7 +131,7 @@ export default function HomeLandingPage() {
     <>
       <HomeLandingTemplate
         categories={categories}
-        eventTitle="7월의 펫 이벤트"
+        eventTitle="10월의 축제"
         events={events}
         onMoreEvents={() => {
           router.navigate({
