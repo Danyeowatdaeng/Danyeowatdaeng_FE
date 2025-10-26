@@ -3,14 +3,16 @@ import type { CategoryItemProps } from "../components/molecules/category/Categor
 import type { EventListItemData } from "../components/molecules/EventListItem";
 import { useRouter } from "@tanstack/react-router";
 import { useMapSearch } from "../hooks/useMapSearch";
+import { useMapSettingsStore } from "../store/mapSettingsStore";
 
 export default function HomeLandingPage() {
   const router = useRouter();
+  const { distance } = useMapSettingsStore();
 
   // 축제 데이터 가져오기
   const { data: festivalData } = useMapSearch({
     category: "festival",
-    distance: "2km",
+    distance,
     enabled: true,
   });
 

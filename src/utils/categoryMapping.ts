@@ -30,3 +30,11 @@ export const DISTANCE_MAPPING: Record<string, number> = {
   "2km": 2000,
   "4km": 4000,
 };
+
+// 거리별 줌 레벨 매핑
+export const ZOOM_LEVEL_MAPPING: Record<string, number> = {
+  "500m": 2,
+  "1km": 3,
+  "2km": 4,
+  "4km": 5,
+};

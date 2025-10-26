@@ -8,12 +8,11 @@ import BottomSheet from "../components/atoms/BottomSheet";
 import PlacePreview from "../components/molecules/PlacePreview";
 import type { SearchResult } from "../store/searchResultStore";
 import type { CafeCardData } from "../components/molecules/category/CafeCard";
+import { useMapSettingsStore } from "../store/mapSettingsStore";
 
 export default function CafeListPage() {
   const router = useRouter();
-  const [distance, setDistance] = useState<"500m" | "1km" | "2km" | "4km">(
-    "500m"
-  );
+  const { distance, setDistance } = useMapSettingsStore();
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<CafeCardData | null>(null);
 

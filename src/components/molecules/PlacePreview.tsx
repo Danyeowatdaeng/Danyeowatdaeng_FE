@@ -326,7 +326,7 @@ export default function PlacePreview({
                 <span className="text-[#797979] text-[12px]">
                   {parseInt(kakaoPlaceInfo.distance) >= 1000
                     ? `${(parseInt(kakaoPlaceInfo.distance) / 1000).toFixed(1)}km`
-                    : `${kakaoPlaceInfo.distance}m`}
+                    : `${kakaoPlaceInfo.distance}Km`}
                 </span>
               </div>
             )}
@@ -338,13 +338,13 @@ export default function PlacePreview({
                 type="button"
                 onClick={onReserve}
                 className={[
-                  "h-10 px-4 rounded-full border border-[#D9D9D9] bg-white",
-                  "text-[#111] text-[14px] font-medium shadow-sm",
+                  "h-8 px-2 rounded-full border border-[#D9D9D9] bg-white",
+                  "text-[#444444] text-[13px] font-normal",
                   "flex items-center gap-2 active:scale-[.99]",
                 ].join(" ")}
               >
                 <span className="grid place-items-center w-6 h-6 rounded-full bg-[#F3F4F6]">
-                  <Bell className="w-3.5 h-3.5 text-[#6B7280]" />
+                  <Bell className="w-3.5 h-3.5" />
                 </span>
                 예약하기
               </button>

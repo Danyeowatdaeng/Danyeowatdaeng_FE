@@ -4,6 +4,7 @@ import {
   CATEGORY_MAPPING,
   DISTANCE_MAPPING,
   CATEGORY_TITLE_MAP,
+  ZOOM_LEVEL_MAPPING,
 } from "../utils/categoryMapping";
 import type { CafeCardData } from "../components/molecules/category/CafeCard";
 
@@ -120,6 +121,8 @@ export function useMapSearch({
 
       // 거리를 기반으로 bounds 계산 (간단한 원형 영역)
       const distanceInMeters = DISTANCE_MAPPING[distance] || 1000;
+      const zoomLevel = ZOOM_LEVEL_MAPPING[distance] || 3; // 거리에 따른 줌 레벨
+
       const latOffset = distanceInMeters / 111000; // 대략적인 위도 오프셋
       const lngOffset =
         distanceInMeters / (111000 * Math.cos((position.lat * Math.PI) / 180)); // 경도 오프셋
@@ -136,7 +139,7 @@ export function useMapSearch({
         neLat,
         neLng,
         category: CATEGORY_MAPPING[category],
-        zoomLevel: 10,
+        zoomLevel,
         json: true,
       };
 

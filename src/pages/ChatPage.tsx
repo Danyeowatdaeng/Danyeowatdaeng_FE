@@ -158,7 +158,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[560px] min-h-dvh bg-[#F7F8FA] flex flex-col">
+    <div className="mx-auto max-w-full min-h-dvh bg-[#F7F8FA] flex flex-col">
       <div className="flex items-center justify-between p-4">
         <button
           className="w-6 h-6 grid place-items-center"
@@ -193,7 +193,7 @@ export default function ChatPage() {
             <p className="text-sm">무엇이든 물어보세요</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-10 max-w-full overflow-y-scroll">
             {messages.map((m) =>
               m.role === "bot" ? (
                 <div key={m.id} className="flex flex-col items-start gap-3">
@@ -251,7 +251,7 @@ export default function ChatPage() {
       {/* 입력 영역 */}
       <div
         className={cn("inset-x-0 z-30", {
-          "relative bottom-23": isWide,
+          "relative bottom-77": isWide,
           "fixed bottom-[72px]": !isWide,
         })}
       >
