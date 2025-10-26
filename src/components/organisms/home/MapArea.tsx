@@ -4,9 +4,15 @@ import SearchBar from "../../molecules/SearchBar";
 import KakaoMap from "./KakaoMap";
 import BottomSheet from "../../atoms/BottomSheet";
 import SearchResultCard from "../../molecules/SearchResultCard";
-import { useSearchResultStore } from "../../../store/searchResultStore";
+import {
+  useSearchResultStore,
+  type SearchResult,
+} from "../../../store/searchResultStore";
 import { useRouter } from "@tanstack/react-router";
-import { isPartnerPlace, getPlaceIdFromName } from "../../../utils/partnerPlaces";
+import {
+  isPartnerPlace,
+  getPlaceIdFromName,
+} from "../../../utils/partnerPlaces";
 
 type MapAreaProps = {
   expanded: boolean;
@@ -17,28 +23,27 @@ type MapAreaProps = {
 interface MapCenter {
   lat: number;
   lng: number;
-  originalLat?: number; // 원본 위도
 }
 
 function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
   const router = useRouter();
   const [searchResultOpen, setSearchResultOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<MapCenter | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<MapCenter | null>(
+    null
+  );
   const { searchResults } = useSearchResultStore();
+  console.log(searchResults);
 
   const handleSearchComplete = () => {
     setSearchResultOpen(true);
   };
 
   const handleLocationClick = (lat: number, lng: number) => {
-    // 지도를 해당 위치로 이동시키는 로직
-    // 바텀시트에 가리지 않도록 위도를 조금 낮춰서(아래로) 이동
-    const adjustedLat = lat - 0.005;
-    console.log("위치로 이동:", adjustedLat, lng);
-    setSelectedLocation({ 
-      lat: adjustedLat, 
+    // 지도를 해당 위치로 이동 - 정중앙으로
+    console.log("위치로 이동 (중앙):", lat, lng);
+    setSelectedLocation({
+      lat,
       lng,
-      originalLat: lat // 원본 위도 저장
     });
     // 지도가 확장되지 않았다면 확장
     if (!expanded) {
@@ -46,14 +51,14 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
     }
   };
 
-  const handleReservation = (result: any) => {
+  const handleReservation = (result: SearchResult) => {
     if (isPartnerPlace(result.name)) {
       // 제휴 장소인 경우 내부 예약 페이지로 이동
       const placeId = getPlaceIdFromName(result.name);
       if (placeId) {
-        router.navigate({ 
-          to: "/reservation/$placeId", 
-          params: { placeId }
+        router.navigate({
+          to: "/reservation/$placeId",
+          params: { placeId },
         });
       }
     } else {
@@ -107,7 +112,11 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
             <div className="px-4 pb-3 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">
-                  총 <span className="font-semibold text-gray-800">{searchResults.length}</span>건
+                  총{" "}
+                  <span className="font-semibold text-gray-800">
+                    {searchResults.length}
+                  </span>
+                  건
                 </span>
               </div>
             </div>

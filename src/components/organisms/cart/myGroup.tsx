@@ -11,12 +11,16 @@ type MyGroupProps = {
   onDelete?: (group: WishlistGroup) => void;
 };
 
-export default function MyGroup({ group, onClick, onEdit, onDelete }: MyGroupProps) {
+export default function MyGroup({
+  group,
+  onClick,
+  onEdit,
+  onDelete,
+}: MyGroupProps) {
   const navigate = useNavigate();
-  const wishlistCount = group.wishlists?.length || 0;
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
+
   // 외부 클릭 시 메뉴 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,29 +63,34 @@ export default function MyGroup({ group, onClick, onEdit, onDelete }: MyGroupPro
     setMenuOpen(false);
     onDelete?.(group);
   };
-  
+
   return (
-    <div 
+    <div
       className="flex justify-between items-center border-b-1 border-[#EFEFEF] py-3 relative cursor-pointer hover:bg-gray-50 transition-colors rounded-lg px-2"
       onClick={handleGroupClick}
     >
       <div className="flex gap-5 items-center">
         <div className="w-[61px] h-[61px] rounded-xl bg-white border-1 border-[#D9D9D9] flex items-center justify-center flex-shrink-0">
-          <Icon src={group.categoryImageUrl} alt={group.name} width={42} height={42} />
+          <Icon
+            src={group.categoryImageUrl}
+            alt={group.name}
+            width={42}
+            height={42}
+          />
         </div>
         <div className="gap-y-3 h-full">
           <div className="text-[16px]">{group.name}</div>
           <div className="text-[#858585] text-[14px]">
-            {group.isPublic ? "공개" : "비공개"} / 장소 {wishlistCount}개
+            {group.isPublic ? "공개" : "비공개"}
           </div>
         </div>
       </div>
-      
+
       <div className="relative" ref={menuRef}>
         <button onClick={handleMenuClick} className="p-2">
           <ShowMoreIcon />
         </button>
-        
+
         {menuOpen && (
           <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[120px] overflow-hidden">
             <button

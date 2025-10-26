@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import BackHeader from "../components/molecules/BackHeader";
-import WishlistItem, { type WishlistItemData } from "../components/molecules/WishlistItem";
+import WishlistItem, {
+  type WishlistItemData,
+} from "../components/molecules/WishlistItem";
 import TabBar from "../components/molecules/TabBar";
 import BottomSheet from "../components/atoms/BottomSheet";
 import PrimaryButton from "../components/molecules/PrimaryButton";
 import { useWebControlStore } from "../store/webControlStore";
-import { 
+import {
   getWishlistGroup,
-  getWishlist, 
+  getWishlist,
   addWishlistToGroup,
   type WishlistGroup,
-  type WishlistItem as WishlistItemAPI
+  type WishlistItem as WishlistItemAPI,
 } from "../api";
 
 type Props = {
@@ -35,11 +37,11 @@ export default function GroupDetailPage({ groupId }: Props) {
       console.log("=== 그룹 상세 조회 시작 ===");
       console.log("groupId:", groupId);
       console.log("API 호출: /wishlist-groups/" + groupId);
-      
+
       // 그룹 상세 조회 API 사용
       const response = await getWishlistGroup(groupId);
       console.log("✅ 그룹 상세 조회 응답:", response);
-      
+
       if (response.isSuccess) {
         console.log("✅ 그룹 데이터:", response.data);
         console.log("✅ 그룹 내 찜 목록:", response.data.wishlists);
@@ -69,18 +71,18 @@ export default function GroupDetailPage({ groupId }: Props) {
     try {
       setWishlistLoading(true);
       setBottomSheetOpen(true);
-      
+
       // 전체 찜 목록 불러오기
       const response = await getWishlist({ page: 0, size: 100 });
       console.log("📋 전체 찜 목록:", response.data?.content);
-      
+
       if (response.isSuccess && response.data) {
         // 이미 그룹에 추가된 항목 제외 (id 사용)
-        const groupWishlistIds = group?.wishlists?.map(w => w.id) || [];
+        const groupWishlistIds = group?.wishlists?.map((w) => w.id) || [];
         console.log("그룹에 이미 있는 ID들:", groupWishlistIds);
-        
+
         const availableWishlists = response.data.content.filter(
-          item => !groupWishlistIds.includes(item.id)
+          (item) => !groupWishlistIds.includes(item.id)
         );
         console.log("추가 가능한 찜 목록:", availableWishlists);
         setAllWishlists(availableWishlists);
@@ -94,9 +96,9 @@ export default function GroupDetailPage({ groupId }: Props) {
   };
 
   const handleToggleWishlist = (wishlistId: number) => {
-    setSelectedWishlistIds(prev => {
+    setSelectedWishlistIds((prev) => {
       if (prev.includes(wishlistId)) {
-        return prev.filter(id => id !== wishlistId);
+        return prev.filter((id) => id !== wishlistId);
       } else {
         return [...prev, wishlistId];
       }
@@ -110,17 +112,20 @@ export default function GroupDetailPage({ groupId }: Props) {
     }
 
     try {
-      console.log("그룹에 추가 시도:", { groupId, wishlistIds: selectedWishlistIds });
+      console.log("그룹에 추가 시도:", {
+        groupId,
+        wishlistIds: selectedWishlistIds,
+      });
       const response = await addWishlistToGroup(groupId, selectedWishlistIds);
       console.log("그룹에 추가 응답:", response);
-      
+
       // 그룹 정보 다시 불러오기
       await fetchGroup();
-      
+
       // 초기화
       setSelectedWishlistIds([]);
       setBottomSheetOpen(false);
-      
+
       alert(`${selectedWishlistIds.length}개의 장소를 추가했습니다.`);
     } catch (error) {
       console.error("그룹에 추가 실패:", error);
@@ -129,12 +134,13 @@ export default function GroupDetailPage({ groupId }: Props) {
   };
 
   // WishlistInGroup을 WishlistItemData로 변환
-  const wishlistItems: WishlistItemData[] = group?.wishlists?.map((item) => ({
-    contentId: item.contentId,
-    title: item.title,
-    address: item.address,
-    image: item.imageUrl,
-  })) || [];
+  const wishlistItems: WishlistItemData[] =
+    group?.wishlists?.map((item) => ({
+      contentId: item.contentId,
+      title: item.title,
+      address: item.address,
+      image: item.imageUrl,
+    })) || [];
 
   if (loading) {
     return (
@@ -170,19 +176,20 @@ export default function GroupDetailPage({ groupId }: Props) {
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <img 
-                  src={group.categoryImageUrl} 
-                  alt={group.name} 
+                <img
+                  src={group.categoryImageUrl}
+                  alt={group.name}
                   className="w-16 h-16"
                 />
                 <div>
                   <h2 className="text-xl font-bold">{group.name}</h2>
                   <p className="text-sm text-gray-500">
-                    {group.isPublic ? "공개" : "비공개"} / 장소 {wishlistItems.length}개
+                    {group.isPublic ? "공개" : "비공개"} / 장소{" "}
+                    {wishlistItems.length}개
                   </p>
                 </div>
               </div>
-              
+
               {/* + 버튼 */}
               <button
                 onClick={handleOpenAddSheet}
@@ -227,7 +234,9 @@ export default function GroupDetailPage({ groupId }: Props) {
             </div>
           ) : allWishlists.length === 0 ? (
             <div className="flex items-center justify-center py-10">
-              <p className="text-gray-500">추가할 수 있는 찜 목록이 없습니다.</p>
+              <p className="text-gray-500">
+                추가할 수 있는 찜 목록이 없습니다.
+              </p>
             </div>
           ) : (
             <>
@@ -244,8 +253,8 @@ export default function GroupDetailPage({ groupId }: Props) {
                   >
                     <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                       {item.imageUrl ? (
-                        <img 
-                          src={item.imageUrl} 
+                        <img
+                          src={item.imageUrl}
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />
@@ -257,16 +266,30 @@ export default function GroupDetailPage({ groupId }: Props) {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-sm">{item.title}</h3>
-                      <p className="text-xs text-gray-500 truncate">{item.address}</p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {item.address}
+                      </p>
                     </div>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                      selectedWishlistIds.includes(item.id)
-                        ? "border-[#00A3A5] bg-[#00A3A5]"
-                        : "border-gray-300"
-                    }`}>
+                    <div
+                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                        selectedWishlistIds.includes(item.id)
+                          ? "border-[#00A3A5] bg-[#00A3A5]"
+                          : "border-gray-300"
+                      }`}
+                    >
                       {selectedWishlistIds.includes(item.id) && (
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       )}
                     </div>
@@ -277,8 +300,8 @@ export default function GroupDetailPage({ groupId }: Props) {
               {/* 추가 버튼 */}
               <div className="pt-4 border-t">
                 <PrimaryButton size="lg" onClick={handleAddToGroup}>
-                  {selectedWishlistIds.length > 0 
-                    ? `${selectedWishlistIds.length}개 추가하기` 
+                  {selectedWishlistIds.length > 0
+                    ? `${selectedWishlistIds.length}개 추가하기`
                     : "추가하기"}
                 </PrimaryButton>
               </div>
@@ -289,4 +312,3 @@ export default function GroupDetailPage({ groupId }: Props) {
     </div>
   );
 }
-
