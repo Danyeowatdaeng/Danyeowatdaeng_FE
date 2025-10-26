@@ -40,6 +40,15 @@ export function useBottomSheet({
   const expandedRef = useRef(isExpanded);
   expandedRef.current = isExpanded;
 
+  // open prop이 변경될 때 isExpanded 상태 업데이트
+  useEffect(() => {
+    if (open) {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(false);
+    }
+  }, [open]);
+
   // 마운트될 때 높이 설정
   useEffect(() => {
     if (isExpanded) {

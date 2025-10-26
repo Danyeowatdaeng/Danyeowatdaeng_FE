@@ -40,6 +40,11 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
   const [placeInfo, setPlaceInfo] = useState<SearchResult | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
+  // BottomSheet 상태 변화 디버깅
+  useEffect(() => {
+    console.log("BottomSheet 상태 변화:", isBottomSheetOpen);
+  }, [isBottomSheetOpen]);
+
   // expanded 변경 시 지도 리렌더링
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -159,9 +164,11 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
                   }
                 }}
                 onClick={() => {
+                  console.log("마커 클릭됨:", { loc, placeInfo, index });
                   setIsBottomSheetOpen(true);
                   setSelectedPlace(loc);
                   setPlaceInfo(placeInfo);
+                  console.log("BottomSheet 상태:", isBottomSheetOpen);
                 }}
               />
             );
@@ -182,7 +189,7 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
         )}
       </Map>
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen}>
-        {selectedPlace && (
+        {selectedPlace && placeInfo && (
           <PlacePreview
             position={selectedPlace}
             placeInfo={placeInfo}
@@ -197,6 +204,11 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
               });
             }}
           />
+        )}
+        {selectedPlace && !placeInfo && (
+          <div className="p-4 text-center">
+            <p>장소 정보를 불러올 수 없습니다.</p>
+          </div>
         )}
       </BottomSheet>
     </div>
