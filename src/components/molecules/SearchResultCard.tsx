@@ -18,7 +18,7 @@ interface SearchResultCardProps {
 }
 
 export default function SearchResultCard({
-  id,
+  id: _id,
   name,
   category,
   status,
@@ -26,7 +26,7 @@ export default function SearchResultCard({
   reviewCount,
   address,
   distance,
-  imageUrl,
+  imageUrl: _imageUrl,
   latitude,
   longitude,
   onWishlist,
