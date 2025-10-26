@@ -9,6 +9,10 @@ export type CafeCardData = {
   rating: number;
   reviewCount: number;
   address: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  source: string;
 };
 
 type Props = {

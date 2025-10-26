@@ -157,10 +157,14 @@ export function useMapSearch({
           id: item.id.toString(),
           title: item.title,
           star: "4.5", // API에서 별점 정보가 없으므로 기본값
-          image: item.imageUrl1 || "",
+          image: item.imageUrl1 || item.imageUrl2 || "",
           rating: 4.5,
           reviewCount: Math.floor(Math.random() * 100) + 1, // 임시 리뷰 수
           address: item.address,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          phone: item.phoneNumber || "",
+          source: "tour-api",
         }));
 
         setData(transformedData);
@@ -177,6 +181,10 @@ export function useMapSearch({
             rating: 4.5,
             reviewCount: 23,
             address: "서울시 강남구 테헤란로 123",
+            latitude: 37.5665,
+            longitude: 126.978,
+            phone: "",
+            source: "tour-api",
           },
           {
             id: "2",
@@ -186,6 +194,10 @@ export function useMapSearch({
             rating: 4.2,
             reviewCount: 15,
             address: "서울시 서초구 서초대로 456",
+            latitude: 37.4833,
+            longitude: 127.0322,
+            phone: "",
+            source: "tour-api",
           },
           {
             id: "3",
@@ -195,6 +207,10 @@ export function useMapSearch({
             rating: 4.8,
             reviewCount: 42,
             address: "서울시 마포구 홍대입구역 789",
+            latitude: 37.5563,
+            longitude: 126.9236,
+            phone: "",
+            source: "tour-api",
           },
         ];
 

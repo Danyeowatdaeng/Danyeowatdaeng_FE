@@ -82,7 +82,8 @@ export default function BottomSheet({
         }}
         className={`bg-white
           relative bottom-0 max-w-full
-          rounded-t-4xl shadow-xl
+          rounded-t-4xl 
+          shadow-[0_-4px_20px_rgba(0,0,0,0.15)]
           transition-transform duration-500
           ${open ? "" : "translate-y-full"}
           ${className}

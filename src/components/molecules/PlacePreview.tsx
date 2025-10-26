@@ -41,7 +41,9 @@ export default function PlacePreview({
   const [isLoading, setIsLoading] = useState(true);
 
   // Google Places 사진/설명
-  const [urls, setUrls] = useState<string[]>([]);
+  const [urls, setUrls] = useState<string[]>([
+    (placeInfo?.imageUrl as string) || "",
+  ]);
   const [description, setDescription] = useState<string>("");
 
   // 리뷰 미리보기
@@ -139,10 +141,10 @@ export default function PlacePreview({
             },
             {
               location: new window.kakao.maps.LatLng(
-                position.lat,
-                position.lng
+                placeInfo.latitude || position.lat,
+                placeInfo.longitude || position.lng
               ),
-              radius: 10,
+              radius: 100,
               sort: window.kakao.maps.services.SortBy.DISTANCE,
             }
           );
@@ -237,16 +239,26 @@ export default function PlacePreview({
           {/* 사진 영역 */}
           <div>
             <div className="w-full overflow-x-auto flex gap-2">
-              {urls.map((imgUrl) => (
+              {placeInfo.imageUrl ? (
                 <img
-                  key={imgUrl}
-                  src={imgUrl}
+                  src={placeInfo.imageUrl}
                   alt={placeInfo.name}
                   onClick={() => window.open(placeInfo?.homepage, "_blank")}
                   className="h-[160px] object-cover rounded-lg"
                   style={{ minWidth: "100%", maxWidth: "100%" }}
                 />
-              ))}
+              ) : urls.length > 0 ? (
+                urls.map((imgUrl) => (
+                  <img
+                    key={imgUrl}
+                    src={imgUrl}
+                    alt={placeInfo.name}
+                    onClick={() => window.open(placeInfo?.homepage, "_blank")}
+                    className="h-[160px] object-cover rounded-lg"
+                    style={{ minWidth: "100%", maxWidth: "100%" }}
+                  />
+                ))
+              ) : null}
             </div>
 
             {/* 타이틀/카테고리 */}
@@ -284,7 +296,9 @@ export default function PlacePreview({
                     kakaoPlaceInfo.address_name}
                 </p>
                 <span className="text-[#797979] text-[12px]">
-                  {kakaoPlaceInfo.distance}Km
+                  {parseInt(kakaoPlaceInfo.distance) >= 1000
+                    ? `${(parseInt(kakaoPlaceInfo.distance) / 1000).toFixed(1)}km`
+                    : `${kakaoPlaceInfo.distance}m`}
                 </span>
               </div>
             )}

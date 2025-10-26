@@ -3,17 +3,18 @@ import { create } from "zustand";
 export interface SearchResult {
   id: number;
   contentId?: number;
-  name: "string";
-  category3: "string";
-  roadAddress: "string";
-  jibunAddress: "string";
-  homepage: "string";
-  closedDays: "string";
-  openingHours: "string";
-  latitude: 0;
-  longitude: 0;
-  phone: "string";
-  source: "string";
+  name: string;
+  category3: string;
+  roadAddress: string;
+  jibunAddress: string;
+  homepage: string;
+  closedDays: string;
+  openingHours: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  source: string;
+  imageUrl?: string;
 }
 
 interface SearchResultState {
