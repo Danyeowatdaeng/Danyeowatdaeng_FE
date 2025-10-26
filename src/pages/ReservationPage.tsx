@@ -70,12 +70,6 @@ export default function ReservationPage() {
 
   // 기본 금액 (실제로는 API에서 가져와야 함)
   const basePrice = placeId === 'hotel' ? 369346 : placeId === 'beauty' ? 50000 : 15000;
-  const discountAmount = selectedCoupon 
-    ? selectedCoupon.type === 'percentage' 
-      ? Math.floor(basePrice * selectedCoupon.discount / 100)
-      : selectedCoupon.discount
-    : 0;
-  const finalPrice = basePrice - discountAmount;
 
   const handleReservationRequest = () => {
     // 기본 필드가 없는 경우에도 빈 값으로 전달
