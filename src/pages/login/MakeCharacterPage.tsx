@@ -137,7 +137,8 @@ export default function MakeCharacterPage() {
       
       // 4. 회원가입 완료 전에 PetAvatar 선택
       const petAvatarId = avatarResponse.data.id;
-      const selectResponse = await post("/api/members/pet-avatar", {
+      console.log("PetAvatar ID:", petAvatarId);
+      const selectResponse = await post("/members/pet-avatar", {
         petAvatarId: petAvatarId
       });
       
