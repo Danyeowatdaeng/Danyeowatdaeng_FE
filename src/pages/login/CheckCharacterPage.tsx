@@ -2,26 +2,38 @@ import { useNavigate } from "@tanstack/react-router";
 import { post } from "../../api";
 import BackHeader from "../../components/molecules/BackHeader";
 import PrimaryButton from "../../components/molecules/PrimaryButton";
+import Title from "../../components/atoms/Title";
 import useUserInfoStore from "../../store/userInfoStore";
 
 export default function CheckCharacterPage() {
   const navigate = useNavigate();
-  const { petAvatarId, petImage, setIsLogin } = useUserInfoStore();
+  const { petAvatarId, petImage, generatedCharacterImage, setIsLogin } = useUserInfoStore();
 
   return (
     <div className="flex flex-col py-10 px-7 items-center justify-center gap-4">
-      <BackHeader />
+      <BackHeader onBack={() => navigate({ to: "/login/makeCharacter" })} />
+      <Title className="mb-4">
+        {generatedCharacterImage ? "생성된 캐릭터를 확인하세요" : "펫 아바타를 확인하세요"}
+      </Title>
       <div>
-        {!petImage && (
+        {generatedCharacterImage ? (
+          <img
+            src={generatedCharacterImage}
+            alt="Generated Character"
+            className="max-h-[300px] rounded-lg shadow-lg"
+          />
+        ) : !petImage ? (
           <img
             src={`/Assets/icons/PetAvatar${petAvatarId}.svg`}
             alt="Pet Avatar"
+            className="max-h-[300px]"
           />
-        )}
-        {petImage ? (
-          <img src={URL.createObjectURL(petImage)} alt="Pet Avatar" />
         ) : (
-          "No image selected"
+          <img 
+            src={URL.createObjectURL(petImage)} 
+            alt="Original Pet Image" 
+            className="max-h-[300px] rounded-lg shadow-lg"
+          />
         )}
       </div>
       <PrimaryButton
