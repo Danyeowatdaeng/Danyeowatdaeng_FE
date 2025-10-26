@@ -16,6 +16,11 @@ export interface SearchResult {
   phone: string;
   source: string;
   imageUrl?: string;
+  // 바텀시트 표시를 위한 추가 필드들
+  rating?: number;
+  reviewCount?: number;
+  distance?: string;
+  status?: "영업 중" | "영업 전" | "영업 종료";
 }
 
 interface SearchResultState {

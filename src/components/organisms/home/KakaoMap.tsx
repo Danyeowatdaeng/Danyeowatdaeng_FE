@@ -8,9 +8,10 @@ import { useRouter } from "@tanstack/react-router";
 
 type KakaoMapProps = {
   expanded: boolean;
+  center?: { lat: number; lng: number; originalLat?: number } | null;
 };
 
-export default function KakaoMap({ expanded }: KakaoMapProps) {
+export default function KakaoMap({ expanded, center }: KakaoMapProps) {
   // 지도의 크기가 변경될 때 지도를 다시 렌더링하기 위한 상태
   const { searchResults } = useSearchResultStore();
 
@@ -34,7 +35,7 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
     lat: 33.450701,
     lng: 126.570667,
   });
-  const [selectedPlace, setSelectedPlace] = useState(current);
+  const [selectedPlace, setSelectedPlace] = useState<{ lat: number; lng: number } | null>(null);
   const [placeInfo, setPlaceInfo] = useState<SearchResult | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -125,6 +126,13 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
     }
   }, [locations]);
 
+  // center prop이 변경되면 지도 중심 이동
+  useEffect(() => {
+    if (center) {
+      setCurrent(center);
+    }
+  }, [center]);
+
   return (
     <div className="relative w-full h-full">
       <Map
@@ -136,8 +144,15 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
         {locations.length > 0 &&
           locations.map((loc, index) => (
             <MapMarker
-              key={index}
+              key={`location-${index}`}
               position={loc}
+              image={{
+                src: '/Assets/icons/Location.svg',
+                size: { width: 40, height: 40 },
+                options: {
+                  offset: { x: 20, y: 20 }
+                }
+              }}
               onClick={() => {
                 setIsBottomSheetOpen(true);
                 setSelectedPlace(loc);
@@ -145,22 +160,38 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
               }}
             />
           ))}
+        {/* center에 originalLat가 있으면 원본 위치에 추가 마커 표시 */}
+        {center?.originalLat && (
+          <MapMarker
+            key="original-marker"
+            position={{ lat: center.originalLat, lng: center.lng }}
+            image={{
+              src: '/Assets/icons/Location.svg',
+              size: { width: 40, height: 40 },
+              options: {
+                offset: { x: 20, y: 20 }
+              }
+            }}
+          />
+        )}
       </Map>
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen}>
-        <PlacePreview
-          position={selectedPlace}
-          placeInfo={placeInfo}
-          map={true}
-          onReviewClick={() => {
-            if (!placeInfo) return;
+        {selectedPlace && (
+          <PlacePreview
+            position={selectedPlace}
+            placeInfo={placeInfo}
+            map={true}
+            onReviewClick={() => {
+              if (!placeInfo) return;
 
-            router.navigate({
-              to: "/place/$placeId/review",
-              params: { placeId: String(placeInfo.id) },
-              search: { name: placeInfo.name },
-            });
-          }}
-        />
+              router.navigate({
+                to: "/place/$placeId/review",
+                params: { placeId: String(placeInfo.id) },
+                search: { name: placeInfo.name },
+              });
+            }}
+          />
+        )}
       </BottomSheet>
     </div>
   );
