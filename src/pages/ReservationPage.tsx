@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useRouter, useParams } from "@tanstack/react-router";
 import BackHeader from "../components/molecules/BackHeader";
 import PrimaryButton from "../components/molecules/PrimaryButton";
-import Input from "../components/atoms/Input";
 import Label from "../components/atoms/Label";
 
 export default function ReservationPage() {
@@ -34,24 +33,6 @@ export default function ReservationPage() {
     : 0;
   const finalPrice = basePrice - discountAmount;
 
-  const handleNext = () => {
-    if (!reservationInfo.period || !reservationInfo.rooms || !reservationInfo.people) {
-      alert("모든 정보를 입력해주세요.");
-      return;
-    }
-    // 다음 단계로 진행 (쿠폰 선택은 선택사항)
-    router.navigate({ 
-      to: "/reservation/$placeId/complete", 
-      params: { placeId },
-      search: { 
-        period: reservationInfo.period,
-        rooms: reservationInfo.rooms,
-        people: reservationInfo.people,
-        couponId: selectedCoupon?.id
-      }
-    });
-  };
-
   const handleReservationRequest = () => {
     router.navigate({ 
       to: "/reservation/$placeId/complete", 
@@ -69,7 +50,7 @@ export default function ReservationPage() {
     <div className="h-screen bg-white">
       <BackHeader 
         onBack={() => router.history.go(-1)} 
-        title="예약하기"
+        label="예약하기"
       />
       
       <div className="p-6">
@@ -84,7 +65,7 @@ export default function ReservationPage() {
         {/* 예약 정보 입력 */}
         <div className="space-y-4 mb-6">
           <div>
-            <Label text="기간" />
+            <Label content="기간" />
             <select
               value={reservationInfo.period}
               onChange={(e) => setReservationInfo(prev => ({ ...prev, period: e.target.value }))}
@@ -98,7 +79,7 @@ export default function ReservationPage() {
           </div>
 
           <div>
-            <Label text="객실 수" />
+            <Label content="객실 수" />
             <select
               value={reservationInfo.rooms}
               onChange={(e) => setReservationInfo(prev => ({ ...prev, rooms: e.target.value }))}
@@ -112,7 +93,7 @@ export default function ReservationPage() {
           </div>
 
           <div>
-            <Label text="인원" />
+            <Label content="인원" />
             <select
               value={reservationInfo.people}
               onChange={(e) => setReservationInfo(prev => ({ ...prev, people: e.target.value }))}

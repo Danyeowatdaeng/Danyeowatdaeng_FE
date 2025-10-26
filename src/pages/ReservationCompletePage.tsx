@@ -1,9 +1,8 @@
-import { useRouter, useParams, useSearch } from "@tanstack/react-router";
+import { useRouter, useSearch } from "@tanstack/react-router";
 import PrimaryButton from "../components/molecules/PrimaryButton";
 
 export default function ReservationCompletePage() {
   const router = useRouter();
-  const { placeId } = useParams({ from: "/reservation/$placeId/complete" });
   const search = useSearch({ from: "/reservation/$placeId/complete" });
 
   const handleGoHome = () => {
