@@ -1,4 +1,5 @@
 import { Star, MapPin, Bell } from "lucide-react";
+import { isPartnerPlace } from "../../utils/partnerPlaces";
 
 interface SearchResultCardProps {
   id: number;
@@ -33,6 +34,7 @@ export default function SearchResultCard({
   onReservation,
   onLocationClick,
 }: SearchResultCardProps) {
+  const isPartner = isPartnerPlace(name);
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -126,10 +128,14 @@ export default function SearchResultCard({
                 handleButtonClick(e);
                 onReservation?.();
               }}
-              className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                isPartner 
+                  ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
             >
               <Bell className="w-4 h-4" />
-              예약하기
+              {isPartner ? '제휴 예약하기' : '예약하기'}
             </button>
           )}
           <button

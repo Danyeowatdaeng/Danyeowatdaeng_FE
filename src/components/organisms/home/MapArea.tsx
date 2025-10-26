@@ -5,6 +5,8 @@ import KakaoMap from "./KakaoMap";
 import BottomSheet from "../../atoms/BottomSheet";
 import SearchResultCard from "../../molecules/SearchResultCard";
 import { useSearchResultStore } from "../../../store/searchResultStore";
+import { useRouter } from "@tanstack/react-router";
+import { isPartnerPlace } from "../../../utils/partnerPlaces";
 
 type MapAreaProps = {
   expanded: boolean;
@@ -19,6 +21,7 @@ interface MapCenter {
 }
 
 function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
+  const router = useRouter();
   const [searchResultOpen, setSearchResultOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<MapCenter | null>(null);
   const { searchResults } = useSearchResultStore();
@@ -40,6 +43,19 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
     // 지도가 확장되지 않았다면 확장
     if (!expanded) {
       onTap();
+    }
+  };
+
+  const handleReservation = (result: any) => {
+    if (isPartnerPlace(result.name)) {
+      // 제휴 장소인 경우 내부 예약 페이지로 이동
+      router.navigate({ 
+        to: "/reservation/$placeId", 
+        params: { placeId: String(result.id || result.contentId) }
+      });
+    } else {
+      // 일반 장소인 경우 외부 링크로 이동 (기존 로직)
+      console.log("예약하기:", result.id);
     }
   };
 
@@ -111,7 +127,7 @@ function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
                   longitude={result.longitude}
                   onLocationClick={handleLocationClick}
                   onWishlist={() => console.log("찜하기:", result.id)}
-                  onReservation={() => console.log("예약하기:", result.id)}
+                  onReservation={() => handleReservation(result)}
                 />
               ))}
             </div>
