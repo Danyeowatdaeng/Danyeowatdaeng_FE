@@ -97,3 +97,25 @@ export const del = async (url: string, params?: unknown) => {
     throw error;
   }
 };
+
+// 회원 정보 조회
+export interface MemberInfo {
+  id: number;
+  nickname: string | null;
+  email: string;
+  profileImageUrl: string | null;
+  signUpCompleted: boolean;
+  petAvatarId: number;
+}
+
+export interface MemberInfoResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: MemberInfo;
+  success: boolean;
+}
+
+export const getMemberInfo = async (): Promise<MemberInfoResponse> => {
+  return await get("/members/me");
+};
