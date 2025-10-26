@@ -150,6 +150,7 @@ export default function KakaoMap({ expanded }: KakaoMapProps) {
         <PlacePreview
           position={selectedPlace}
           placeInfo={placeInfo}
+          map={true}
           onReviewClick={() => {
             if (!placeInfo) return;
 

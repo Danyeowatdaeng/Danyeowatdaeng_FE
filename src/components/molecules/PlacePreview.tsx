@@ -1,5 +1,5 @@
 // src/components/molecules/PlacePreview.tsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { SearchResult } from "../../store/searchResultStore";
 import { MapPinCheckInside, MessageSquare, Bell } from "lucide-react";
 import CartButton from "./CartButton";
@@ -22,6 +22,7 @@ interface KakaoPlace {
 type PlacePreviewProps = {
   position: { lat: number; lng: number };
   placeInfo: SearchResult | null;
+  map?: boolean;
   onReviewClick: () => void;
 };
 
@@ -37,6 +38,7 @@ export default function PlacePreview({
   position,
   placeInfo,
   onReviewClick,
+  map = false,
 }: PlacePreviewProps) {
   const [kakaoPlaceInfo, setKakaoPlaceInfo] = useState<KakaoPlace | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,6 +56,14 @@ export default function PlacePreview({
 
   // 찜하기 상태
   const [isWishlisted, setIsWishlisted] = useState(false);
+
+  // 장소 정보 상태 (contentId 업데이트를 위해)
+  const [currentPlaceInfo, setCurrentPlaceInfo] = useState(placeInfo);
+
+  // placeInfo가 변경되면 currentPlaceInfo 업데이트
+  React.useEffect(() => {
+    setCurrentPlaceInfo(placeInfo);
+  }, [placeInfo]);
 
   const maxWidth = 400;
 
@@ -173,7 +183,7 @@ export default function PlacePreview({
 
   /** 리뷰 미리보기: contentId 기준 최신 목록 */
   useEffect(() => {
-    const cid = placeInfo?.contentId;
+    const cid = currentPlaceInfo?.contentId;
     if (!cid) {
       setReviews([]);
       setReviewError(null);
@@ -212,7 +222,7 @@ export default function PlacePreview({
     };
 
     load();
-  }, [placeInfo]);
+  }, [currentPlaceInfo?.contentId]);
 
   /** 찜하기 상태 확인 */
   useEffect(() => {
@@ -351,14 +361,28 @@ export default function PlacePreview({
 
               {/* 찜하기 */}
               <CartButton
-                placeId={placeInfo.contentId || placeInfo.id}
-                contentTypeId={placeInfo.contentTypeId}
-                title={placeInfo.name}
-                address={placeInfo.roadAddress || placeInfo.jibunAddress}
-                imageUrl={placeInfo.imageUrl}
-                latitude={placeInfo.latitude}
-                longitude={placeInfo.longitude}
+                placeId={currentPlaceInfo?.contentId || currentPlaceInfo?.id}
+                contentTypeId={currentPlaceInfo?.contentTypeId}
+                title={currentPlaceInfo?.name}
+                address={
+                  currentPlaceInfo?.roadAddress ||
+                  currentPlaceInfo?.jibunAddress
+                }
+                imageUrl={currentPlaceInfo?.imageUrl}
+                latitude={currentPlaceInfo?.latitude}
+                longitude={currentPlaceInfo?.longitude}
                 initialAdded={isWishlisted}
+                map={map}
+                onWishlistAdded={(contentId) => {
+                  // 응답에서 받은 contentId로 업데이트
+                  if (currentPlaceInfo) {
+                    setCurrentPlaceInfo({
+                      ...currentPlaceInfo,
+                      contentId,
+                    });
+                    console.log("PlaceInfo contentId 업데이트됨:", contentId);
+                  }
+                }}
               />
             </div>
           </div>

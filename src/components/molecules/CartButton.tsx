@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../atoms/Button";
 import StarIcon from "../atoms/Icon/StarIcon";
 import { cn } from "../../utils/style";
-import { addWishlist, deleteWishlist } from "../../api/index";
+import { addWishlist, addWishlistAtMap, deleteWishlist } from "../../api/index";
 
 type CartButtonProps = {
   placeId?: number;
@@ -13,6 +13,8 @@ type CartButtonProps = {
   latitude?: number;
   longitude?: number;
   initialAdded?: boolean;
+  map?: boolean;
+  onWishlistAdded?: (contentId: number) => void; // 찜하기 추가 시 contentId 콜백
 };
 
 export default function CartButton({
@@ -24,6 +26,8 @@ export default function CartButton({
   latitude,
   longitude,
   initialAdded = false,
+  map = false,
+  onWishlistAdded,
 }: CartButtonProps) {
   const [addCart, setAddCart] = useState(initialAdded);
   const [loading, setLoading] = useState(false);
@@ -37,32 +41,47 @@ export default function CartButton({
     e.stopPropagation();
 
     // 필수 정보가 없으면 경고
-    if (!placeId || !title || !address) {
-      alert("장소 정보가 부족합니다.");
-      return;
-    }
 
     setLoading(true);
 
     try {
       if (addCart) {
+        if (!placeId || !title || !address) {
+          alert("장소 정보가 부족합니다.");
+          return;
+        }
         // 찜하기 삭제
         await deleteWishlist(placeId);
         setAddCart(false);
         console.log("찜하기 삭제 완료");
       } else {
         // 찜하기 추가
-        await addWishlist({
-          contentId: placeId,
-          contentTypeId: contentTypeId || 0,
-          title,
-          address,
-          imageUrl: imageUrl || "",
-          latitude: latitude || 0,
-          longitude: longitude || 0,
-        });
+        let response;
+        if (map) {
+          response = await addWishlistAtMap({
+            source: "map",
+          });
+        } else {
+          response = await addWishlist({
+            contentId: placeId || 0,
+            contentTypeId: contentTypeId || 0,
+            title: title || "",
+            address: address || "",
+            imageUrl: imageUrl || "",
+            latitude: latitude || 0,
+            longitude: longitude || 0,
+          });
+        }
+
+        console.log("찜하기 추가 응답:", response);
+
+        // 응답에서 contentId를 받아서 콜백 호출
+        if (response.isSuccess && response.data?.contentId) {
+          onWishlistAdded?.(response.data.contentId);
+          console.log("찜하기 추가 완료, contentId:", response.data.contentId);
+        }
+
         setAddCart(true);
-        console.log("찜하기 추가 완료");
       }
     } catch (error) {
       console.error("찜하기 API 오류:", error);

@@ -47,8 +47,17 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       console.warn("인증 실패 - 로그인이 필요합니다.");
-      // 필요시 로그인 페이지로 리다이렉트
-      window.location.href = "/login";
+
+      // 사용자에게 확인
+      const shouldLogin = window.confirm(
+        "로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
+      );
+
+      if (shouldLogin) {
+        window.location.href = "/login";
+      } else {
+        window.location.href = "/";
+      }
     }
     return Promise.reject(error);
   }
@@ -173,6 +182,10 @@ export const addWishlist = async (data: {
   longitude: number;
 }) => {
   return await post("/wishlist", data);
+};
+
+export const addWishlistAtMap = async (data: { source: string }) => {
+  return await post("/wishlist/add", data);
 };
 
 // 찜하기 삭제

@@ -18,7 +18,6 @@ export const PUBLIC_ROUTES = [
   "/login/checkPermission",
   "/login/checkCharacter",
   "/login/makeCharacter",
-  "/chat",
 ];
 
 // 해당 경로가 공개 라우트인지 확인
