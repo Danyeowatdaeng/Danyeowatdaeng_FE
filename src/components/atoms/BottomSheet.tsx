@@ -89,15 +89,16 @@ export default function BottomSheet({
           ${open ? "" : "translate-y-full"}
           ${className}
           pb-[env(safe-area-inset-bottom)]
+          flex flex-col
         `}
       >
         <div className="h-1.5 w-10 mx-auto my-3 rounded-full bg-gray-300" />
         {title && (
-          <div className="px-4 pb-2 text-base font-semibold text-center">
+          <div className="px-4 pb-2 text-base font-semibold text-center flex-shrink-0">
             {title}
           </div>
         )}
-        <div className="px-2 pb-6">{children}</div>
+        <div className="px-2 pb-6 overflow-y-auto flex-1">{children}</div>
       </animated.div>
     </div>,
     isWide ? document.getElementById("app-container")! : document.body

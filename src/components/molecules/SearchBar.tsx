@@ -10,12 +10,14 @@ type SearchBarProps = {
   placeholder?: string;
   onFocus?: () => void;
   className?: string;
+  onSearchComplete?: () => void;
 };
 
 export default function SearchBar({
   placeholder = "",
   onFocus,
   className = "",
+  onSearchComplete,
 }: SearchBarProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [searchValue, setSearchValue] = useState<string>("");
@@ -34,6 +36,11 @@ export default function SearchBar({
 
       console.log("검색 결과:", response);
       setSearchResults([...response.data]);
+      
+      // 검색 완료 후 바텀시트 열기
+      if (onSearchComplete) {
+        onSearchComplete();
+      }
     } catch (error) {
       console.error("검색 오류:", error);
     }
