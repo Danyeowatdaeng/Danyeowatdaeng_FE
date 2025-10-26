@@ -5,6 +5,7 @@ import PrimaryButton from "../../components/molecules/PrimaryButton";
 import { post } from "../../api";
 import useUserInfoStore from "../../store/userInfoStore";
 import { useNavigate } from "@tanstack/react-router";
+import axios from "axios";
 
 export default function MakeCharacterPage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function MakeCharacterPage() {
   const [preview, setPreview] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [generatedBlob, setGeneratedBlob] = useState<Blob | null>(null); // 생성된 이미지 Blob 저장
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,26 +51,38 @@ export default function MakeCharacterPage() {
     setIsGenerating(true);
     const formData = new FormData();
     formData.append("file", petImage);
-    formData.append("key", "value");
 
     try {
-      const res = await post(
-        "https://danyeowatdaeng.p-e.kr/api/pet-avatars/transform-mypet",
+      // axios를 직접 사용하여 Blob 응답 받기
+      const res = await axios.post(
+        "https://danyeowatdaeng.p-e.kr/api/pet-avatars/upload/transform",
         formData,
-        { responseType: "blob", "Content-Type": "multipart/form-data" }
+        {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
 
-      const maybeBlob = res?.data ?? res;
-      const mimeFromBlob = maybeBlob?.type && String(maybeBlob.type);
-      const mimeFromHeaders = res?.headers?.["content-type"]?.split(";")[0];
-      const mime = mimeFromBlob || mimeFromHeaders || "image/png";
+      console.log("API 응답:", res);
+      console.log("응답 데이터 (Blob):", res.data);
+      console.log("Blob size:", res.data.size);
+      console.log("Blob type:", res.data.type);
 
-      const blob: Blob =
-        maybeBlob instanceof Blob
-          ? maybeBlob
-          : new Blob([maybeBlob], { type: mime });
+      // Blob이 비어있는지 확인
+      if (res.data.size === 0) {
+        throw new Error("서버에서 빈 이미지를 반환했습니다.");
+      }
 
-      const url = URL.createObjectURL(blob);
+      // Blob URL 생성
+      const url = URL.createObjectURL(res.data);
+      console.log("생성된 Blob URL:", url);
+
+      // Blob 저장 (나중에 서버에 전송하기 위해)
+      setGeneratedBlob(res.data);
+
       setPreview((prev) => {
         if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
         return url;
@@ -133,11 +147,41 @@ export default function MakeCharacterPage() {
         )}
         <PrimaryButton
           onClick={async () => {
-            const res = await post("/members/pet-avatar", {
-              petAvatarId: petAvatarId,
-            });
-            if (res.isSuccess) {
-              navigate({ to: "/login/checkCharacter" });
+            try {
+              // 생성된 캐릭터 이미지가 있으면 서버에 업로드
+              if (generatedBlob) {
+                const formData = new FormData();
+                formData.append("file", generatedBlob, "pet-avatar.png");
+
+                const uploadRes = await axios.post(
+                  "https://danyeowatdaeng.p-e.kr/api/pet-avatars/upload",
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                    withCredentials: true,
+                  }
+                );
+
+                console.log("생성된 캐릭터 업로드 완료:", uploadRes.data);
+
+                // 업로드 성공 후 다음 단계로
+                if (uploadRes.data) {
+                  navigate({ to: "/login/checkCharacter" });
+                }
+              } else {
+                // 기본 아바타 선택
+                const res = await post("/members/pet-avatar", {
+                  petAvatarId: petAvatarId,
+                });
+                if (res.isSuccess) {
+                  navigate({ to: "/login/checkCharacter" });
+                }
+              }
+            } catch (error) {
+              console.error("캐릭터 저장 실패:", error);
+              alert("캐릭터 저장에 실패했습니다. 다시 시도해주세요.");
             }
           }}
         >

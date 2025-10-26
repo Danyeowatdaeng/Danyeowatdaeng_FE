@@ -14,7 +14,7 @@ type AuthLandingTemplateProps = {
 export default function AuthLandingTemplate({
   onBack,
   onKakao,
-  onNaver,
+  // onNaver,
   onGoogle,
   logo,
 }: AuthLandingTemplateProps) {
@@ -32,11 +32,11 @@ export default function AuthLandingTemplate({
           provider="kakao"
           label="카카오톡으로 시작하기"
         />
-        <SocialButton
+        {/* <SocialButton
           onClick={onNaver}
           provider="naver"
           label="네이버로 시작하기"
-        />
+        /> */}
         <SocialButton
           onClick={onGoogle}
           provider="google"

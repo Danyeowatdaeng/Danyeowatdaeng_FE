@@ -37,7 +37,7 @@ export default function CartButton({
     e.stopPropagation();
 
     // 필수 정보가 없으면 경고
-    if (!placeId || !contentTypeId || !title || !address) {
+    if (!placeId || !title || !address) {
       alert("장소 정보가 부족합니다.");
       return;
     }
@@ -54,7 +54,7 @@ export default function CartButton({
         // 찜하기 추가
         await addWishlist({
           contentId: placeId,
-          contentTypeId,
+          contentTypeId: contentTypeId || 0,
           title,
           address,
           imageUrl: imageUrl || "",
