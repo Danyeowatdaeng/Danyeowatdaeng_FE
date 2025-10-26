@@ -158,8 +158,8 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto max-w-full min-h-dvh bg-[#F7F8FA] flex flex-col">
-      <div className="flex items-center justify-between p-4">
+    <div className="mx-auto max-w-full h-dvh bg-[#F7F8FA] flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between p-4 flex-shrink-0">
         <button
           className="w-6 h-6 grid place-items-center"
           aria-label="더보기"
@@ -183,17 +183,14 @@ export default function ChatPage() {
         )}
       </div>
 
-      <div
-        ref={listRef}
-        className="flex-1 overflow-y-auto px-4 pt-4 pb-[200px]"
-      >
+      <div ref={listRef} className="flex-1 overflow-y-auto px-4 pt-4">
         {!hasConversationBegun ? (
-          <div className="mt-10 flex flex-col items-center text-center text-gray-400">
+          <div className="mt-10 flex flex-col items-center text-center text-gray-400 pb-[200px]">
             <div className="w-12 h-12 rounded-full bg-gray-300 mb-3" />
             <p className="text-sm">무엇이든 물어보세요</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-10 max-w-full overflow-y-scroll">
+          <div className="flex flex-col gap-10 pb-[280px]">
             {messages.map((m) =>
               m.role === "bot" ? (
                 <div key={m.id} className="flex flex-col items-start gap-3">
@@ -251,7 +248,7 @@ export default function ChatPage() {
       {/* 입력 영역 */}
       <div
         className={cn("inset-x-0 z-30", {
-          "relative bottom-77": isWide,
+          "relative bottom-23": isWide,
           "fixed bottom-[72px]": !isWide,
         })}
       >
@@ -292,7 +289,7 @@ export default function ChatPage() {
         </div>
         <div className="h-[12px]" />
       </div>
-      {isWide && <TabBar className="sticky bottom-0 w-full z-30" />}
+      {isWide && <TabBar className="sticky bottom-30 w-full z-30" />}
     </div>
   );
 }
