@@ -247,6 +247,21 @@ export const getWishlistGroups = async (params?: {
   return await get("/wishlist-groups", params);
 };
 
+// 그룹 상세 조회
+export interface GetWishlistGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: WishlistGroup;
+  success: boolean;
+}
+
+export const getWishlistGroup = async (
+  groupId: number
+): Promise<GetWishlistGroupResponse> => {
+  return await get(`/wishlist-groups/${groupId}`);
+};
+
 // 그룹 생성
 export interface CreateWishlistGroupRequest {
   name: string;

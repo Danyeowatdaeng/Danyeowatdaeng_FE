@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import BackHeader from "../components/molecules/BackHeader";
 import WishlistItem, { type WishlistItemData } from "../components/molecules/WishlistItem";
 import TabBar from "../components/molecules/TabBar";
@@ -7,7 +8,7 @@ import BottomSheet from "../components/atoms/BottomSheet";
 import PrimaryButton from "../components/molecules/PrimaryButton";
 import { useWebControlStore } from "../store/webControlStore";
 import { 
-  getWishlistGroups, 
+  getWishlistGroup,
   getWishlist, 
   addWishlistToGroup,
   type WishlistGroup,
@@ -31,18 +32,32 @@ export default function GroupDetailPage({ groupId }: Props) {
   const fetchGroup = async () => {
     try {
       setLoading(true);
-      // 전체 그룹 목록에서 해당 그룹 찾기
-      const response = await getWishlistGroups();
-      const foundGroup = response.data.find((g) => g.id === groupId);
-      setGroup(foundGroup || null);
+      console.log("=== 그룹 상세 조회 시작 ===");
+      console.log("groupId:", groupId);
+      console.log("API 호출: /wishlist-groups/" + groupId);
+      
+      // 그룹 상세 조회 API 사용
+      const response = await getWishlistGroup(groupId);
+      console.log("✅ 그룹 상세 조회 응답:", response);
+      
+      if (response.isSuccess) {
+        console.log("✅ 그룹 데이터:", response.data);
+        console.log("✅ 그룹 내 찜 목록:", response.data.wishlists);
+        setGroup(response.data);
+      } else {
+        console.log("❌ 응답 실패");
+        setGroup(null);
+      }
     } catch (error) {
-      console.error("그룹 조회 실패:", error);
+      console.error("❌ 그룹 조회 실패:", error);
+      setGroup(null);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log("🔄 useEffect 실행 - groupId:", groupId);
     fetchGroup();
   }, [groupId]);
 
@@ -57,12 +72,17 @@ export default function GroupDetailPage({ groupId }: Props) {
       
       // 전체 찜 목록 불러오기
       const response = await getWishlist({ page: 0, size: 100 });
+      console.log("📋 전체 찜 목록:", response.data?.content);
+      
       if (response.isSuccess && response.data) {
-        // 이미 그룹에 추가된 항목 제외
+        // 이미 그룹에 추가된 항목 제외 (id 사용)
         const groupWishlistIds = group?.wishlists?.map(w => w.id) || [];
+        console.log("그룹에 이미 있는 ID들:", groupWishlistIds);
+        
         const availableWishlists = response.data.content.filter(
           item => !groupWishlistIds.includes(item.id)
         );
+        console.log("추가 가능한 찜 목록:", availableWishlists);
         setAllWishlists(availableWishlists);
       }
     } catch (error) {
@@ -90,7 +110,9 @@ export default function GroupDetailPage({ groupId }: Props) {
     }
 
     try {
-      await addWishlistToGroup(groupId, selectedWishlistIds);
+      console.log("그룹에 추가 시도:", { groupId, wishlistIds: selectedWishlistIds });
+      const response = await addWishlistToGroup(groupId, selectedWishlistIds);
+      console.log("그룹에 추가 응답:", response);
       
       // 그룹 정보 다시 불러오기
       await fetchGroup();
@@ -164,10 +186,10 @@ export default function GroupDetailPage({ groupId }: Props) {
               {/* + 버튼 */}
               <button
                 onClick={handleOpenAddSheet}
-                className="w-12 h-12 rounded-full bg-[#00A3A5] text-white flex items-center justify-center text-2xl shadow-lg hover:bg-[#008a8c] transition-colors"
+                className="w-12 h-12 rounded-full bg-[#00A3A5] text-white flex items-center justify-center shadow-lg hover:bg-[#008a8c] transition-colors"
                 aria-label="찜 목록 추가"
               >
-                +
+                <Plus size={24} strokeWidth={2.5} />
               </button>
             </div>
           </div>
