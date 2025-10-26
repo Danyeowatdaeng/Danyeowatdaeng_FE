@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getMemberInfo, type MemberInfo } from "../api";
+import type { MemberInfo } from "../api";
 
 interface UserInfo {
   isLogin: boolean;
@@ -17,18 +17,14 @@ interface UserInfo {
   setMemberInfo: (info: MemberInfo | null) => void;
   isLoadingUserInfo: boolean;
   setIsLoadingUserInfo: (loading: boolean) => void;
-  fetchUserInfo: () => Promise<void>;
 }
 
-const useUserInfoStore = create<UserInfo>((set, get) => ({
+const useUserInfoStore = create<UserInfo>((set) => ({
   isLogin: false,
   setIsLogin: (value) => {
     set({ isLogin: value });
-    // 로그인 상태가 true로 변경되면 사용자 정보를 자동으로 가져옴
-    if (value) {
-      get().fetchUserInfo();
-    } else {
-      // 로그아웃 시 사용자 정보 초기화
+    // 로그아웃 시 사용자 정보 초기화
+    if (!value) {
       set({ 
         memberInfo: null, 
         petAvatarCdnUrl: null,
@@ -49,24 +45,6 @@ const useUserInfoStore = create<UserInfo>((set, get) => ({
   setMemberInfo: (info) => set({ memberInfo: info }),
   isLoadingUserInfo: false,
   setIsLoadingUserInfo: (loading) => set({ isLoadingUserInfo: loading }),
-  fetchUserInfo: async () => {
-    const { isLogin } = get();
-    if (!isLogin) return;
-    
-    try {
-      set({ isLoadingUserInfo: true });
-      const response = await getMemberInfo();
-      if (response.isSuccess && response.data) {
-        set({ 
-          memberInfo: response.data
-        });
-      }
-    } catch (error) {
-      console.error("사용자 정보 조회 실패:", error);
-    } finally {
-      set({ isLoadingUserInfo: false });
-    }
-  },
 }));
 
 export default useUserInfoStore;

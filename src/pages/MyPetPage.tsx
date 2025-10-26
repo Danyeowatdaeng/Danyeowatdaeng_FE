@@ -6,6 +6,7 @@ import MyPetTemplate from "../components/templates/MyPetTemplate";
 import type { DiaryItem, DiaryListResponse } from "../api/diary";
 import { mapListItem } from "../api/diary";
 import { getMemberInfo, type MemberInfo } from "../api";
+import useUserInfoStore from "../store/userInfoStore";
 
 export default function MyPetPage() {
   const navigate = useNavigate();                       // ✅ 선언
@@ -16,6 +17,7 @@ export default function MyPetPage() {
   const [loading, setLoading] = useState(false);
   const [memberInfo, setMemberInfo] = useState<MemberInfo | null>(null);
   const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(true);
+  const { setMemberInfo: setGlobalMemberInfo, setIsLoadingUserInfo: setGlobalIsLoadingUserInfo } = useUserInfoStore();
 
   const goToDiaryWrite = () => navigate({ to: "/mypet/diary" });   // ✅ 교체
   const goToDailyQuest = () => navigate({ to: "/mypet/quest" });   // ✅ 교체
@@ -49,20 +51,23 @@ export default function MyPetPage() {
     const fetchMemberInfo = async () => {
       try {
         setIsLoadingUserInfo(true);
+        setGlobalIsLoadingUserInfo(true);
         const response = await getMemberInfo();
         if (response.isSuccess && response.data) {
           setMemberInfo(response.data);
+          setGlobalMemberInfo(response.data); // 전역 상태에도 저장
         }
       } catch (error) {
         console.error("회원 정보 조회 실패:", error);
       } finally {
         setIsLoadingUserInfo(false);
+        setGlobalIsLoadingUserInfo(false);
       }
     };
 
     fetchMemberInfo();
     fetchDiaries(0);
-  }, []);
+  }, [setGlobalMemberInfo, setGlobalIsLoadingUserInfo]);
 
   if (isLoadingUserInfo) {
     return (

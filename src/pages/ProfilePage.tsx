@@ -1,5 +1,4 @@
 import { useRouter } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import ProfileTemplate from "../components/templates/ProfileTemplate";
 import { usePointStore } from "../store/pointStore"; // 👈 추가
 import useUserInfoStore from "../store/userInfoStore";
@@ -7,19 +6,11 @@ import useUserInfoStore from "../store/userInfoStore";
 export default function ProfilePage() {
   const router = useRouter();
   const point = usePointStore((s) => s.point); // 👈 전역 포인트 값
-  const [isInitialized, setIsInitialized] = useState(false);
-  const { setIsLogin, memberInfo, isLoadingUserInfo, isLogin } = useUserInfoStore();
+  const { setIsLogin, memberInfo, isLoadingUserInfo } = useUserInfoStore();
 
   const goToCoupon = () => router.navigate({ to: "/profile/coupon" });
   const goToStamp  = () => router.navigate({ to: "/profile/stamp" });
   const goToPoint  = () => router.navigate({ to: "/profile/point" });
-
-  useEffect(() => {
-    // 로그인 상태이고 사용자 정보가 로드되었을 때만 초기화
-    if (isLogin && !isLoadingUserInfo && memberInfo) {
-      setIsInitialized(true);
-    }
-  }, [isLogin, isLoadingUserInfo, memberInfo]);
 
   const handleLogout = () => {
     if (window.confirm("로그아웃하시겠습니까?")) {
@@ -32,10 +23,8 @@ export default function ProfilePage() {
     }
   };
 
-  // 로딩 조건을 더 명확하게 설정
-  const shouldShowLoading = isLoadingUserInfo || (isLogin && !memberInfo) || !isInitialized;
-
-  if (shouldShowLoading) {
+  // 사용자 정보가 로딩 중이면 로딩 표시
+  if (isLoadingUserInfo) {
     return (
       <div className="flex items-center justify-center h-full">
         <p>로딩 중...</p>
