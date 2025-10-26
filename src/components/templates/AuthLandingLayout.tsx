@@ -1,6 +1,9 @@
 import BackHeader from "../molecules/BackHeader";
 import Icon from "../atoms/Icon";
 import { SocialButton } from "../molecules/SocialButton";
+import PrimaryButton from "../molecules/PrimaryButton";
+import { testSignup } from "../../api/auth";
+import { useRouter } from "@tanstack/react-router";
 
 type AuthLandingTemplateProps = {
   onBack?: () => void;
@@ -18,6 +21,21 @@ export default function AuthLandingTemplate({
   onGoogle,
   logo,
 }: AuthLandingTemplateProps) {
+  const router = useRouter();
+
+  const handleTestSignup = async () => {
+    try {
+      const testEmail = "test@example.com";
+      const testName = "평가용 테스트 계정";
+      
+      await testSignup(testEmail, testName);
+      // 회원가입 성공 후 약관 동의 페이지로 이동
+      router.navigate({ to: "/login/checkPermission" });
+    } catch (error) {
+      console.error("테스트 회원가입 실패:", error);
+      alert("테스트 회원가입에 실패했습니다.");
+    }
+  };
   return (
     <div className="h-[100vh] p-10">
       <div className="">
@@ -42,6 +60,13 @@ export default function AuthLandingTemplate({
           provider="google"
           label="구글로 시작하기"
         />
+        <PrimaryButton
+          variant="secondary"
+          size="md"
+          onClick={handleTestSignup}
+        >
+          <span className="font-bold text-[0.9rem] text-gray-700">평가용 테스트 계정 회원가입</span>
+        </PrimaryButton>
       </div>
     </div>
   );

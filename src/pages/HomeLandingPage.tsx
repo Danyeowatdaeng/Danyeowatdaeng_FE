@@ -1,13 +1,21 @@
+import { useState, useEffect } from "react";
 import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
 import type { CategoryItemProps } from "../components/molecules/category/CategoryItem";
 import type { EventListItemData } from "../components/molecules/EventListItem";
 import { useRouter } from "@tanstack/react-router";
 import { useMapSearch } from "../hooks/useMapSearch";
 import { useMapSettingsStore } from "../store/mapSettingsStore";
+import ReservationInfoModal from "../components/molecules/ReservationInfoModal";
 
 export default function HomeLandingPage() {
   const router = useRouter();
   const { distance } = useMapSettingsStore();
+  const [showReservationModal, setShowReservationModal] = useState(false);
+
+  // 페이지 로드 시 모달 표시
+  useEffect(() => {
+    setShowReservationModal(true);
+  }, []);
 
   // 축제 데이터 가져오기
   const { data: festivalData } = useMapSearch({
@@ -120,17 +128,23 @@ export default function HomeLandingPage() {
     }));
 
   return (
-    <HomeLandingTemplate
-      categories={categories}
-      eventTitle="7월의 펫 이벤트"
-      events={events}
-      onMoreEvents={() => {
-        router.navigate({
-          to: "/landing/category/$category",
-          params: { category: "festival" },
-        });
-      }}
-      onEventClick={(id) => console.log("아이템 클릭:", id)}
-    />
+    <>
+      <HomeLandingTemplate
+        categories={categories}
+        eventTitle="7월의 펫 이벤트"
+        events={events}
+        onMoreEvents={() => {
+          router.navigate({
+            to: "/landing/category/$category",
+            params: { category: "festival" },
+          });
+        }}
+        onEventClick={(id) => console.log("아이템 클릭:", id)}
+      />
+      <ReservationInfoModal
+        isOpen={showReservationModal}
+        onClose={() => setShowReservationModal(false)}
+      />
+    </>
   );
 }

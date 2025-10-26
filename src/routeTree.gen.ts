@@ -17,6 +17,7 @@ import { Route as MypetIndexRouteImport } from './routes/mypet/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
+import { Route as ReservationPlaceIdRouteImport } from './routes/reservation.$placeId'
 import { Route as ProfileStampRouteImport } from './routes/profile/stamp'
 import { Route as ProfilePointRouteImport } from './routes/profile/point'
 import { Route as ProfileCouponRouteImport } from './routes/profile/coupon'
@@ -26,6 +27,7 @@ import { Route as LoginMakeCharacterRouteImport } from './routes/login/makeChara
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 import { Route as LoginCheckCharacterRouteImport } from './routes/login/checkCharacter'
 import { Route as MypetDiaryIndexRouteImport } from './routes/mypet/diary/index'
+import { Route as ReservationPlaceIdCompleteRouteImport } from './routes/reservation.$placeId.complete'
 import { Route as PlacePlaceIdReviewRouteImport } from './routes/place/$placeId/review'
 import { Route as MypetDiaryIdRouteImport } from './routes/mypet/diary/$id'
 import { Route as LandingCategoryCategoryRouteImport } from './routes/landing/category/$category'
@@ -69,6 +71,11 @@ const LandingIndexRoute = LandingIndexRouteImport.update({
 const CartIndexRoute = CartIndexRouteImport.update({
   id: '/cart/',
   path: '/cart/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReservationPlaceIdRoute = ReservationPlaceIdRouteImport.update({
+  id: '/reservation/$placeId',
+  path: '/reservation/$placeId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileStampRoute = ProfileStampRouteImport.update({
@@ -116,6 +123,12 @@ const MypetDiaryIndexRoute = MypetDiaryIndexRouteImport.update({
   path: '/mypet/diary/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReservationPlaceIdCompleteRoute =
+  ReservationPlaceIdCompleteRouteImport.update({
+    id: '/complete',
+    path: '/complete',
+    getParentRoute: () => ReservationPlaceIdRoute,
+  } as any)
 const PlacePlaceIdReviewRoute = PlacePlaceIdReviewRouteImport.update({
   id: '/place/$placeId/review',
   path: '/place/$placeId/review',
@@ -148,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
+  '/reservation/$placeId': typeof ReservationPlaceIdRouteWithChildren
   '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
@@ -158,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
+  '/reservation/$placeId/complete': typeof ReservationPlaceIdCompleteRoute
   '/mypet/diary': typeof MypetDiaryIndexRoute
 }
 export interface FileRoutesByTo {
@@ -171,6 +186,7 @@ export interface FileRoutesByTo {
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
+  '/reservation/$placeId': typeof ReservationPlaceIdRouteWithChildren
   '/cart': typeof CartIndexRoute
   '/landing': typeof LandingIndexRoute
   '/login': typeof LoginIndexRoute
@@ -181,6 +197,7 @@ export interface FileRoutesByTo {
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
+  '/reservation/$placeId/complete': typeof ReservationPlaceIdCompleteRoute
   '/mypet/diary': typeof MypetDiaryIndexRoute
 }
 export interface FileRoutesById {
@@ -195,6 +212,7 @@ export interface FileRoutesById {
   '/profile/coupon': typeof ProfileCouponRoute
   '/profile/point': typeof ProfilePointRoute
   '/profile/stamp': typeof ProfileStampRoute
+  '/reservation/$placeId': typeof ReservationPlaceIdRouteWithChildren
   '/cart/': typeof CartIndexRoute
   '/landing/': typeof LandingIndexRoute
   '/login/': typeof LoginIndexRoute
@@ -205,6 +223,7 @@ export interface FileRoutesById {
   '/landing/category/$category': typeof LandingCategoryCategoryRoute
   '/mypet/diary/$id': typeof MypetDiaryIdRoute
   '/place/$placeId/review': typeof PlacePlaceIdReviewRoute
+  '/reservation/$placeId/complete': typeof ReservationPlaceIdCompleteRoute
   '/mypet/diary/': typeof MypetDiaryIndexRoute
 }
 export interface FileRouteTypes {
@@ -220,6 +239,7 @@ export interface FileRouteTypes {
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
+    | '/reservation/$placeId'
     | '/cart'
     | '/landing'
     | '/login'
@@ -230,6 +250,7 @@ export interface FileRouteTypes {
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
+    | '/reservation/$placeId/complete'
     | '/mypet/diary'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -243,6 +264,7 @@ export interface FileRouteTypes {
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
+    | '/reservation/$placeId'
     | '/cart'
     | '/landing'
     | '/login'
@@ -253,6 +275,7 @@ export interface FileRouteTypes {
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
+    | '/reservation/$placeId/complete'
     | '/mypet/diary'
   id:
     | '__root__'
@@ -266,6 +289,7 @@ export interface FileRouteTypes {
     | '/profile/coupon'
     | '/profile/point'
     | '/profile/stamp'
+    | '/reservation/$placeId'
     | '/cart/'
     | '/landing/'
     | '/login/'
@@ -276,6 +300,7 @@ export interface FileRouteTypes {
     | '/landing/category/$category'
     | '/mypet/diary/$id'
     | '/place/$placeId/review'
+    | '/reservation/$placeId/complete'
     | '/mypet/diary/'
   fileRoutesById: FileRoutesById
 }
@@ -290,6 +315,7 @@ export interface RootRouteChildren {
   ProfileCouponRoute: typeof ProfileCouponRoute
   ProfilePointRoute: typeof ProfilePointRoute
   ProfileStampRoute: typeof ProfileStampRoute
+  ReservationPlaceIdRoute: typeof ReservationPlaceIdRouteWithChildren
   CartIndexRoute: typeof CartIndexRoute
   LandingIndexRoute: typeof LandingIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
@@ -361,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reservation/$placeId': {
+      id: '/reservation/$placeId'
+      path: '/reservation/$placeId'
+      fullPath: '/reservation/$placeId'
+      preLoaderRoute: typeof ReservationPlaceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile/stamp': {
       id: '/profile/stamp'
       path: '/profile/stamp'
@@ -424,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MypetDiaryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reservation/$placeId/complete': {
+      id: '/reservation/$placeId/complete'
+      path: '/complete'
+      fullPath: '/reservation/$placeId/complete'
+      preLoaderRoute: typeof ReservationPlaceIdCompleteRouteImport
+      parentRoute: typeof ReservationPlaceIdRoute
+    }
     '/place/$placeId/review': {
       id: '/place/$placeId/review'
       path: '/place/$placeId/review'
@@ -455,6 +495,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ReservationPlaceIdRouteChildren {
+  ReservationPlaceIdCompleteRoute: typeof ReservationPlaceIdCompleteRoute
+}
+
+const ReservationPlaceIdRouteChildren: ReservationPlaceIdRouteChildren = {
+  ReservationPlaceIdCompleteRoute: ReservationPlaceIdCompleteRoute,
+}
+
+const ReservationPlaceIdRouteWithChildren =
+  ReservationPlaceIdRoute._addFileChildren(ReservationPlaceIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
@@ -466,6 +517,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileCouponRoute: ProfileCouponRoute,
   ProfilePointRoute: ProfilePointRoute,
   ProfileStampRoute: ProfileStampRoute,
+  ReservationPlaceIdRoute: ReservationPlaceIdRouteWithChildren,
   CartIndexRoute: CartIndexRoute,
   LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,

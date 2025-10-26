@@ -5,6 +5,7 @@ import PlacePreview from "../../molecules/PlacePreview";
 import { useSearchResultStore } from "../../../store/searchResultStore";
 import type { SearchResult } from "../../../store/searchResultStore";
 import { useRouter } from "@tanstack/react-router";
+import { isPartnerPlace } from "../../../utils/partnerPlaces";
 
 type KakaoMapProps = {
   expanded: boolean;
@@ -142,24 +143,29 @@ export default function KakaoMap({ expanded, center }: KakaoMapProps) {
         level={3}
       >
         {locations.length > 0 &&
-          locations.map((loc, index) => (
-            <MapMarker
-              key={`location-${index}`}
-              position={loc}
-              image={{
-                src: '/Assets/icons/Location.svg',
-                size: { width: 40, height: 40 },
-                options: {
-                  offset: { x: 20, y: 20 }
-                }
-              }}
-              onClick={() => {
-                setIsBottomSheetOpen(true);
-                setSelectedPlace(loc);
-                setPlaceInfo(searchResults[index]);
-              }}
-            />
-          ))}
+          locations.map((loc, index) => {
+            const placeInfo = searchResults[index];
+            const isPartner = placeInfo ? isPartnerPlace(placeInfo.name) : false;
+            
+            return (
+              <MapMarker
+                key={`location-${index}`}
+                position={loc}
+                image={{
+                  src: isPartner ? '/Assets/icons/PawPrint.svg' : '/Assets/icons/Location.svg',
+                  size: { width: 40, height: 40 },
+                  options: {
+                    offset: { x: 20, y: 20 }
+                  }
+                }}
+                onClick={() => {
+                  setIsBottomSheetOpen(true);
+                  setSelectedPlace(loc);
+                  setPlaceInfo(placeInfo);
+                }}
+              />
+            );
+          })}
         {/* center에 originalLat가 있으면 원본 위치에 추가 마커 표시 */}
         {center?.originalLat && (
           <MapMarker
