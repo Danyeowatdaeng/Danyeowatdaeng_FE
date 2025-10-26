@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import ProfileTemplate from "../components/templates/ProfileTemplate";
 import { usePointStore } from "../store/pointStore"; // 👈 추가
 import { getMemberInfo, type MemberInfo } from "../api";
+import useUserInfoStore from "../store/userInfoStore";
 
 export default function ProfilePage() {
   const router = useRouter();
   const point = usePointStore((s) => s.point); // 👈 전역 포인트 값
+  const { setIsLogin } = useUserInfoStore();
   const [memberInfo, setMemberInfo] = useState<MemberInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +34,17 @@ export default function ProfilePage() {
   const goToStamp  = () => router.navigate({ to: "/profile/stamp" });
   const goToPoint  = () => router.navigate({ to: "/profile/point" });
 
+  const handleLogout = () => {
+    if (window.confirm("로그아웃하시겠습니까?")) {
+      // 쿠키 삭제
+      document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      // 로그인 상태 업데이트
+      setIsLogin(false);
+      // 로그인 페이지로 이동
+      router.navigate({ to: "/login" });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -52,6 +65,7 @@ export default function ProfilePage() {
       stamp={4}
       onClickStamp={goToStamp}
       onClickPoint={goToPoint}
+      onLogout={handleLogout}
     />
   );
 }

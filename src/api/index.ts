@@ -119,3 +119,42 @@ export interface MemberInfoResponse {
 export const getMemberInfo = async (): Promise<MemberInfoResponse> => {
   return await get("/members/me");
 };
+
+// 찜 목록 조회
+export interface WishlistItem {
+  id: number;
+  placeId: number;
+  placeName: string;
+  category: string;
+  address: string;
+  imageUrl?: string;
+  createdAt: string;
+}
+
+export interface Pageable {
+  page: number;
+  size: number;
+  sort?: string[];
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+}
+
+export interface WishlistResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: PageResponse<WishlistItem>;
+  success: boolean;
+}
+
+export const getWishlist = async (params?: { page?: number; size?: number }): Promise<WishlistResponse> => {
+  return await get("/wishlist", params);
+};
