@@ -1,5 +1,5 @@
-import Button from "../atoms/Button";
-import Label from "../atoms/Label";
+import Button from "../../atoms/Button";
+import Label from "../../atoms/Label";
 
 export type CafeCardData = {
   id: string | number;

@@ -3,11 +3,11 @@ import CafeListTemplate from "../components/templates/CafeListTemplate";
 import { useRouter } from "@tanstack/react-router";
 import { Route } from "../routes/landing/category/$category";
 import { useMapSearch } from "../hooks/useMapSearch";
-import { CATEGORY_TITLE_MAP } from "../utils/categoryMapping";
+import { CATEGORY_TITLE_MAP, CATEGORY_MAPPING } from "../utils/categoryMapping";
 import BottomSheet from "../components/atoms/BottomSheet";
 import PlacePreview from "../components/molecules/PlacePreview";
 import type { SearchResult } from "../store/searchResultStore";
-import type { CafeCardData } from "../components/molecules/CafeCard";
+import type { CafeCardData } from "../components/molecules/category/CafeCard";
 
 export default function CafeListPage() {
   const router = useRouter();
@@ -55,6 +55,7 @@ export default function CafeListPage() {
   const convertToSearchResult = (place: CafeCardData): SearchResult => ({
     id: typeof place.id === "string" ? parseInt(place.id) : place.id,
     contentId: typeof place.id === "string" ? parseInt(place.id) : place.id,
+    contentTypeId: CATEGORY_MAPPING[category],
     name: place.title as "string",
     category3: title as "string",
     roadAddress: place.address as "string",

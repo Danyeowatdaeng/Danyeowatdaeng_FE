@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CartLayout from "../components/templates/CartLayout";
 import { getWishlist, type WishlistItem } from "../api";
-import type { CafeCardData } from "../components/molecules/CafeCard";
+import type { CafeCardData } from "../components/molecules/category/CafeCard";
 
 export default function CartPage() {
   const [wishlistItems, setWishlistItems] = useState<CafeCardData[]>([]);

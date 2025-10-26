@@ -22,10 +22,11 @@ export default function BottomSheet({
   children,
   title,
   className = "",
+  height: customHeight,
 }: BottomSheetProps) {
   const isWide = useWebControlStore((state) => state.isWide);
-  const MIN_HEIGHT = 400; // 기본 높이 (px)
-  let MAX_HEIGHT = 600; // fallback
+  const MIN_HEIGHT = typeof customHeight === "number" ? customHeight : 400; // 기본 높이 (px)
+  let MAX_HEIGHT = typeof customHeight === "number" ? customHeight : 600; // fallback
 
   // web/app 높이 다르게 계산
   if (typeof document !== "undefined") {
@@ -92,7 +93,9 @@ export default function BottomSheet({
       >
         <div className="h-1.5 w-10 mx-auto my-3 rounded-full bg-gray-300" />
         {title && (
-          <div className="px-4 pb-2 text-base font-semibold">{title}</div>
+          <div className="px-4 pb-2 text-base font-semibold text-center">
+            {title}
+          </div>
         )}
         <div className="px-2 pb-6">{children}</div>
       </animated.div>

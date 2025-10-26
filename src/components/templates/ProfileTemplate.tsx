@@ -81,7 +81,11 @@ export default function ProfileTemplate({
         )}
       </div>
 
-      {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
+      {isWide && (
+        <TabBar
+          className={`relative w-full z-30 ${onLogout ? "bottom-9" : "bottom-0"}`}
+        />
+      )}
     </div>
   );
 }

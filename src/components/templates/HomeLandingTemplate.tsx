@@ -1,7 +1,7 @@
 import React from "react";
 import MapArea from "../organisms/home/MapArea";
-import CategoryGrid from "../molecules/CategoryGrid";
-import type { CategoryItemProps } from "../molecules/CategoryItem";
+import CategoryGrid from "../molecules/category/CategoryGrid";
+import type { CategoryItemProps } from "../molecules/category/CategoryItem";
 import EventListSection from "../molecules/EventListSection";
 import type { EventListItemData } from "../molecules/EventListItem";
 import TabBar from "../molecules/TabBar";

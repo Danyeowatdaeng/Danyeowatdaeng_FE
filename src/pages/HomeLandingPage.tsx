@@ -1,5 +1,5 @@
 import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
-import type { CategoryItemProps } from "../components/molecules/CategoryItem";
+import type { CategoryItemProps } from "../components/molecules/category/CategoryItem";
 import type { EventListItemData } from "../components/molecules/EventListItem";
 import { useRouter } from "@tanstack/react-router";
 import { useMapSearch } from "../hooks/useMapSearch";

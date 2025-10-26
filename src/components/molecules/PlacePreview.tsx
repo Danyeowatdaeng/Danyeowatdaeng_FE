@@ -7,6 +7,7 @@ import FlagIcon from "../atoms/Icon/FlagIcon";
 import StarIcon from "../atoms/Icon/StarIcon";
 import { Loader } from "@googlemaps/js-api-loader";
 import { fetchReviewsByContentId, type Review } from "../../api/review";
+import { getWishlist } from "../../api/index";
 
 interface KakaoPlace {
   place_name: string;
@@ -50,6 +51,9 @@ export default function PlacePreview({
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviews, setReviews] = useState<ReviewLite[]>([]);
   const [reviewError, setReviewError] = useState<string | null>(null);
+
+  // 찜하기 상태
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const maxWidth = 400;
 
@@ -210,6 +214,30 @@ export default function PlacePreview({
     load();
   }, [placeInfo]);
 
+  /** 찜하기 상태 확인 */
+  useEffect(() => {
+    const checkWishlist = async () => {
+      if (!placeInfo?.contentId && !placeInfo?.id) return;
+
+      try {
+        const response = await getWishlist({ page: 0, size: 100 });
+
+        if (response.isSuccess && response.data) {
+          // 현재 장소가 찜 목록에 있는지 확인
+          const placeId = placeInfo.contentId || placeInfo.id;
+          const isInWishlist = response.data.content.some(
+            (item) => item.placeId === placeId
+          );
+          setIsWishlisted(isInWishlist);
+        }
+      } catch (error) {
+        console.error("찜하기 목록 조회 실패:", error);
+      }
+    };
+
+    checkWishlist();
+  }, [placeInfo?.contentId, placeInfo?.id]);
+
   // ✅ 예약 버튼 클릭 핸들러
   const reserveUrl = kakaoPlaceInfo?.place_url || placeInfo?.homepage || "";
   const onReserve = () => {
@@ -321,8 +349,17 @@ export default function PlacePreview({
                 예약하기
               </button>
 
-              {/* 찜하기 (기존) */}
-              <CartButton />
+              {/* 찜하기 */}
+              <CartButton
+                placeId={placeInfo.contentId || placeInfo.id}
+                contentTypeId={placeInfo.contentTypeId}
+                title={placeInfo.name}
+                address={placeInfo.roadAddress || placeInfo.jibunAddress}
+                imageUrl={placeInfo.imageUrl}
+                latitude={placeInfo.latitude}
+                longitude={placeInfo.longitude}
+                initialAdded={isWishlisted}
+              />
             </div>
           </div>
 

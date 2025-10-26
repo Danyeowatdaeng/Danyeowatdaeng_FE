@@ -3,6 +3,7 @@ import { create } from "zustand";
 export interface SearchResult {
   id: number;
   contentId?: number;
+  contentTypeId?: number;
   name: string;
   category3: string;
   roadAddress: string;

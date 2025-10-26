@@ -1,5 +1,5 @@
 import ShowMoreIcon from "../../atoms/Icon/ShowMoreIcon";
-import CategoryItem from "../../molecules/CategoryItem";
+import CategoryItem from "../../molecules/category/CategoryItem";
 
 export default function MyGroup() {
   return (

@@ -1,10 +1,10 @@
 import BackHeader from "../molecules/BackHeader";
 import { ChevronRight } from "lucide-react";
 import DistanceButton, { type Distance } from "../molecules/DistanceButton";
-import CafeGrid from "../molecules/CafeGrid";
+import CafeGrid from "../molecules/category/CafeGrid";
 import TabBar from "../molecules/TabBar";
 import { useWebControlStore } from "../../store/webControlStore";
-import type { CafeCardData } from "../molecules/CafeCard";
+import type { CafeCardData } from "../molecules/category/CafeCard";
 
 type CafeListTemplateProps = {
   // 헤더

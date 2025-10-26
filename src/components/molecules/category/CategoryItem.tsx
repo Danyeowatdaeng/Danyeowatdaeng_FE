@@ -1,7 +1,7 @@
 // 아이콘 + 라벨 버튼
-import Button from "../atoms/Button";
-import Icon from "../atoms/Icon";
-import Label from "../atoms/Label";
+import Button from "../../atoms/Button";
+import Icon from "../../atoms/Icon";
+import Label from "../../atoms/Label";
 
 export type CategoryItemProps = {
   style: string;

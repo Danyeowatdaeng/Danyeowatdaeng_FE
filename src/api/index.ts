@@ -155,6 +155,27 @@ export interface WishlistResponse {
   success: boolean;
 }
 
-export const getWishlist = async (params?: { page?: number; size?: number }): Promise<WishlistResponse> => {
+export const getWishlist = async (params?: {
+  page?: number;
+  size?: number;
+}): Promise<WishlistResponse> => {
   return await get("/wishlist", params);
+};
+
+// 찜하기 추가
+export const addWishlist = async (data: {
+  contentId: number;
+  contentTypeId: number;
+  title: string;
+  address: string;
+  imageUrl: string;
+  latitude: number;
+  longitude: number;
+}) => {
+  return await post("/wishlist", data);
+};
+
+// 찜하기 삭제
+export const deleteWishlist = async (placeId: number) => {
+  return await del(`/wishlist/${placeId}`);
 };

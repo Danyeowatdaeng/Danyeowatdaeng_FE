@@ -5,7 +5,7 @@ import {
   DISTANCE_MAPPING,
   CATEGORY_TITLE_MAP,
 } from "../utils/categoryMapping";
-import type { CafeCardData } from "../components/molecules/CafeCard";
+import type { CafeCardData } from "../components/molecules/category/CafeCard";
 
 // API 응답 타입 정의 (실제 API 응답 구조에 맞게 수정)
 export interface MapSearchResponse {
