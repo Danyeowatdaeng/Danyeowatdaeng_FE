@@ -134,6 +134,15 @@ export default function MakeCharacterPage() {
       });
       
       console.log("PetAvatar 생성 완료:", avatarResponse);
+      
+      // 4. 회원가입 완료 전에 PetAvatar 선택
+      const petAvatarId = avatarResponse.data.id;
+      const selectResponse = await post("/api/members/pet-avatar", {
+        petAvatarId: petAvatarId
+      });
+      
+      console.log("PetAvatar 선택 완료:", selectResponse);
+      
       return avatarResponse;
     } catch (error) {
       console.error("Presigned URL 업로드 실패:", error);
