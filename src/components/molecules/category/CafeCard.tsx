@@ -13,6 +13,7 @@ export type CafeCardData = {
   longitude: number;
   phone: string;
   source: string;
+  contentId: number;
 };
 
 type Props = {

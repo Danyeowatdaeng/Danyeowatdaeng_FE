@@ -132,12 +132,14 @@ export const getMemberInfo = async (): Promise<MemberInfoResponse> => {
 // 찜 목록 조회
 export interface WishlistItem {
   id: number;
+  title: string;
   placeId: number;
   placeName: string;
   category: string;
   address: string;
   imageUrl?: string;
   createdAt: string;
+  contentId: number;
 }
 
 export interface Pageable {
@@ -184,11 +186,24 @@ export const addWishlist = async (data: {
   return await post("/wishlist", data);
 };
 
-export const addWishlistAtMap = async (data: { source: string }) => {
-  return await post("/wishlist/add", data);
+export const addWishlistAtMap = async (data: {
+  name: string;
+  category3: string;
+  roadAddress: string;
+  jibunAddress: string;
+  homepage: string;
+  closedDays: string;
+  openingHours: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  source: string;
+  contentTypeId: number;
+}) => {
+  return await post("/wishlist/search", data);
 };
 
 // 찜하기 삭제
-export const deleteWishlist = async (placeId: number) => {
-  return await del(`/wishlist/${placeId}`);
+export const deleteWishlist = async (contentId: number) => {
+  return await del(`/wishlist/${contentId}`);
 };

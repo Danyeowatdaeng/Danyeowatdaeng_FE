@@ -157,6 +157,7 @@ export function useMapSearch({
 
         // 데이터 변환 (실제 API 응답 구조에 맞게 수정)
         const transformedData: CafeCardData[] = response.data.map((item) => ({
+          contentId: item.id,
           id: item.id.toString(),
           title: item.title,
           star: "4.5", // API에서 별점 정보가 없으므로 기본값
@@ -177,6 +178,7 @@ export function useMapSearch({
         // API 실패 시 더미 데이터 사용
         const dummyData: CafeCardData[] = [
           {
+            contentId: 1,
             id: "1",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 1`,
             star: "4.5",
@@ -190,6 +192,7 @@ export function useMapSearch({
             source: "tour-api",
           },
           {
+            contentId: 2,
             id: "2",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 2`,
             star: "4.2",
@@ -203,6 +206,7 @@ export function useMapSearch({
             source: "tour-api",
           },
           {
+            contentId: 3,
             id: "3",
             title: `${CATEGORY_TITLE_MAP[category] || "장소"} 3`,
             star: "4.8",

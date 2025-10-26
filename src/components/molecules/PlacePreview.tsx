@@ -373,6 +373,15 @@ export default function PlacePreview({
                 longitude={currentPlaceInfo?.longitude}
                 initialAdded={isWishlisted}
                 map={map}
+                // 지도 찜하기용 추가 필드
+                category3={currentPlaceInfo?.category3}
+                roadAddress={currentPlaceInfo?.roadAddress}
+                jibunAddress={currentPlaceInfo?.jibunAddress}
+                homepage={currentPlaceInfo?.homepage}
+                closedDays={currentPlaceInfo?.closedDays}
+                openingHours={currentPlaceInfo?.openingHours}
+                phone={currentPlaceInfo?.phone}
+                source={currentPlaceInfo?.source}
                 onWishlistAdded={(contentId) => {
                   // 응답에서 받은 contentId로 업데이트
                   if (currentPlaceInfo) {

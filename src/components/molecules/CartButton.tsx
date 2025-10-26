@@ -14,7 +14,16 @@ type CartButtonProps = {
   longitude?: number;
   initialAdded?: boolean;
   map?: boolean;
-  onWishlistAdded?: (contentId: number) => void; // 찜하기 추가 시 contentId 콜백
+  onWishlistAdded?: (contentId: number) => void;
+  // 지도 찜하기용 추가 필드
+  category3?: string;
+  roadAddress?: string;
+  jibunAddress?: string;
+  homepage?: string;
+  closedDays?: string;
+  openingHours?: string;
+  phone?: string;
+  source?: string;
 };
 
 export default function CartButton({
@@ -28,6 +37,14 @@ export default function CartButton({
   initialAdded = false,
   map = false,
   onWishlistAdded,
+  category3,
+  roadAddress,
+  jibunAddress,
+  homepage,
+  closedDays,
+  openingHours,
+  phone,
+  source,
 }: CartButtonProps) {
   const [addCart, setAddCart] = useState(initialAdded);
   const [loading, setLoading] = useState(false);
@@ -46,27 +63,44 @@ export default function CartButton({
 
     try {
       if (addCart) {
-        if (!placeId || !title || !address) {
+        if (!placeId) {
           alert("장소 정보가 부족합니다.");
           return;
         }
-        // 찜하기 삭제
+        // 찜하기 삭제 (placeId는 contentId임)
         await deleteWishlist(placeId);
         setAddCart(false);
-        console.log("찜하기 삭제 완료");
+        console.log("찜하기 삭제 완료, contentId:", placeId);
       } else {
         // 찜하기 추가
         let response;
         if (map) {
+          // 지도에서 찜하기 - 모든 필드 포함
           response = await addWishlistAtMap({
-            source: "map",
+            name: title || "",
+            category3: category3 || "",
+            roadAddress: roadAddress || address || "",
+            jibunAddress: jibunAddress || address || "",
+            homepage: homepage || "",
+            closedDays: closedDays || "",
+            openingHours: openingHours || "",
+            latitude: latitude || 0,
+            longitude: longitude || 0,
+            phone: phone || "",
+            source: source || "TOUR_API",
+            contentTypeId: contentTypeId || 0,
           });
         } else {
+          // 일반 찜하기
+          if (!placeId || !title || !address) {
+            alert("장소 정보가 부족합니다.");
+            return;
+          }
           response = await addWishlist({
-            contentId: placeId || 0,
+            contentId: placeId,
             contentTypeId: contentTypeId || 0,
-            title: title || "",
-            address: address || "",
+            title,
+            address,
             imageUrl: imageUrl || "",
             latitude: latitude || 0,
             longitude: longitude || 0,
