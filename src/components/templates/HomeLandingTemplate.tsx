@@ -58,7 +58,7 @@ export default function HomeLandingTemplate({
         )}
       >
         <div className="h-full overflow-y-auto">
-          <div className="px-4 pt-4">
+          <div className="px-6 pt-4">
             <CategoryGrid items={categories} />
           </div>
           <div className="px-6 pt-8 pb-[calc(4rem+env(safe-area-inset-bottom))]">

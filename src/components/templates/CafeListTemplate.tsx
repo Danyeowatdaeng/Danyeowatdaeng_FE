@@ -75,7 +75,7 @@ export default function CafeListTemplate({
     <>
       <div className="h-dvh flex flex-col pt-[env(safe-area-inset-top)] px-6 pb-[env(safe-area-inset-bottom)]">
         {/* 상단 헤더 */}
-        <div className="flex-none pt-10">
+        <div className="flex-none pt-11">
           <BackHeader onBack={onBack} label={title} />
         </div>
 

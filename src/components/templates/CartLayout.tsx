@@ -150,7 +150,7 @@ export default function CartLayout({
     <div className="h-full flex flex-col overflow-hidden">
       {/* 스크롤 가능한 컨텐츠 영역 */}
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-8 pb-[calc(80px+env(safe-area-inset-bottom))]">
+        <div className="mx-6 pb-[calc(80px+env(safe-area-inset-bottom))]">
           <Title className="mt-15 mb-5">내 그룹</Title>
           
           {/* 그룹 목록 */}
