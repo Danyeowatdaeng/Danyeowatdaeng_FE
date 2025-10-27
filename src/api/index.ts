@@ -339,3 +339,31 @@ export const addWishlistToGroup = async (
 ): Promise<AddWishlistToGroupResponse> => {
   return await post(`/wishlist-groups/${groupId}/items`, { wishlistIds });
 };
+
+// 그룹에서 찜하기 제거
+export interface RemoveWishlistFromGroupRequest {
+  wishlistIds: number[];
+}
+
+export interface RemoveWishlistFromGroupResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: Record<string, unknown>;
+  success: boolean;
+}
+
+export const removeWishlistFromGroup = async (
+  groupId: number,
+  wishlistIds: number[]
+): Promise<RemoveWishlistFromGroupResponse> => {
+  try {
+    const res = await api.delete(`/wishlist-groups/${groupId}/items`, {
+      data: { wishlistIds }
+    });
+    return res.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    throw error;
+  }
+};

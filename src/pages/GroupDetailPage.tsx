@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import BackHeader from "../components/molecules/BackHeader";
 import WishlistItem, {
@@ -13,6 +13,7 @@ import {
   getWishlistGroup,
   getWishlist,
   addWishlistToGroup,
+  removeWishlistFromGroup,
   type WishlistGroup,
   type WishlistItem as WishlistItemAPI,
 } from "../api";
@@ -23,6 +24,7 @@ type Props = {
 
 export default function GroupDetailPage({ groupId }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const isWide = useWebControlStore((state) => state.isWide);
   const [group, setGroup] = useState<WishlistGroup | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,6 +64,36 @@ export default function GroupDetailPage({ groupId }: Props) {
     console.log("🔄 useEffect 실행 - groupId:", groupId);
     fetchGroup();
   }, [groupId]);
+
+  // 페이지가 다시 보여질 때 (탭 전환, 다른 페이지에서 돌아올 때) 새로고침
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        console.log("🔄 페이지 다시 보임 - 그룹 새로고침");
+        fetchGroup();
+      }
+    };
+
+    const handleFocus = () => {
+      console.log("🔄 윈도우 포커스 - 그룹 새로고침");
+      fetchGroup();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [groupId]);
+
+  // 라우트 변경 감지 (다른 페이지에서 돌아올 때)
+  // location의 key나 state가 변경될 때마다 새로고침
+  useEffect(() => {
+    console.log("🔄 라우트 상태 변경 감지 - 그룹 새로고침", location);
+    fetchGroup();
+  }, [location]);
 
   const handleBack = () => {
     navigate({ to: "/cart" });
@@ -133,6 +165,50 @@ export default function GroupDetailPage({ groupId }: Props) {
     }
   };
 
+  // 그룹에서 찜 해제
+  const handleRemoveWishlist = async (contentId: number) => {
+    if (!window.confirm("이 그룹에서 제거하시겠습니까?")) {
+      return;
+    }
+
+    try {
+      console.log("=== 그룹에서 찜하기 제거 시작 ===");
+      console.log("contentId:", contentId);
+      console.log("groupId:", groupId);
+      
+      // contentId로 wishlist의 id 찾기
+      const wishlistItem = group?.wishlists?.find(w => w.contentId === contentId);
+      if (!wishlistItem) {
+        console.error("❌ 찜하기 항목을 찾을 수 없습니다.");
+        alert("찜하기 항목을 찾을 수 없습니다.");
+        return;
+      }
+
+      console.log("wishlist id:", wishlistItem.id);
+      console.log("API 호출: DELETE /wishlist-groups/" + groupId + "/items");
+      console.log("Body:", { wishlistIds: [wishlistItem.id] });
+      
+      const response = await removeWishlistFromGroup(groupId, [wishlistItem.id]);
+      console.log("✅ 그룹에서 제거 응답:", response);
+
+      // 그룹 정보 다시 불러오기
+      await fetchGroup();
+
+      alert("그룹에서 제거되었습니다.");
+    } catch (error: any) {
+      console.error("❌ 그룹에서 제거 실패:", error);
+      console.error("에러 상세:", {
+        message: error.message,
+        response: error.response,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+      
+      const errorMessage = error.response?.data?.message || error.message || "그룹에서 제거하는데 실패했습니다.";
+      alert(`제거 실패: ${errorMessage}`);
+    }
+  };
+
   // WishlistInGroup을 WishlistItemData로 변환
   const wishlistItems: WishlistItemData[] =
     group?.wishlists?.map((item) => ({
@@ -140,6 +216,7 @@ export default function GroupDetailPage({ groupId }: Props) {
       title: item.title,
       address: item.address,
       image: item.imageUrl,
+      onRemove: handleRemoveWishlist,
     })) || [];
 
   if (loading) {
@@ -172,35 +249,6 @@ export default function GroupDetailPage({ groupId }: Props) {
             <BackHeader onBack={handleBack} label={group.name} />
           </div>
 
-          {/* 그룹 정보 */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img
-                  src={group.categoryImageUrl}
-                  alt={group.name}
-                  className="w-16 h-16"
-                />
-                <div>
-                  <h2 className="text-xl font-bold">{group.name}</h2>
-                  <p className="text-sm text-gray-500">
-                    {group.isPublic ? "공개" : "비공개"} / 장소{" "}
-                    {wishlistItems.length}개
-                  </p>
-                </div>
-              </div>
-
-              {/* + 버튼 */}
-              <button
-                onClick={handleOpenAddSheet}
-                className="w-12 h-12 rounded-full bg-[#00A3A5] text-white flex items-center justify-center shadow-lg hover:bg-[#008a8c] transition-colors"
-                aria-label="찜 목록 추가"
-              >
-                <Plus size={24} strokeWidth={2.5} />
-              </button>
-            </div>
-          </div>
-
           {/* 찜 목록 */}
           {wishlistItems.length === 0 ? (
             <div className="flex items-center justify-center py-10">
@@ -215,6 +263,17 @@ export default function GroupDetailPage({ groupId }: Props) {
           )}
         </div>
       </div>
+
+      {/* Floating + 버튼 (탭바 위 중앙) */}
+      <button
+        onClick={handleOpenAddSheet}
+        className={`${
+          isWide ? "absolute" : "fixed"
+        } left-1/2 -translate-x-1/2 bottom-[calc(80px+env(safe-area-inset-bottom)+10px)] w-14 h-14 rounded-full bg-[#00A3A5] text-white flex items-center justify-center shadow-xl hover:bg-[#008a8c] transition-all hover:scale-110 z-40`}
+        aria-label="찜 목록 추가"
+      >
+        <Plus size={28} strokeWidth={2.5} />
+      </button>
 
       {/* 하단 고정 TabBar */}
       {isWide && <TabBar className="relative bottom-0 w-full z-30" />}
@@ -251,19 +310,6 @@ export default function GroupDetailPage({ groupId }: Props) {
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
-                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                      {item.imageUrl ? (
-                        <img
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          No Image
-                        </div>
-                      )}
-                    </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-sm">{item.title}</h3>
                       <p className="text-xs text-gray-500 truncate">
