@@ -136,7 +136,7 @@ export default function CartButton({
       disabled={loading}
     >
       <StarIcon className="mr-2" color={addCart ? "#00A3A5" : "#ABABAB"} />
-      <div className={`${addCart ? "text-[#00A3A5]" : "text-[#ABABAB]"}`}>
+      <div className={`text-[13px] ${addCart ? "text-[#00A3A5]" : "text-[#ABABAB]"}`}>
         {loading ? "처리중..." : "찜하기"}
       </div>
     </Button>
