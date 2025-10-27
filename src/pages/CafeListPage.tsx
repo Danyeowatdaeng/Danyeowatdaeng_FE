@@ -96,7 +96,14 @@ export default function CafeListPage() {
               lng: selectedPlace.longitude,
             }}
             placeInfo={convertToSearchResult(selectedPlace)}
-            onReviewClick={() => console.log("리뷰 작성")}
+            onReviewClick={() => {
+              // 리뷰 작성 페이지로 이동
+              router.navigate({
+                to: "/place/$placeId/review",
+                params: { placeId: String(selectedPlace.id) },
+                search: { name: selectedPlace.title },
+              });
+            }}
           />
         )}
       </BottomSheet>
