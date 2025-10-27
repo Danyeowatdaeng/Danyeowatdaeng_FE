@@ -43,7 +43,7 @@ export function useBottomSheet({
   // open prop이 변경될 때 isExpanded 상태 업데이트
   useEffect(() => {
     if (open) {
-      setIsExpanded(true);
+      setIsExpanded(false); // 초기에는 절반만 올라오도록
     } else {
       setIsExpanded(false);
     }
