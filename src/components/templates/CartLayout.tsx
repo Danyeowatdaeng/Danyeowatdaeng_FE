@@ -58,6 +58,12 @@ export default function CartLayout({
     fetchGroups();
   }, [location.pathname]); // 경로가 변경될 때마다 새로고침
 
+  // 찜 목록이 변경될 때도 그룹 목록 새로고침 (찜하기 취소 시)
+  useEffect(() => {
+    console.log("🔄 찜 목록 변경 감지 - 그룹 목록 새로고침");
+    fetchGroups();
+  }, [wishlistItems.length]); // 찜 목록 개수가 변경될 때
+
   const handleCreateGroup = async (data: {
     name: string;
     icon: string;

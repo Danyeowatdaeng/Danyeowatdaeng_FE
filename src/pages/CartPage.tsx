@@ -53,12 +53,26 @@ export default function CartPage() {
     }
 
     try {
-      await deleteWishlist(contentId);
+      console.log("=== [CartPage] 찜하기 삭제 시작 ===");
+      console.log("contentId:", contentId);
+      console.log("API 호출: DELETE /wishlist/" + contentId);
+      
+      const response = await deleteWishlist(contentId);
+      console.log("✅ [CartPage] 찜하기 삭제 응답:", response);
+      
       // 목록 다시 불러오기
       await fetchWishlist();
-    } catch (err) {
-      console.error("찜하기 삭제 실패:", err);
-      alert("찜하기 취소에 실패했습니다.");
+    } catch (err: any) {
+      console.error("❌ [CartPage] 찜하기 삭제 실패:", err);
+      console.error("에러 상세:", {
+        message: err.message,
+        response: err.response,
+        status: err.response?.status,
+        data: err.response?.data,
+      });
+      
+      const errorMessage = err.response?.data?.message || err.message || "찜하기 취소에 실패했습니다.";
+      alert(`찜하기 취소 실패: ${errorMessage}`);
     }
   };
 
