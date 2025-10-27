@@ -66,16 +66,16 @@ export default function MyGroup({
 
   return (
     <div
-      className="flex justify-between items-center border-b-1 border-[#EFEFEF] py-3 relative cursor-pointer hover:bg-gray-50 transition-colors rounded-lg px-2"
+      className="flex justify-between items-center border-b-1 border-[#EFEFEF] py-3 relative cursor-pointer hover:bg-gray-50 transition-colors rounded-lg"
       onClick={handleGroupClick}
     >
       <div className="flex gap-5 items-center">
-        <div className="w-[61px] h-[61px] rounded-xl bg-white border-1 border-[#D9D9D9] flex items-center justify-center flex-shrink-0">
+        <div className="w-[50px] h-[50px] rounded-xl bg-white border-1 border-[#D9D9D9] flex items-center justify-center flex-shrink-0">
           <Icon
             src={group.categoryImageUrl}
             alt={group.name}
-            width={42}
-            height={42}
+            width={32}
+            height={32}
           />
         </div>
         <div className="gap-y-3 h-full">

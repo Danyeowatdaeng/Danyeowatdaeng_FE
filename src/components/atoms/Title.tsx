@@ -6,7 +6,7 @@ export default function Title({
   children: React.ReactNode;
 }) {
   return (
-    <h1 className={`text-2xl font-bold text-gray-900 ${className}`}>
+    <h1 className={`text-xl font-bold text-gray-900 ${className}`}>
       {children}
     </h1>
   );

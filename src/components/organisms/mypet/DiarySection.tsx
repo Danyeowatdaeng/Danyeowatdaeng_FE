@@ -28,7 +28,9 @@ export default function DiarySection({
 
       {/* 그리드만 스크롤 */}
       <div className="flex-1 min-h-0 overflow-y-auto mt-4 relative z-10">
-        <DiaryGrid items={items} onItemClick={onItemClick} />
+        <div className="pb-[calc(120px+env(safe-area-inset-bottom))]">
+          <DiaryGrid items={items} onItemClick={onItemClick} />
+        </div>
       </div>
     </section>
   );
