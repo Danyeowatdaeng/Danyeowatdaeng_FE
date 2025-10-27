@@ -230,7 +230,7 @@ export default function GroupDetailPage({ groupId }: Props) {
   if (!group) {
     return (
       <div className="h-full flex flex-col">
-        <div className="mx-8 mt-15">
+        <div className="mx-8 mt-15 ">
           <BackHeader onBack={handleBack} label="그룹" />
           <div className="flex items-center justify-center py-10">
             <p className="text-gray-500">그룹을 찾을 수 없습니다.</p>
@@ -241,11 +241,11 @@ export default function GroupDetailPage({ groupId }: Props) {
   }
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div className="h-full flex flex-col overflow-hidden ">
       {/* 스크롤 가능한 컨텐츠 영역 */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-8 pb-[calc(80px+env(safe-area-inset-bottom))]">
-          <div className="mt-15">
+      <div className="flex-1 overflow-y-auto p-6 my-5">
+        <div className=" pb-[calc(80px+env(safe-area-inset-bottom))]">
+          <div>
             <BackHeader onBack={handleBack} label={group.name} />
           </div>
 
